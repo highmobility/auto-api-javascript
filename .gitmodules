@@ -1,0 +1,4 @@
+[submodule "auto-api"]
+	path = auto-api
+	url = git@github.com:highmobility/auto-api.git
+	branch = master
