@@ -6,10 +6,8 @@ export class WiFi extends Capability {
     msb: 0,
     lsb: 89,
   };
+  static readonly Name = 'wi_fi';
   constructor() {
-    super(
-      Configuration.getCapabilityDefinitionByName('wi_fi'),
-      Configuration.getUniversalProperties(),
-    );
+    super(Configuration.getCapabilityDefinition(WiFi.Name), Configuration.getUniversalProperties());
   }
 }

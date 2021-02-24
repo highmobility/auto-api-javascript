@@ -19,22 +19,28 @@ import * as tsUtils from './shared/typescript';
 
 const ClassTypeIdentifier = 'CapabilityClass';
 const IdentifierToken = 'Identifier';
+const NameToken = 'Name';
 
 /*
  * Code generation utilities
  */
 
-function createConstructorDeclaration({ name }: Capability) {
+function createConstructorDeclaration(className: string) {
   return tsUtils.createConstructorDeclaration([
     ts.factory.createExpressionStatement(
       ts.factory.createCallExpression(ts.factory.createSuper(), undefined, [
         ts.factory.createCallExpression(
           ts.factory.createPropertyAccessExpression(
             ts.factory.createIdentifier(ConfigurationClassName),
-            'getCapabilityDefinitionByName',
+            'getCapabilityDefinition',
           ),
           undefined,
-          [ts.factory.createStringLiteral(name)],
+          [
+            ts.factory.createPropertyAccessExpression(
+              ts.factory.createIdentifier(className),
+              ts.factory.createIdentifier(NameToken),
+            ),
+          ],
         ),
         ts.factory.createCallExpression(
           ts.factory.createPropertyAccessExpression(
@@ -75,6 +81,20 @@ function createIdentifierDeclaration({ identifier }: Capability) {
   );
 }
 
+function createNameDeclaration(name: string) {
+  return ts.factory.createPropertyDeclaration(
+    undefined,
+    [
+      ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
+      ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+    ],
+    ts.factory.createIdentifier(NameToken),
+    undefined,
+    undefined,
+    ts.factory.createStringLiteral(name),
+  );
+}
+
 function createCapabilityClassDefinition(className: string, capability: Capability) {
   return ts.factory.createClassDeclaration(
     undefined,
@@ -89,7 +109,11 @@ function createCapabilityClassDefinition(className: string, capability: Capabili
         ),
       ]),
     ],
-    [createIdentifierDeclaration(capability), createConstructorDeclaration(capability)],
+    [
+      createIdentifierDeclaration(capability),
+      createNameDeclaration(capability.name),
+      createConstructorDeclaration(className),
+    ],
   );
 }
 

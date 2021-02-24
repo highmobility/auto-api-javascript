@@ -6,9 +6,10 @@ export class Trips extends Capability {
     msb: 0,
     lsb: 106,
   };
+  static readonly Name = 'trips';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('trips'),
+      Configuration.getCapabilityDefinition(Trips.Name),
       Configuration.getUniversalProperties(),
     );
   }

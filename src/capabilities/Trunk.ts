@@ -6,9 +6,10 @@ export class Trunk extends Capability {
     msb: 0,
     lsb: 33,
   };
+  static readonly Name = 'trunk';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('trunk'),
+      Configuration.getCapabilityDefinition(Trunk.Name),
       Configuration.getUniversalProperties(),
     );
   }

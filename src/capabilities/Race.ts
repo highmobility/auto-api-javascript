@@ -6,10 +6,8 @@ export class Race extends Capability {
     msb: 0,
     lsb: 87,
   };
+  static readonly Name = 'race';
   constructor() {
-    super(
-      Configuration.getCapabilityDefinitionByName('race'),
-      Configuration.getUniversalProperties(),
-    );
+    super(Configuration.getCapabilityDefinition(Race.Name), Configuration.getUniversalProperties());
   }
 }

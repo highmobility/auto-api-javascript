@@ -6,10 +6,8 @@ export class Hood extends Capability {
     msb: 0,
     lsb: 103,
   };
+  static readonly Name = 'hood';
   constructor() {
-    super(
-      Configuration.getCapabilityDefinitionByName('hood'),
-      Configuration.getUniversalProperties(),
-    );
+    super(Configuration.getCapabilityDefinition(Hood.Name), Configuration.getUniversalProperties());
   }
 }

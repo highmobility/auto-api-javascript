@@ -6,9 +6,10 @@ export class FailureMessage extends Capability {
     msb: 0,
     lsb: 2,
   };
+  static readonly Name = 'failure_message';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('failure_message'),
+      Configuration.getCapabilityDefinition(FailureMessage.Name),
       Configuration.getUniversalProperties(),
     );
   }

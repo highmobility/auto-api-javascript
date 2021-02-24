@@ -13,7 +13,7 @@ export class Configuration {
     return configuration.version;
   }
 
-  public static getCapabilityDefinitionByName(name: string): Readonly<Capability> {
+  public static getCapabilityDefinition(name: string): Readonly<Capability> {
     const definition = configuration.capabilities[name];
 
     if (definition === undefined) throw new Error(`Capability '${name}' doesn't exist.`);

@@ -6,9 +6,10 @@ export class RooftopControl extends Capability {
     msb: 0,
     lsb: 37,
   };
+  static readonly Name = 'rooftop_control';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('rooftop_control'),
+      Configuration.getCapabilityDefinition(RooftopControl.Name),
       Configuration.getUniversalProperties(),
     );
   }

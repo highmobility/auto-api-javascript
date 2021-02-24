@@ -6,9 +6,10 @@ export class MultiCommand extends Capability {
     msb: 0,
     lsb: 19,
   };
+  static readonly Name = 'multi_command';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('multi_command'),
+      Configuration.getCapabilityDefinition(MultiCommand.Name),
       Configuration.getUniversalProperties(),
     );
   }

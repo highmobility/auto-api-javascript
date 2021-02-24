@@ -6,9 +6,10 @@ export class Browser extends Capability {
     msb: 0,
     lsb: 73,
   };
+  static readonly Name = 'browser';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('browser'),
+      Configuration.getCapabilityDefinition(Browser.Name),
       Configuration.getUniversalProperties(),
     );
   }
