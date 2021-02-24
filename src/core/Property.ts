@@ -1,8 +1,10 @@
-import { ClassMap, ComponentMap, ComponentName } from '../components/classes';
+import { ComponentName } from '../components/classes';
 import { Property as IProperty } from '../types';
+import { PropertyComponentFactory } from '../factories';
 
 import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
 
+import { JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Serializable } from './Serializable';
 import { PropertyComponent } from './PropertyComponent';
@@ -17,7 +19,7 @@ export class Property extends Serializable implements NamedEntity {
 
   public decode(bytes: number[] = []) {
     for (const [id, chunk] of bytesToChunks(bytes)) {
-      this.createComponent(this.getComponentNameById(id)).decode(chunk);
+      this.createComponent(id).decode(chunk);
     }
 
     return this;
@@ -35,6 +37,20 @@ export class Property extends Serializable implements NamedEntity {
     return [this.id, ...bytesWithSize(bytes)];
   }
 
+  public fromJSON(payload: Record<string, unknown>) {
+    try {
+      for (const [componentName, componentAsJSON] of Object.entries(payload)) {
+        this.createComponent(componentName as ComponentName)
+          .createValue()
+          .fromJSON(componentAsJSON);
+      }
+    } catch (e) {
+      throw new JSONError(e);
+    }
+
+    return this;
+  }
+
   public get id() {
     return this.definition.id;
   }
@@ -47,16 +63,12 @@ export class Property extends Serializable implements NamedEntity {
     return this.definition.name;
   }
 
-  public createComponent<T extends ComponentName>(name: T) {
-    const PropertyComponentConstructor = ClassMap[name];
-    if (PropertyComponentConstructor) {
-      const component = new PropertyComponentConstructor(this);
-      this.setComponent(component);
+  public createComponent<T extends ComponentName>(identifier: T | number) {
+    const component = PropertyComponentFactory.create(identifier, this);
 
-      return component as InstanceType<typeof ClassMap[T]>;
-    } else {
-      throw new Error(`Unknown property component name: ${name}.`);
-    }
+    this.setComponent(component);
+
+    return component;
   }
 
   public getComponent<T extends ComponentName>(name: T) {
@@ -82,13 +94,5 @@ export class Property extends Serializable implements NamedEntity {
 
   public toJSON() {
     return isEmptyObject(this.components) ? null : this.components;
-  }
-
-  protected getComponentNameById(id: number) {
-    const name = ComponentMap[id] as ComponentName | undefined;
-
-    if (name === undefined) throw new Error(`Unknown property component id: ${id}.`);
-
-    return name;
   }
 }

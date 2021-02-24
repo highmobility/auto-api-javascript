@@ -1,5 +1,6 @@
 import { EnumValue as IEnumValue, TypeDefinition } from '../types';
 
+import { JSONError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
@@ -32,6 +33,18 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
 
   public encode() {
     return [this.getValueForEncoding().id];
+  }
+
+  public fromJSON(payload: unknown) {
+    const value = this.extractValueFromJSONPayload(payload);
+
+    try {
+      this.setValue(value as string | number);
+    } catch (e) {
+      throw new JSONError(e);
+    }
+
+    return this;
   }
 
   public getValueDefinitionByField<T extends keyof IEnumValue>(field: T, value: IEnumValue[T]) {

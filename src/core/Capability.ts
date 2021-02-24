@@ -1,7 +1,8 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks } from '../utils';
+import { bytesToChunks, getKeyValuePairFromObject, isObject } from '../utils';
 
+import { JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
@@ -10,7 +11,6 @@ interface CapabilityEncodeDecodeOptions {
   bytesAsPropertyIds?: boolean;
 }
 
-// TODO capability_state type needs special handling?
 export abstract class Capability extends Serializable implements NamedEntity {
   public properties: Record<string, Property | Property[]> = {};
 
@@ -60,6 +60,37 @@ export abstract class Capability extends Serializable implements NamedEntity {
     this.setProperty(property);
 
     return property;
+  }
+
+  public fromJSON(payload: unknown) {
+    try {
+      const [, properties] = getKeyValuePairFromObject(payload);
+      if (!isObject(properties)) {
+        throw new Error('Properties must be an object.');
+      }
+
+      for (const [name, components] of Object.entries(properties)) {
+        const componentsArray = (Array.isArray(components) ? components : [components]).filter(
+          (value) => value !== null,
+        );
+
+        if (componentsArray.length) {
+          for (const components of componentsArray) {
+            if (!isObject(components)) {
+              throw new Error('Property components must be an object.');
+            }
+
+            this.createProperty(name).fromJSON(components);
+          }
+        } else {
+          this.createProperty(name);
+        }
+      }
+    } catch (e) {
+      throw new JSONError(e);
+    }
+
+    return this;
   }
 
   public getProperty(name: string): Property | undefined {
