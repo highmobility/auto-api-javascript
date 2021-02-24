@@ -6,9 +6,10 @@ export class Ignition extends Capability {
     msb: 0,
     lsb: 53,
   };
+  static readonly Name = 'ignition';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('ignition'),
+      Configuration.getCapabilityDefinition(Ignition.Name),
       Configuration.getUniversalProperties(),
     );
   }

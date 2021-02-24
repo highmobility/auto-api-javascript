@@ -1,3 +1,5 @@
+import { getValueFromObject } from '../utils';
+
 import { Serializable } from './Serializable';
 
 export abstract class Value<D = unknown, S = D> extends Serializable {
@@ -7,6 +9,11 @@ export abstract class Value<D = unknown, S = D> extends Serializable {
 
   public toJSON() {
     return { value: this.valueOf() };
+  }
+
+  protected extractValueFromJSONPayload(payload: unknown) {
+    const value = getValueFromObject(payload);
+    return value !== undefined ? value : payload;
   }
 
   protected getValueForEncoding() {

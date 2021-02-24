@@ -6,9 +6,10 @@ export class FirmwareVersion extends Capability {
     msb: 0,
     lsb: 3,
   };
+  static readonly Name = 'firmware_version';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('firmware_version'),
+      Configuration.getCapabilityDefinition(FirmwareVersion.Name),
       Configuration.getUniversalProperties(),
     );
   }

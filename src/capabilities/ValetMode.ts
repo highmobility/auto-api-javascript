@@ -6,9 +6,10 @@ export class ValetMode extends Capability {
     msb: 0,
     lsb: 40,
   };
+  static readonly Name = 'valet_mode';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('valet_mode'),
+      Configuration.getCapabilityDefinition(ValetMode.Name),
       Configuration.getUniversalProperties(),
     );
   }

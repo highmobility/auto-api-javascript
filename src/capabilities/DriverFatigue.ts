@@ -6,9 +6,10 @@ export class DriverFatigue extends Capability {
     msb: 0,
     lsb: 65,
   };
+  static readonly Name = 'driver_fatigue';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('driver_fatigue'),
+      Configuration.getCapabilityDefinition(DriverFatigue.Name),
       Configuration.getUniversalProperties(),
     );
   }

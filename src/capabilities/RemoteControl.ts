@@ -6,9 +6,10 @@ export class RemoteControl extends Capability {
     msb: 0,
     lsb: 39,
   };
+  static readonly Name = 'remote_control';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('remote_control'),
+      Configuration.getCapabilityDefinition(RemoteControl.Name),
       Configuration.getUniversalProperties(),
     );
   }

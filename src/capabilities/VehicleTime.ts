@@ -6,9 +6,10 @@ export class VehicleTime extends Capability {
     msb: 0,
     lsb: 80,
   };
+  static readonly Name = 'vehicle_time';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('vehicle_time'),
+      Configuration.getCapabilityDefinition(VehicleTime.Name),
       Configuration.getUniversalProperties(),
     );
   }

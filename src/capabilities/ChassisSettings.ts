@@ -6,9 +6,10 @@ export class ChassisSettings extends Capability {
     msb: 0,
     lsb: 83,
   };
+  static readonly Name = 'chassis_settings';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('chassis_settings'),
+      Configuration.getCapabilityDefinition(ChassisSettings.Name),
       Configuration.getUniversalProperties(),
     );
   }

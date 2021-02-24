@@ -1,12 +1,12 @@
 import { Configuration } from '../core/Configuration';
+import { JSONError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { TypeDefinition, TypeDefinitionType } from '../types';
+import { ValueFactory } from '../factories';
 
 import { bytesToInt, bytesWithSize, isObject } from '../utils';
-
-import { createValueInstanceFromDefinition } from './classes';
 
 type CustomValueItems = Record<string, Value>;
 type CustomValueData = Value | CustomValueItems;
@@ -86,6 +86,18 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     return this;
   }
 
+  public fromJSON(payload: unknown) {
+    const value = this.extractValueFromJSONPayload(payload);
+
+    try {
+      this.setValue(value);
+    } catch (e) {
+      throw new JSONError(e);
+    }
+
+    return this;
+  }
+
   public get name() {
     return this.definition.name;
   }
@@ -136,11 +148,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   protected createValueInstance(definition: Readonly<TypeDefinition>) {
-    return createValueInstanceFromDefinition(
-      definition,
-      Configuration.getCustomTypeDefinition,
-      Configuration.getMeasurementTypeDefinition,
-    );
+    return ValueFactory.createFromDefinition(definition);
   }
 
   protected decodeItem(definition: TypeDefinition, bytes: number[]) {

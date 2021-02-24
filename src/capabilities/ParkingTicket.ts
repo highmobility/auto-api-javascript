@@ -6,9 +6,10 @@ export class ParkingTicket extends Capability {
     msb: 0,
     lsb: 71,
   };
+  static readonly Name = 'parking_ticket';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('parking_ticket'),
+      Configuration.getCapabilityDefinition(ParkingTicket.Name),
       Configuration.getUniversalProperties(),
     );
   }

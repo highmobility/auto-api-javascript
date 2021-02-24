@@ -1,9 +1,8 @@
-import { createValueInstanceFromDefinition, getValueConstructor } from '../values/classes';
 import { PropertyComponent as IPropertyComponent, TypeDefinition } from '../types';
+import { ValueFactory } from '../factories';
 
 import { bytesWithSize } from '../utils';
 
-import { Configuration } from './Configuration';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
@@ -34,6 +33,11 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return [this.definition.id, ...bytesWithSize(this._value.encode())];
   }
 
+  public fromJSON(payload: unknown) {
+    (this.value || this.createValue()).fromJSON(payload);
+    return this;
+  }
+
   public get id() {
     return this.definition.id;
   }
@@ -46,32 +50,10 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return this._value;
   }
 
-  public set value(value: Value | undefined) {
-    if (value) {
-      const ValueConstructor = this.getValueConstructor();
-      if (!(value instanceof ValueConstructor)) {
-        throw new Error(
-          `Cannot assign value to property ${this.property.name} ${this.name} component. It must be type of ${ValueConstructor.name}.`,
-        );
-      }
-    }
-
-    this._value = value;
-  }
-
   public createValue(initialValue?: unknown) {
-    this.value = createValueInstanceFromDefinition(
-      this.getTypeDefinitionForValueConstructor(),
-      Configuration.getCustomTypeDefinition,
-      Configuration.getMeasurementTypeDefinition,
-    );
+    this._value = ValueFactory.createFromDefinition(this.getTypeDefinitionForValueConstructor());
 
-    return initialValue ? this.value.setValue(initialValue) : this.value;
-  }
-
-  public setValue(value?: Value) {
-    this.value = value;
-    return this;
+    return initialValue !== undefined ? this._value.setValue(initialValue) : this._value;
   }
 
   public toJSON() {
@@ -80,9 +62,5 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
 
   protected getTypeDefinitionForValueConstructor(): Readonly<TypeDefinition> {
     return this.definition;
-  }
-
-  protected getValueConstructor() {
-    return getValueConstructor(this.getTypeDefinitionForValueConstructor());
   }
 }

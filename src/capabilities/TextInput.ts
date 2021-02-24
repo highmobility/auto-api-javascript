@@ -6,9 +6,10 @@ export class TextInput extends Capability {
     msb: 0,
     lsb: 68,
   };
+  static readonly Name = 'text_input';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('text_input'),
+      Configuration.getCapabilityDefinition(TextInput.Name),
       Configuration.getUniversalProperties(),
     );
   }

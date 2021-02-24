@@ -6,9 +6,10 @@ export class Graphics extends Capability {
     msb: 0,
     lsb: 81,
   };
+  static readonly Name = 'graphics';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('graphics'),
+      Configuration.getCapabilityDefinition(Graphics.Name),
       Configuration.getUniversalProperties(),
     );
   }

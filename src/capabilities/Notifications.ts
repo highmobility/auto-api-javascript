@@ -6,9 +6,10 @@ export class Notifications extends Capability {
     msb: 0,
     lsb: 56,
   };
+  static readonly Name = 'notifications';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('notifications'),
+      Configuration.getCapabilityDefinition(Notifications.Name),
       Configuration.getUniversalProperties(),
     );
   }

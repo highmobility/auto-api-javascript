@@ -1,6 +1,7 @@
+import { JSONError } from '../core/Error';
 import { Value } from '../core/Value';
 
-import { bytesToInt, decimalToHexArray } from '../utils';
+import { bytesToInt, decimalToHexArray, isInteger } from '../utils';
 
 export class IntegerValue extends Value<number> {
   public constructor(public readonly size = 1) {
@@ -13,6 +14,18 @@ export class IntegerValue extends Value<number> {
 
   public decode(bytes: number[]) {
     this._value = bytesToInt(bytes);
+    return this;
+  }
+
+  public fromJSON(payload: unknown) {
+    const value = this.extractValueFromJSONPayload(payload);
+
+    if (isInteger(value)) {
+      this.setValue(value);
+    } else {
+      throw new JSONError('Value must be integer.');
+    }
+
     return this;
   }
 

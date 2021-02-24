@@ -6,9 +6,10 @@ export class NaviDestination extends Capability {
     msb: 0,
     lsb: 49,
   };
+  static readonly Name = 'navi_destination';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('navi_destination'),
+      Configuration.getCapabilityDefinition(NaviDestination.Name),
       Configuration.getUniversalProperties(),
     );
   }

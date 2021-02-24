@@ -6,9 +6,10 @@ export class Maintenance extends Capability {
     msb: 0,
     lsb: 52,
   };
+  static readonly Name = 'maintenance';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('maintenance'),
+      Configuration.getCapabilityDefinition(Maintenance.Name),
       Configuration.getUniversalProperties(),
     );
   }

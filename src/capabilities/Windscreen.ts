@@ -6,9 +6,10 @@ export class Windscreen extends Capability {
     msb: 0,
     lsb: 66,
   };
+  static readonly Name = 'windscreen';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('windscreen'),
+      Configuration.getCapabilityDefinition(Windscreen.Name),
       Configuration.getUniversalProperties(),
     );
   }

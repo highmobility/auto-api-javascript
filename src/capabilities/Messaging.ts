@@ -6,9 +6,10 @@ export class Messaging extends Capability {
     msb: 0,
     lsb: 55,
   };
+  static readonly Name = 'messaging';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('messaging'),
+      Configuration.getCapabilityDefinition(Messaging.Name),
       Configuration.getUniversalProperties(),
     );
   }

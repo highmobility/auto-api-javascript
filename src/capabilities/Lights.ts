@@ -6,9 +6,10 @@ export class Lights extends Capability {
     msb: 0,
     lsb: 54,
   };
+  static readonly Name = 'lights';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('lights'),
+      Configuration.getCapabilityDefinition(Lights.Name),
       Configuration.getUniversalProperties(),
     );
   }

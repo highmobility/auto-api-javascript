@@ -6,9 +6,10 @@ export class Climate extends Capability {
     msb: 0,
     lsb: 36,
   };
+  static readonly Name = 'climate';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('climate'),
+      Configuration.getCapabilityDefinition(Climate.Name),
       Configuration.getUniversalProperties(),
     );
   }

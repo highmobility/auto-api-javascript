@@ -6,9 +6,10 @@ export class VehicleStatus extends Capability {
     msb: 0,
     lsb: 17,
   };
+  static readonly Name = 'vehicle_status';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('vehicle_status'),
+      Configuration.getCapabilityDefinition(VehicleStatus.Name),
       Configuration.getUniversalProperties(),
     );
   }
