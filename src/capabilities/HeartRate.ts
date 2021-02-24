@@ -6,9 +6,10 @@ export class HeartRate extends Capability {
     msb: 0,
     lsb: 41,
   };
+  static readonly Name = 'heart_rate';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('heart_rate'),
+      Configuration.getCapabilityDefinition(HeartRate.Name),
       Configuration.getUniversalProperties(),
     );
   }

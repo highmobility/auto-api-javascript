@@ -6,9 +6,10 @@ export class KeyfobPosition extends Capability {
     msb: 0,
     lsb: 72,
   };
+  static readonly Name = 'keyfob_position';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('keyfob_position'),
+      Configuration.getCapabilityDefinition(KeyfobPosition.Name),
       Configuration.getUniversalProperties(),
     );
   }

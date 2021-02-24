@@ -6,9 +6,10 @@ export class Seats extends Capability {
     msb: 0,
     lsb: 86,
   };
+  static readonly Name = 'seats';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('seats'),
+      Configuration.getCapabilityDefinition(Seats.Name),
       Configuration.getUniversalProperties(),
     );
   }

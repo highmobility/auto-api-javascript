@@ -6,9 +6,10 @@ export class WakeUp extends Capability {
     msb: 0,
     lsb: 34,
   };
+  static readonly Name = 'wake_up';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('wake_up'),
+      Configuration.getCapabilityDefinition(WakeUp.Name),
       Configuration.getUniversalProperties(),
     );
   }

@@ -6,9 +6,10 @@ export class HomeCharger extends Capability {
     msb: 0,
     lsb: 96,
   };
+  static readonly Name = 'home_charger';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('home_charger'),
+      Configuration.getCapabilityDefinition(HomeCharger.Name),
       Configuration.getUniversalProperties(),
     );
   }

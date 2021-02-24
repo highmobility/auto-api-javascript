@@ -6,9 +6,10 @@ export class ParkingBrake extends Capability {
     msb: 0,
     lsb: 88,
   };
+  static readonly Name = 'parking_brake';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('parking_brake'),
+      Configuration.getCapabilityDefinition(ParkingBrake.Name),
       Configuration.getUniversalProperties(),
     );
   }

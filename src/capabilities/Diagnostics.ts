@@ -6,9 +6,10 @@ export class Diagnostics extends Capability {
     msb: 0,
     lsb: 51,
   };
+  static readonly Name = 'diagnostics';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('diagnostics'),
+      Configuration.getCapabilityDefinition(Diagnostics.Name),
       Configuration.getUniversalProperties(),
     );
   }

@@ -6,9 +6,10 @@ export class DashboardLights extends Capability {
     msb: 0,
     lsb: 97,
   };
+  static readonly Name = 'dashboard_lights';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('dashboard_lights'),
+      Configuration.getCapabilityDefinition(DashboardLights.Name),
       Configuration.getUniversalProperties(),
     );
   }

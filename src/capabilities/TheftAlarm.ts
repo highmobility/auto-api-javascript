@@ -6,9 +6,10 @@ export class TheftAlarm extends Capability {
     msb: 0,
     lsb: 70,
   };
+  static readonly Name = 'theft_alarm';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('theft_alarm'),
+      Configuration.getCapabilityDefinition(TheftAlarm.Name),
       Configuration.getUniversalProperties(),
     );
   }

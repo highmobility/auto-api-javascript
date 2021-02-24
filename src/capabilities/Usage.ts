@@ -6,9 +6,10 @@ export class Usage extends Capability {
     msb: 0,
     lsb: 104,
   };
+  static readonly Name = 'usage';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('usage'),
+      Configuration.getCapabilityDefinition(Usage.Name),
       Configuration.getUniversalProperties(),
     );
   }

@@ -6,9 +6,10 @@ export class Mobile extends Capability {
     msb: 0,
     lsb: 102,
   };
+  static readonly Name = 'mobile';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('mobile'),
+      Configuration.getCapabilityDefinition(Mobile.Name),
       Configuration.getUniversalProperties(),
     );
   }

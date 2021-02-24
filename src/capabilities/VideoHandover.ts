@@ -6,9 +6,10 @@ export class VideoHandover extends Capability {
     msb: 0,
     lsb: 67,
   };
+  static readonly Name = 'video_handover';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('video_handover'),
+      Configuration.getCapabilityDefinition(VideoHandover.Name),
       Configuration.getUniversalProperties(),
     );
   }

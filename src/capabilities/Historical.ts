@@ -6,9 +6,10 @@ export class Historical extends Capability {
     msb: 0,
     lsb: 18,
   };
+  static readonly Name = 'historical';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('historical'),
+      Configuration.getCapabilityDefinition(Historical.Name),
       Configuration.getUniversalProperties(),
     );
   }

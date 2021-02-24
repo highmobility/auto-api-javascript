@@ -6,9 +6,10 @@ export class PowerTakeoff extends Capability {
     msb: 0,
     lsb: 101,
   };
+  static readonly Name = 'power_takeoff';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('power_takeoff'),
+      Configuration.getCapabilityDefinition(PowerTakeoff.Name),
       Configuration.getUniversalProperties(),
     );
   }

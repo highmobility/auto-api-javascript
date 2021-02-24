@@ -6,9 +6,10 @@ export class Tachograph extends Capability {
     msb: 0,
     lsb: 100,
   };
+  static readonly Name = 'tachograph';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('tachograph'),
+      Configuration.getCapabilityDefinition(Tachograph.Name),
       Configuration.getUniversalProperties(),
     );
   }

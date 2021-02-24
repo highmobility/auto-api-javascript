@@ -6,9 +6,10 @@ export class Fueling extends Capability {
     msb: 0,
     lsb: 64,
   };
+  static readonly Name = 'fueling';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('fueling'),
+      Configuration.getCapabilityDefinition(Fueling.Name),
       Configuration.getUniversalProperties(),
     );
   }

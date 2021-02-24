@@ -6,9 +6,10 @@ export class Windows extends Capability {
     msb: 0,
     lsb: 69,
   };
+  static readonly Name = 'windows';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('windows'),
+      Configuration.getCapabilityDefinition(Windows.Name),
       Configuration.getUniversalProperties(),
     );
   }

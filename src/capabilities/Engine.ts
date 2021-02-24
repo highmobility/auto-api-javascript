@@ -6,9 +6,10 @@ export class Engine extends Capability {
     msb: 0,
     lsb: 105,
   };
+  static readonly Name = 'engine';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('engine'),
+      Configuration.getCapabilityDefinition(Engine.Name),
       Configuration.getUniversalProperties(),
     );
   }

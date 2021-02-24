@@ -6,9 +6,10 @@ export class LightConditions extends Capability {
     msb: 0,
     lsb: 84,
   };
+  static readonly Name = 'light_conditions';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('light_conditions'),
+      Configuration.getCapabilityDefinition(LightConditions.Name),
       Configuration.getUniversalProperties(),
     );
   }

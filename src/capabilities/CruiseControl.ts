@@ -6,9 +6,10 @@ export class CruiseControl extends Capability {
     msb: 0,
     lsb: 98,
   };
+  static readonly Name = 'cruise_control';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('cruise_control'),
+      Configuration.getCapabilityDefinition(CruiseControl.Name),
       Configuration.getUniversalProperties(),
     );
   }

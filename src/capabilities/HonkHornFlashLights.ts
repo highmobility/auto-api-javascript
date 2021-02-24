@@ -6,9 +6,10 @@ export class HonkHornFlashLights extends Capability {
     msb: 0,
     lsb: 38,
   };
+  static readonly Name = 'honk_horn_flash_lights';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('honk_horn_flash_lights'),
+      Configuration.getCapabilityDefinition(HonkHornFlashLights.Name),
       Configuration.getUniversalProperties(),
     );
   }

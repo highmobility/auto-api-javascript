@@ -6,9 +6,10 @@ export class Offroad extends Capability {
     msb: 0,
     lsb: 82,
   };
+  static readonly Name = 'offroad';
   constructor() {
     super(
-      Configuration.getCapabilityDefinitionByName('offroad'),
+      Configuration.getCapabilityDefinition(Offroad.Name),
       Configuration.getUniversalProperties(),
     );
   }
