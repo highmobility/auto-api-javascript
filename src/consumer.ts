@@ -172,7 +172,10 @@ const commands = [
 
 for (const bytes of commands) {
   const command = Command.parse(bytes);
-  console.log(JSON.stringify(command));
+  const commandAsJSON = JSON.stringify(command);
+  const fromJSONString = JSON.stringify(Command.fromJSON(JSON.parse(commandAsJSON)));
+
+  console.log(commandAsJSON, fromJSONString === commandAsJSON);
 }
 
 // Test case 2

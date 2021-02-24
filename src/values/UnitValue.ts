@@ -1,7 +1,10 @@
 import { MeasurementType, UnitType } from '../types';
 
+import { JSONError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
+
+import { isNumber, isObject } from '../utils';
 
 import { DoubleValue } from './DoubleValue';
 
@@ -43,6 +46,22 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
       unit,
       value,
     };
+
+    return this;
+  }
+
+  public fromJSON(payload: unknown) {
+    const value = this.extractValueFromJSONPayload(payload);
+
+    try {
+      if (isObject(value) && isNumber(value.value)) {
+        this.setValue(value as UnitValueDataSetter);
+      } else {
+        throw new Error('Value must be number.');
+      }
+    } catch (e) {
+      throw new JSONError(e);
+    }
 
     return this;
   }

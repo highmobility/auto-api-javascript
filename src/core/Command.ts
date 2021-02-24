@@ -1,7 +1,10 @@
-import { ClassList } from '../capabilities/classes';
+import { CapabilityFactory } from '../factories';
+
+import { capitalize, getKeyValuePairFromObject } from '../utils';
 
 import { Capability } from './Capability';
 import { Configuration } from './Configuration';
+import { JSONError } from './Error';
 
 export enum CommandType {
   Availability = 0x02,
@@ -16,18 +19,30 @@ export class Command {
     public version = Configuration.getApiVersion(),
   ) {}
 
+  public static fromJSON(payload: unknown) {
+    try {
+      const [name, command] = getKeyValuePairFromObject(payload);
+      const [capabilityName] = getKeyValuePairFromObject(command);
+
+      const type = CommandType[capitalize(name) as keyof typeof CommandType];
+      if (type === undefined) {
+        throw new Error(`Unknown command type: ${name}`);
+      }
+
+      const capability = CapabilityFactory.createFromName(capabilityName).fromJSON(command);
+
+      return new Command(type, capability);
+    } catch (e) {
+      throw new JSONError(e);
+    }
+  }
+
   public static parse(bytes: number[]) {
     const [version, msb, lsb, type, ...data] = bytes;
 
-    const Capability = ClassList.find(
-      ({ Identifier }) => Identifier.msb === msb && Identifier.lsb === lsb,
-    );
+    const capability = CapabilityFactory.createFromIdentifier(msb, lsb);
 
-    if (Capability === undefined) {
-      throw new Error(`Capability identified by [${msb}, ${lsb}] doesn't exist.`);
-    }
-
-    return new Command(type, new Capability(), version).decode(data);
+    return new Command(type, capability, version).decode(data);
   }
 
   public encode() {
@@ -35,14 +50,7 @@ export class Command {
   }
 
   public get name() {
-    switch (this.type) {
-      case CommandType.Availability:
-        return 'availability';
-      case CommandType.Get:
-        return 'get';
-      case CommandType.Set:
-        return 'set';
-    }
+    return CommandType[this.type].toLowerCase();
   }
 
   public setCapability(capability: Capability) {

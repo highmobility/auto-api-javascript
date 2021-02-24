@@ -1,5 +1,6 @@
 export { BytesValue } from './BytesValue';
 export { CustomValue } from './CustomValue';
+export { DoubleValue } from './DoubleValue';
 export { EnumValue } from './EnumValue';
 export { FloatValue } from './FloatValue';
 export { IntegerValue } from './IntegerValue';
