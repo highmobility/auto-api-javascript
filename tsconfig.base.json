@@ -3,8 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true,
