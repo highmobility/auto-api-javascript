@@ -4,7 +4,7 @@ import { PropertyComponentFactory } from '../factories';
 
 import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
 
-import { JSONError } from './Error';
+import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Serializable } from './Serializable';
 import { PropertyComponent } from './PropertyComponent';
@@ -18,8 +18,12 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public decode(bytes: number[] = []) {
-    for (const [id, chunk] of bytesToChunks(bytes)) {
-      this.createComponent(id).decode(chunk);
+    try {
+      for (const [id, chunk] of bytesToChunks(bytes)) {
+        this.createComponent(id).decode(chunk);
+      }
+    } catch (e) {
+      throw new InvalidCommandError(e);
     }
 
     return this;

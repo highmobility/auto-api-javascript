@@ -4,7 +4,7 @@ import { capitalize, getKeyValuePairFromObject } from '../utils';
 
 import { Capability } from './Capability';
 import { Configuration } from './Configuration';
-import { JSONError } from './Error';
+import { InvalidCommandError, JSONError } from './Error';
 
 export enum CommandType {
   Availability = 0x02,
@@ -29,20 +29,22 @@ export class Command {
         throw new Error(`Unknown command type: ${name}`);
       }
 
-      const capability = CapabilityFactory.createFromName(capabilityName).fromJSON(command);
-
-      return new Command(type, capability);
+      return new Command(type, CapabilityFactory.createFromName(capabilityName).fromJSON(command));
     } catch (e) {
       throw new JSONError(e);
     }
   }
 
   public static parse(bytes: number[]) {
-    const [version, msb, lsb, type, ...data] = bytes;
+    try {
+      const [version, msb, lsb, type, ...data] = bytes;
 
-    const capability = CapabilityFactory.createFromIdentifier(msb, lsb);
-
-    return new Command(type, capability, version).decode(data);
+      return new Command(type, CapabilityFactory.createFromIdentifier(msb, lsb), version).decode(
+        data,
+      );
+    } catch (e) {
+      throw new InvalidCommandError(e);
+    }
   }
 
   public encode() {

@@ -6,7 +6,7 @@ import { Value } from '../core/Value';
 import { TypeDefinition, TypeDefinitionType } from '../types';
 import { ValueFactory } from '../factories';
 
-import { bytesToInt, bytesWithSize, isObject } from '../utils';
+import { bytesToChunk, bytesWithSize, isObject } from '../utils';
 
 type CustomValueItems = Record<string, Value>;
 type CustomValueData = Value | CustomValueItems;
@@ -59,20 +59,11 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
           ? Configuration.getCustomTypeDefinition(item.customType)
           : item;
 
-        let chunk: number[] = [];
+        const [count, chunk] = bytesToChunk(bytes.slice(offset), itemTypeDefinition.size, () =>
+          this.isVariableSizeSubtype(itemTypeDefinition),
+        );
 
-        if (itemTypeDefinition.size) {
-          chunk = bytes.slice(offset, offset + itemTypeDefinition.size);
-          offset += chunk.length;
-        } else if (this.isVariableSizeSubtype(itemTypeDefinition)) {
-          const bytesOffset = offset + 2;
-          const itemSize = bytesToInt(bytes.slice(offset, bytesOffset));
-
-          chunk = bytes.slice(bytesOffset, bytesOffset + itemSize);
-          offset = bytesOffset + itemSize;
-        } else {
-          chunk = bytes.slice(offset);
-        }
+        offset += count;
 
         return {
           ...values,
