@@ -2,7 +2,7 @@ import { Capability as ICapability, Property as IProperty } from '../types';
 
 import { bytesToChunks, getKeyValuePairFromObject, isObject } from '../utils';
 
-import { JSONError } from './Error';
+import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
@@ -26,14 +26,18 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   public decode(bytes: number[], options?: CapabilityEncodeDecodeOptions) {
-    if (options && options.bytesAsPropertyIds) {
-      (bytes.length ? bytes : this.definition.state).forEach((id) => {
-        this.createProperty(id).decode();
-      });
-    } else {
-      for (const [id, chunk] of bytesToChunks(bytes)) {
-        this.createProperty(id).decode(chunk);
+    try {
+      if (options && options.bytesAsPropertyIds) {
+        (bytes.length ? bytes : this.definition.state).forEach((id) => {
+          this.createProperty(id).decode();
+        });
+      } else {
+        for (const [id, chunk] of bytesToChunks(bytes)) {
+          this.createProperty(id).decode(chunk);
+        }
       }
+    } catch (e) {
+      throw new InvalidCommandError(e);
     }
 
     return this;

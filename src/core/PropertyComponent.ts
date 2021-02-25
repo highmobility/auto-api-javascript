@@ -3,6 +3,7 @@ import { ValueFactory } from '../factories';
 
 import { bytesWithSize } from '../utils';
 
+import { InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
@@ -19,8 +20,12 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
   }
 
   public decode(bytes: number[]) {
-    this.createValue().decode(bytes);
-    return this;
+    try {
+      this.createValue().decode(bytes);
+      return this;
+    } catch (e) {
+      throw new InvalidCommandError(e);
+    }
   }
 
   public encode() {
