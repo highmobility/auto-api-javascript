@@ -6,7 +6,7 @@ export class CapabilityFactory {
     );
 
     if (Capability === undefined) {
-      throw new Error(`Capability identified by [${msb}, ${lsb}] doesn't exist.`);
+      throw new Error(`Invalid capability identifier [${msb}, ${lsb}].`);
     }
 
     return new Capability();
@@ -16,7 +16,7 @@ export class CapabilityFactory {
     const Capability = ClassList.find((CapabilityClass) => CapabilityClass.Name === name);
 
     if (Capability === undefined) {
-      throw new Error(`Capability identified by ${name} doesn't exist.`);
+      throw new Error(`Capability ${name} doesn't exist.`);
     }
 
     return new Capability();

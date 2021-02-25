@@ -1,5 +1,12 @@
 import ieee754 from 'ieee754';
 
+export function assertByteCount(bytes: number[] | undefined, count: number) {
+  if (!bytes || bytes.length < count) {
+    throw new Error('Invalid byte range.');
+  }
+  return true;
+}
+
 export function base10ToIeee754(value: number, count = 4) {
   const ieeeArray = ([] as unknown) as Uint8Array;
   ieee754.write(ieeeArray, value, 0, false, 23, count);
@@ -12,15 +19,42 @@ export function base10ToIeee754Double(value: number, count = 8) {
   return [...ieeeArray];
 }
 
+export function bytesToChunk(
+  bytes: number[],
+  size: number | undefined,
+  isVariableSize: () => boolean,
+): [number, number[]] {
+  let count = 0;
+  let offset = 0;
+
+  if (size) {
+    count = size;
+  } else if (isVariableSize()) {
+    assertByteCount(bytes, 2);
+    count = bytesToInt(bytes.slice(0, 2));
+    offset += 2;
+  } else {
+    count += bytes.length;
+  }
+
+  const total = offset + count;
+  assertByteCount(bytes, total - 1);
+
+  return [total, bytes.slice(offset, total)];
+}
+
 export function* bytesToChunks(bytes: number[]) {
   let offset = 0;
+
   while (offset < bytes.length) {
     const [id, msb, lsb, ...rest] = bytes.slice(offset);
-    const size = bytesToInt([msb, lsb]);
+    const count = bytesToInt([msb, lsb]);
 
-    yield [id, rest.slice(0, size)] as [number, number[]];
+    assertByteCount(rest, count - 1);
 
-    offset += size + 3;
+    yield [id, rest.slice(0, count)] as [number, number[]];
+
+    offset += count + 3;
   }
 }
 
