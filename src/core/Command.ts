@@ -22,14 +22,17 @@ export class Command {
   public static fromJSON(payload: unknown) {
     try {
       const [name, command] = getKeyValuePairFromObject(payload);
-      const [capabilityName] = getKeyValuePairFromObject(command);
+      const [capabilityName, properties] = getKeyValuePairFromObject(command);
 
       const type = CommandType[capitalize(name) as keyof typeof CommandType];
       if (type === undefined) {
         throw new Error(`Unknown command type: ${name}`);
       }
 
-      return new Command(type, CapabilityFactory.createFromName(capabilityName).fromJSON(command));
+      return new Command(
+        type,
+        CapabilityFactory.createFromName(capabilityName).fromJSON(properties),
+      );
     } catch (e) {
       throw new JSONError(e);
     }
@@ -68,7 +71,9 @@ export class Command {
   public toJSON() {
     const { capability, name } = this;
     return {
-      [name]: capability,
+      [name]: {
+        [capability.name]: capability,
+      },
     };
   }
 

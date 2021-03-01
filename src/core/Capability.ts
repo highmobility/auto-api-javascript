@@ -1,6 +1,6 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks, getKeyValuePairFromObject, isObject } from '../utils';
+import { bytesToChunks, isObject } from '../utils';
 
 import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -29,7 +29,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
     try {
       if (options && options.bytesAsPropertyIds) {
         (bytes.length ? bytes : this.definition.state).forEach((id) => {
-          this.createProperty(id).decode();
+          this.createProperty(id);
         });
       } else {
         for (const [id, chunk] of bytesToChunks(bytes)) {
@@ -55,12 +55,16 @@ export abstract class Capability extends Serializable implements NamedEntity {
     }
   }
 
-  public createProperty(id: string | number) {
+  public createProperty(id: string | number, dataComponentValue?: unknown) {
     const property = new Property(
       typeof id === 'string'
         ? this.getPropertyDefinition('name', id)
         : this.getPropertyDefinition('id', id),
     );
+
+    if (dataComponentValue !== undefined) {
+      property.createComponent('data', dataComponentValue);
+    }
     this.setProperty(property);
 
     return property;
@@ -68,12 +72,11 @@ export abstract class Capability extends Serializable implements NamedEntity {
 
   public fromJSON(payload: unknown) {
     try {
-      const [, properties] = getKeyValuePairFromObject(payload);
-      if (!isObject(properties)) {
-        throw new Error('Properties must be an object.');
+      if (!isObject(payload)) {
+        throw new Error('Capability must be an object.');
       }
 
-      for (const [name, components] of Object.entries(properties)) {
+      for (const [name, components] of Object.entries(payload)) {
         const componentsArray = (Array.isArray(components) ? components : [components]).filter(
           (value) => value !== null,
         );
@@ -151,10 +154,6 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   public toJSON() {
-    const { name, properties } = this;
-
-    return {
-      [name]: properties,
-    };
+    return this.properties;
   }
 }

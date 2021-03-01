@@ -17,6 +17,8 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     public readonly property: Readonly<Property>,
   ) {
     super();
+
+    this.property.setComponent(this);
   }
 
   public decode(bytes: number[]) {
@@ -35,7 +37,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
       );
     }
 
-    return [this.definition.id, ...bytesWithSize(this._value.encode())];
+    return [this.id, ...bytesWithSize(this._value.encode())];
   }
 
   public fromJSON(payload: unknown) {
