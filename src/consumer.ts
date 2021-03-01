@@ -195,8 +195,8 @@ if (command.type === CommandType.Get) {
   if (capability.hasProperty('gear_mode')) {
     const property = capability.getProperty('gear_mode');
 
-    property!.createComponent('data').createValue('reverse');
-    property!.createComponent('timestamp').createValue();
+    property!.createComponent('data', 'reverse');
+    property!.createComponent('timestamp', new Date());
   }
 
   const response = command.setType(CommandType.Set);
@@ -258,22 +258,16 @@ console.log(encodedCustomValue, JSON.stringify(decodedCustomValue));
 const multiCommand = new Command(CommandType.Set, new Capabilities.MultiCommand());
 
 const setDoorLocksCommand = new Command(CommandType.Set, new Capabilities.Doors());
-setDoorLocksCommand.capability
-  .createProperty('locks')
-  .createComponent('data')
-  .createValue({ location: 'front_right', lock_state: 'locked' });
+setDoorLocksCommand.capability.createProperty('locks', {
+  location: 'front_right',
+  lock_state: 'locked',
+});
 
 const setIgnitionStatusCommand = new Command(CommandType.Set, new Capabilities.Ignition());
-setIgnitionStatusCommand.capability
-  .createProperty('status')
-  .createComponent('data')
-  .createValue('off');
+setIgnitionStatusCommand.capability.createProperty('status', 'off');
 
 [setDoorLocksCommand, setIgnitionStatusCommand].forEach((command) =>
-  multiCommand.capability
-    .createProperty('multi_commands')
-    .createComponent('data')
-    .createValue(command.encode()),
+  multiCommand.capability.createProperty('multi_commands', command.encode()),
 );
 
 console.log(multiCommand, JSON.stringify(multiCommand));

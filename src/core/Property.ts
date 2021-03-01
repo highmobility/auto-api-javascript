@@ -44,9 +44,7 @@ export class Property extends Serializable implements NamedEntity {
   public fromJSON(payload: Record<string, unknown>) {
     try {
       for (const [componentName, componentAsJSON] of Object.entries(payload)) {
-        this.createComponent(componentName as ComponentName)
-          .createValue()
-          .fromJSON(componentAsJSON);
+        this.createComponent(componentName as ComponentName).fromJSON(componentAsJSON);
       }
     } catch (e) {
       throw new JSONError(e);
@@ -67,12 +65,8 @@ export class Property extends Serializable implements NamedEntity {
     return this.definition.name;
   }
 
-  public createComponent<T extends ComponentName>(identifier: T | number) {
-    const component = PropertyComponentFactory.create(identifier, this);
-
-    this.setComponent(component);
-
-    return component;
+  public createComponent<T extends ComponentName>(identifier: T | number, initialValue?: unknown) {
+    return PropertyComponentFactory.create(identifier, this, initialValue);
   }
 
   public getComponent<T extends ComponentName>(name: T) {
