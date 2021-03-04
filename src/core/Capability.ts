@@ -1,6 +1,6 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks, isObject } from '../utils';
+import { bytesToChunks, hexToUint8Array, isObject } from '../utils';
 
 import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -70,6 +70,19 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return property;
   }
 
+  public createPropertiesFromExamples(name: string) {
+    const definition = this.getPropertyDefinition('name', name);
+
+    return definition.examples.reduce<Property[]>((properties, { data_component }) => {
+      const property = new Property(definition);
+
+      property.createComponent('data').decode(Array.from(hexToUint8Array(data_component)));
+      this.setProperty(property);
+
+      return [...properties, property];
+    }, []);
+  }
+
   public fromJSON(payload: unknown) {
     try {
       if (!isObject(payload)) {
@@ -105,8 +118,8 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return Array.isArray(property) ? property[0] : property;
   }
 
-  public getProperties(name: string): Property[] | undefined {
-    const property = this.properties[name];
+  public getProperties(name: string) {
+    const property = this.properties[name] || [];
     return Array.isArray(property) ? property : [property];
   }
 
@@ -120,7 +133,15 @@ export abstract class Capability extends Serializable implements NamedEntity {
     );
   }
 
-  public getPropertyDefinition<T extends keyof IProperty>(field: T, value: IProperty[T]) {
+  public hasProperty(name: string) {
+    return !!this.properties[name];
+  }
+
+  public toJSON() {
+    return this.properties;
+  }
+
+  protected getPropertyDefinition<T extends keyof IProperty>(field: T, value: IProperty[T]) {
     const definition = [...this.definition.properties, ...this.universalProperties].find(
       (property) => property[field] === value,
     );
@@ -134,11 +155,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return definition;
   }
 
-  public hasProperty(name: string) {
-    return !!this.properties[name];
-  }
-
-  public setProperty(property: Property) {
+  protected setProperty(property: Property) {
     const { name } = property;
 
     const currentValue = this.properties[name];
@@ -151,9 +168,5 @@ export abstract class Capability extends Serializable implements NamedEntity {
     }
 
     return this;
-  }
-
-  public toJSON() {
-    return this.properties;
   }
 }
