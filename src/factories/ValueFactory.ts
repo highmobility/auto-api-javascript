@@ -11,7 +11,7 @@ import {
   UnitValue,
 } from '../values';
 
-import { Configuration } from '../core';
+import { Configuration } from '../core/Configuration';
 
 import { TypeDefinition, TypeDefinitionType } from '../types';
 

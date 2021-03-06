@@ -1,8 +1,4 @@
-// Errors
 export { AutoApiError, JSONError, InvalidCommandError } from './Error';
-
-// Command
+export { Capability } from './Capability';
 export { Command, CommandType } from './Command';
-
-// Configuration
-export { Configuration } from './Configuration';
+export { Property } from './Property';
