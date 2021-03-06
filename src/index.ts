@@ -4,8 +4,8 @@ export * from './core';
 // Capabilities
 export * as Capabilities from './capabilities';
 
-// Factories
-export * as Factory from './factories';
+// Capability factory
+export * from './factories/CapabilityFactory';
 
 // Values
 export * as Values from './values';

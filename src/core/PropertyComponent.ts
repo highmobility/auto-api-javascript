@@ -1,5 +1,5 @@
 import { PropertyComponent as IPropertyComponent, TypeDefinition } from '../types';
-import { ValueFactory } from '../factories';
+import { ValueFactory } from '../factories/ValueFactory';
 
 import { bytesWithSize } from '../utils';
 
@@ -64,6 +64,10 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
   }
 
   public toJSON() {
+    return this.valueOf();
+  }
+
+  public valueOf() {
     return this.value ? this.value.valueOf() : null;
   }
 
