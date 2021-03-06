@@ -46,7 +46,10 @@ function createConstructorDeclaration({ name }: PropertyComponent) {
     [
       ts.factory.createParameterDeclaration(
         undefined,
-        [ts.factory.createModifier(ts.SyntaxKind.PublicKeyword)],
+        [
+          ts.factory.createModifier(ts.SyntaxKind.PublicKeyword),
+          ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+        ],
         undefined,
         ts.factory.createIdentifier('property'),
         undefined,
