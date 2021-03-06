@@ -1,4 +1,4 @@
-import { CapabilityFactory } from '../factories';
+import { CapabilityFactory } from '../factories/CapabilityFactory';
 
 import { capitalize, getKeyValuePairFromObject } from '../utils';
 

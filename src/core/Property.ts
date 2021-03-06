@@ -1,6 +1,6 @@
 import { ComponentName } from '../components/classes';
 import { Property as IProperty } from '../types';
-import { PropertyComponentFactory } from '../factories';
+import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
 
 import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
 

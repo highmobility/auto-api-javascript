@@ -4,7 +4,7 @@ import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { TypeDefinition, TypeDefinitionType } from '../types';
-import { ValueFactory } from '../factories';
+import { ValueFactory } from '../factories/ValueFactory';
 
 import { bytesToChunk, bytesWithSize, isObject } from '../utils';
 
