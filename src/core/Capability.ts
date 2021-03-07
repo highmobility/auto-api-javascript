@@ -1,6 +1,6 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks, hexToUint8Array, isObject } from '../utils';
+import { bytesToChunks, bytesToInt, hexToUint8Array, isObject } from '../utils';
 
 import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -19,6 +19,13 @@ export abstract class Capability extends Serializable implements NamedEntity {
     public readonly universalProperties: Readonly<Array<Readonly<IProperty>>>,
   ) {
     super();
+  }
+
+  public get id() {
+    const {
+      identifier: { msb, lsb },
+    } = this.definition;
+    return bytesToInt([msb, lsb]);
   }
 
   public get name() {
