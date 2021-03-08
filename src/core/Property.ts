@@ -66,28 +66,21 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public createComponent<T extends ComponentName>(identifier: T | number, initialValue?: unknown) {
-    return PropertyComponentFactory.create(identifier, this, initialValue);
+    const component = PropertyComponentFactory.create(identifier, this, initialValue);
+
+    return (this.components[component.name as ComponentName] = component);
   }
 
   public getComponent<T extends ComponentName>(name: T) {
-    if (this.hasComponent(name)) return this.components[name] as PropertyComponent;
+    if (this.hasComponent(name)) {
+      return this.components[name] as PropertyComponent;
+    }
 
     throw new Error(`Property ${this.name} has no ${name} component.`);
   }
 
   public hasComponent<T extends ComponentName>(name: T) {
     return !!this.components[name];
-  }
-
-  public setComponent(component?: PropertyComponent) {
-    if (component instanceof PropertyComponent) {
-      this.components[component.name as ComponentName] = component;
-      return this;
-    }
-
-    throw new Error(
-      `Property ${this.name} component must be instance of ${PropertyComponent.name}.`,
-    );
   }
 
   public toJSON() {
