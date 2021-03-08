@@ -1,6 +1,6 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks, bytesToInt, hexToUint8Array, isObject } from '../utils';
+import { bytesToChunks, bytesToInt, hexToUint8Array, isEmptyObject, isObject } from '../utils';
 
 import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -32,12 +32,10 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return this.definition.name;
   }
 
-  public decode(bytes: number[], options?: CapabilityEncodeDecodeOptions) {
+  public decode(bytes: number[] = [], options?: CapabilityEncodeDecodeOptions) {
     try {
       if (options && options.bytesAsPropertyIds) {
-        (bytes.length ? bytes : this.definition.state).forEach((id) => {
-          this.createProperty(id);
-        });
+        bytes.forEach((id) => this.createProperty(id));
       } else {
         for (const [id, chunk] of bytesToChunks(bytes)) {
           this.createProperty(id).decode(chunk);
@@ -140,8 +138,16 @@ export abstract class Capability extends Serializable implements NamedEntity {
     );
   }
 
+  public getStatePropertyNames() {
+    return this.definition.state.map((id) => this.getPropertyDefinition('id', id).name);
+  }
+
   public hasProperty(name: string) {
     return !!this.properties[name];
+  }
+
+  public hasProperties() {
+    return !isEmptyObject(this.properties);
   }
 
   public toJSON() {
