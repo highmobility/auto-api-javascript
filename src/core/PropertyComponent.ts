@@ -17,8 +17,6 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     public readonly property: Readonly<Property>,
   ) {
     super();
-
-    this.property.setComponent(this);
   }
 
   public decode(bytes: number[]) {
