@@ -1,8 +1,11 @@
+import { Adas } from './Adas';
 import { Browser } from './Browser';
 import { Capabilities } from './Capabilities';
 import { Charging } from './Charging';
+import { ChargingSession } from './ChargingSession';
 import { ChassisSettings } from './ChassisSettings';
 import { Climate } from './Climate';
+import { Crash } from './Crash';
 import { CruiseControl } from './CruiseControl';
 import { DashboardLights } from './DashboardLights';
 import { Diagnostics } from './Diagnostics';
@@ -55,11 +58,14 @@ import { Windows } from './Windows';
 import { Windscreen } from './Windscreen';
 
 export type CapabilityClass =
+  | typeof Adas
   | typeof Browser
   | typeof Capabilities
   | typeof Charging
+  | typeof ChargingSession
   | typeof ChassisSettings
   | typeof Climate
+  | typeof Crash
   | typeof CruiseControl
   | typeof DashboardLights
   | typeof Diagnostics
@@ -112,11 +118,14 @@ export type CapabilityClass =
   | typeof Windscreen;
 
 export const ClassList: Array<CapabilityClass> = [
+  Adas,
   Browser,
   Capabilities,
   Charging,
+  ChargingSession,
   ChassisSettings,
   Climate,
+  Crash,
   CruiseControl,
   DashboardLights,
   Diagnostics,
