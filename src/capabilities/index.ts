@@ -1,8 +1,11 @@
+export { Adas } from './Adas';
 export { Browser } from './Browser';
 export { Capabilities } from './Capabilities';
 export { Charging } from './Charging';
+export { ChargingSession } from './ChargingSession';
 export { ChassisSettings } from './ChassisSettings';
 export { Climate } from './Climate';
+export { Crash } from './Crash';
 export { CruiseControl } from './CruiseControl';
 export { DashboardLights } from './DashboardLights';
 export { Diagnostics } from './Diagnostics';
