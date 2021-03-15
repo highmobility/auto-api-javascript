@@ -151,7 +151,19 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   public toJSON() {
-    return this.properties;
+    return this.valueOf();
+  }
+
+  public valueOf() {
+    return Object.entries(this.properties).reduce(
+      (value, [propertyName, properties]) => ({
+        ...value,
+        [propertyName]: Array.isArray(properties)
+          ? properties.map((property) => property.valueOf())
+          : properties.valueOf(),
+      }),
+      {},
+    );
   }
 
   protected getPropertyDefinition<T extends keyof IProperty>(field: T, value: IProperty[T]) {
