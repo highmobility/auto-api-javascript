@@ -84,6 +84,18 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public toJSON() {
-    return isEmptyObject(this.components) ? null : this.components;
+    return this.valueOf();
+  }
+
+  public valueOf() {
+    return isEmptyObject(this.components)
+      ? null
+      : Object.entries(this.components).reduce(
+          (value, [componentName, component]) => ({
+            ...value,
+            [componentName]: component?.valueOf(),
+          }),
+          {},
+        );
   }
 }
