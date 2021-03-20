@@ -17,6 +17,6 @@ export class DoubleValue extends FloatValue {
   }
 
   public toString() {
-    return (this._value || NaN).toPrecision(15);
+    return (this._value !== undefined ? this._value : NaN).toPrecision(15);
   }
 }

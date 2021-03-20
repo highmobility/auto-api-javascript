@@ -35,7 +35,7 @@ export class FloatValue extends Value<number> {
   }
 
   public toString() {
-    return (this._value || NaN).toPrecision(7);
+    return (this._value !== undefined ? this._value : NaN).toPrecision(7);
   }
 
   public valueOf() {
