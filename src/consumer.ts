@@ -270,5 +270,12 @@ setIgnitionStatusCommand.capability.createProperty('status', 'off');
   multiCommand.capability.createProperty('multi_commands', command.encode()),
 );
 
-console.log(multiCommand, JSON.stringify(multiCommand));
+const multiCommandEncoded = multiCommand.encode();
+const multiCommandAsJSON = JSON.stringify(multiCommand);
+
+console.log(
+  multiCommandAsJSON,
+  multiCommandAsJSON === JSON.stringify(Command.parse(multiCommandEncoded)),
+);
+
 
