@@ -1,9 +1,9 @@
 import { isObject } from './misc';
 
-export function getKeyValuePairFromObject(payload: unknown): [string, unknown] {
+export function getKeyValuePairFromObject<T = unknown>(payload: unknown) {
   if (payloadHasSingleKey(payload)) {
     for (const entry of Object.entries(payload)) {
-      return entry;
+      return entry as [string, T];
     }
   }
 
