@@ -1,3 +1,5 @@
+import { last } from 'lodash';
+
 import { Configuration } from '../core/Configuration';
 import { JSONError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
@@ -6,7 +8,7 @@ import { Value } from '../core/Value';
 import { TypeDefinition, TypeDefinitionType } from '../types';
 import { ValueFactory } from '../factories/ValueFactory';
 
-import { bytesToChunk, bytesWithSize, isObject } from '../utils';
+import { bytesToChunk, bytesWithSize, getKeyValuePairFromObject, isObject } from '../utils';
 
 type CustomValueItems = Record<string, Value>;
 type CustomValueData = Value | CustomValueItems;
@@ -50,11 +52,10 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
 
   public decode(bytes: number[]) {
     const { definition } = this;
+    const items = definition.items || [definition];
 
-    if (definition.items) {
-      let offset = 0;
-
-      this._value = definition.items.reduce<CustomValueItems>((values, item) => {
+    const [values] = items.reduce<[CustomValueItems, number]>(
+      ([values, offset], item) => {
         const itemTypeDefinition = item.customType
           ? Configuration.getCustomTypeDefinition(item.customType)
           : item;
@@ -63,16 +64,20 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
           this.isVariableSizeSubtype(itemTypeDefinition),
         );
 
-        offset += count;
+        return [
+          {
+            ...values,
+            [item.name]: this.decodeItem(itemTypeDefinition, chunk),
+          },
+          offset + count,
+        ];
+      },
+      [{}, 0],
+    );
 
-        return {
-          ...values,
-          [item.name]: this.decodeItem(itemTypeDefinition, chunk),
-        };
-      }, {});
-    } else {
-      this._value = this.decodeItem(definition, bytes);
-    }
+    this._value = definition.items
+      ? values
+      : (last(getKeyValuePairFromObject<Value>(values)) as Value);
 
     return this;
   }
