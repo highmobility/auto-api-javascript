@@ -19,7 +19,7 @@ export class BytesValue extends Value<number[]> {
     if (value && isArrayOfNumbers(value)) {
       this.setValue(value);
     } else {
-      throw new JSONError('Value must be array of numbers.');
+      throw new JSONError('Value must be an array of numbers.');
     }
 
     return this;

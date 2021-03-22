@@ -57,7 +57,7 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
       if (isObject(value) && isNumber(value.value)) {
         this.setValue(value as UnitValueDataSetter);
       } else {
-        throw new Error('Value must be number.');
+        throw new Error('Value must be a number.');
       }
     } catch (e) {
       throw new JSONError(e);

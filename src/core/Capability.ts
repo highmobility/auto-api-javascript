@@ -1,6 +1,13 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
 
-import { bytesToChunks, bytesToInt, hexToUint8Array, isEmptyObject, isObject } from '../utils';
+import {
+  bytesToChunks,
+  bytesToInt,
+  getArray,
+  hexToUint8Array,
+  isEmptyObject,
+  isObject,
+} from '../utils';
 
 import { InvalidCommandError, JSONError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -95,9 +102,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
       }
 
       for (const [name, components] of Object.entries(payload)) {
-        const componentsArray = (Array.isArray(components) ? components : [components]).filter(
-          (value) => value !== null,
-        );
+        const componentsArray = getArray(components).filter((value) => value !== null);
 
         if (componentsArray.length) {
           for (const components of componentsArray) {
@@ -119,21 +124,17 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   public getProperty(name: string): Property | undefined {
-    const property = this.properties[name];
-    return Array.isArray(property) ? property[0] : property;
+    const [property] = getArray(this.properties[name]);
+    return property;
   }
 
   public getProperties(name: string) {
-    const property = this.properties[name] || [];
-    return Array.isArray(property) ? property : [property];
+    return getArray(this.properties[name] || []);
   }
 
   public getPropertiesArray() {
     return Object.values(this.properties).reduce<Property[]>(
-      (allProperties, properties) => [
-        ...allProperties,
-        ...(Array.isArray(properties) ? properties : [properties]),
-      ],
+      (allProperties, properties) => [...allProperties, ...getArray(properties)],
       [],
     );
   }
@@ -185,9 +186,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
 
     const currentValue = this.properties[name];
     if (property.multiple && currentValue) {
-      (this.properties[name] = Array.isArray(currentValue) ? currentValue : [currentValue]).push(
-        property,
-      );
+      (this.properties[name] = getArray(currentValue)).push(property);
     } else {
       this.properties[name] = property;
     }

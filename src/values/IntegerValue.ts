@@ -23,7 +23,7 @@ export class IntegerValue extends Value<number> {
     if (isInteger(value)) {
       this.setValue(value);
     } else {
-      throw new JSONError('Value must be integer.');
+      throw new JSONError('Value must be an integer.');
     }
 
     return this;
