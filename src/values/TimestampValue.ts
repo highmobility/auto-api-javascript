@@ -26,7 +26,7 @@ export class TimestampValue extends Value<Date> {
     if (isString(value)) {
       this.setValue(new Date(value));
     } else {
-      throw new JSONError('Value must be string in ISO date-time format.');
+      throw new JSONError('Value must be a string in ISO date-time format.');
     }
 
     return this;

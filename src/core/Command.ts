@@ -26,7 +26,7 @@ export class Command {
 
       const type = CommandType[capitalize(name) as keyof typeof CommandType];
       if (type === undefined) {
-        throw new Error(`Unknown command type: ${name}`);
+        throw new Error(`Unknown command type: ${name}.`);
       }
 
       return new Command(

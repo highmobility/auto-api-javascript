@@ -1,5 +1,9 @@
 import { isFinite, isPlainObject } from 'lodash';
 
+export function getArray<T>(value: T | T[]): T[] {
+  return Array.isArray(value) ? value : [value];
+}
+
 export function isArrayOfNumbers(value: unknown): value is number[] {
   return Array.isArray(value) && value.every(isInteger);
 }

@@ -1,4 +1,5 @@
 import { ClassList } from '../capabilities/classes';
+
 export class CapabilityFactory {
   public static createFromIdentifier(msb: number, lsb: number) {
     const Capability = ClassList.find(

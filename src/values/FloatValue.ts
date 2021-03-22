@@ -23,7 +23,7 @@ export class FloatValue extends Value<number> {
     if (isNumber(value)) {
       this.setValue(value);
     } else {
-      throw new JSONError('Value must be number.');
+      throw new JSONError('Value must be a number.');
     }
 
     return this;

@@ -21,7 +21,7 @@ export class StringValue extends Value<string> {
     if (isString(value)) {
       this.setValue(value);
     } else {
-      throw new JSONError('Value must be string.');
+      throw new JSONError('Value must be a string.');
     }
 
     return this;
