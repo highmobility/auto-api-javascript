@@ -1,5 +1,5 @@
 {
-  "name": "auto-api-javascript",
+  "name": "@highmobility/auto-api-javascript",
   "version": "0.0.1",
   "description": "Auto API for JavaScript - the parsing library for the Auto API vehicle data model",
   "main": "lib/index.js",
