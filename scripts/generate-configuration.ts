@@ -34,7 +34,7 @@ function createConfiguration() {
     version: parseApiVersion(),
   };
 
-  fs.writeFileSync(ConfigurationFilePath, JSON.stringify(configuration, undefined, 2));
+  fs.writeFileSync(ConfigurationFilePath, JSON.stringify(configuration));
 
   console.log('Successfully created configuration.');
 }
