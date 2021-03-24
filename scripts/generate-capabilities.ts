@@ -1,7 +1,7 @@
 import path from 'path';
 import ts from 'typescript';
 
-import { Capability } from '@/types';
+import { Capability, Properties } from '@/types';
 import { configuration } from '@/configuration';
 import { snakeCaseToPascalCase } from '@/utils/strings';
 
@@ -20,6 +20,9 @@ import * as tsUtils from './shared/typescript';
 const ClassTypeIdentifier = 'CapabilityClass';
 const IdentifierToken = 'Identifier';
 const NameToken = 'Name';
+const PropertiesToken = 'Properties';
+const UniversalPropertiesFileName = 'properties';
+const UniversalPropertiesToken = 'UniversalProperties';
 
 /*
  * Code generation utilities
@@ -95,6 +98,43 @@ function createNameDeclaration(name: string) {
   );
 }
 
+function createPropertiesDeclaration() {
+  return [PropertiesToken, UniversalPropertiesToken].map((token) =>
+    ts.factory.createPropertyDeclaration(
+      undefined,
+      [
+        ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
+        ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+      ],
+      ts.factory.createIdentifier(token),
+      undefined,
+      undefined,
+      ts.factory.createIdentifier(token),
+    ),
+  );
+}
+
+function createPropertiesEnumDeclaration(
+  properties: Properties,
+  token = PropertiesToken,
+  exportDeclaration = false,
+) {
+  return ts.factory.createEnumDeclaration(
+    undefined,
+    exportDeclaration ? [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)] : undefined,
+    ts.factory.createIdentifier(token),
+    properties
+      .map(({ name }) => name)
+      .sort()
+      .map((name) =>
+        ts.factory.createEnumMember(
+          ts.factory.createIdentifier(snakeCaseToPascalCase(name)),
+          ts.factory.createStringLiteral(name),
+        ),
+      ),
+  );
+}
+
 function createCapabilityClassDefinition(className: string, capability: Capability) {
   return ts.factory.createClassDeclaration(
     undefined,
@@ -105,13 +145,19 @@ function createCapabilityClassDefinition(className: string, capability: Capabili
       ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
         ts.factory.createExpressionWithTypeArguments(
           ts.factory.createIdentifier(CapabilityBaseClassName),
-          undefined,
+          [
+            ts.factory.createUnionTypeNode([
+              tsUtils.createTemplateLiteralType(PropertiesToken),
+              tsUtils.createTemplateLiteralType(UniversalPropertiesToken),
+            ]),
+          ],
         ),
       ]),
     ],
     [
       createIdentifierDeclaration(capability),
       createNameDeclaration(capability.name),
+      ...createPropertiesDeclaration(),
       createConstructorDeclaration(className),
     ],
   );
@@ -160,7 +206,7 @@ function createClassListDefinition(classNames: string[]) {
  * Generate class definition files and export file
  */
 
-function printCapabilityClassDefinition(filename: string, classDeclaration: ts.Node) {
+function printCapabilityClassDefinition(filename: string, declarations: ts.Node[]) {
   const printer = tsUtils.createPrinter(filename);
 
   const nodes = [
@@ -180,7 +226,10 @@ function printCapabilityClassDefinition(filename: string, classDeclaration: ts.N
     ]
       .join('\n')
       .concat('\n'),
-    printer(classDeclaration),
+    printer(
+      tsUtils.createImportDeclaration(`./${UniversalPropertiesFileName}`, UniversalPropertiesToken),
+    ).concat('\n'),
+    ...declarations.map((declaration) => printer(declaration).concat('\n')),
   ];
 
   printSourceFile(filename, nodes);
@@ -213,6 +262,21 @@ function printCapabilitiesMetaData(classNames: string[]) {
   printSourceFile(filename, nodes);
 }
 
+function printUniversalProperties() {
+  const filename = path.join(CapabilityClassesPath, `${UniversalPropertiesFileName}.ts`);
+  const printer = tsUtils.createPrinter(filename);
+  const nodes = [
+    printer(
+      createPropertiesEnumDeclaration(
+        configuration.universal_properties,
+        UniversalPropertiesToken,
+        true,
+      ),
+    ),
+  ];
+  printSourceFile(filename, nodes);
+}
+
 function generateClassDefinitionsForCapabilitites() {
   // Clean or create destination dir
   cleanOrCreateDirectory(CapabilityClassesPath);
@@ -222,12 +286,16 @@ function generateClassDefinitionsForCapabilitites() {
 
   const classNames = capabilities
     .map((capability) => {
-      const { name } = capability;
+      const { name, properties } = capability;
 
       const className = snakeCaseToPascalCase(name);
-      const node = createCapabilityClassDefinition(className, capability);
+      const propertiesDeclaration = createPropertiesEnumDeclaration(properties);
+      const classDeclaration = createCapabilityClassDefinition(className, capability);
 
-      printCapabilityClassDefinition(path.join(CapabilityClassesPath, `${className}.ts`), node);
+      printCapabilityClassDefinition(path.join(CapabilityClassesPath, `${className}.ts`), [
+        propertiesDeclaration,
+        classDeclaration,
+      ]);
 
       return className;
     })
@@ -235,6 +303,7 @@ function generateClassDefinitionsForCapabilitites() {
 
   printExportDefinitionsForCapabilities(classNames);
   printCapabilitiesMetaData(classNames);
+  printUniversalProperties();
 
   console.log('Successfully generated class definitions for capabilities.');
 }

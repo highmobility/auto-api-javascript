@@ -1,12 +1,20 @@
 import { Capability } from '../core/Capability';
 import { Configuration } from '../core/Configuration';
 
-export class Browser extends Capability {
+import { UniversalProperties } from './properties';
+
+enum Properties {
+  Url = 'url',
+}
+
+export class Browser extends Capability<`${Properties}` | `${UniversalProperties}`> {
   static readonly Identifier = {
     msb: 0,
     lsb: 73,
   };
   static readonly Name = 'browser';
+  static readonly Properties = Properties;
+  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Browser.Name),

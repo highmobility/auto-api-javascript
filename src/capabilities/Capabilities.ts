@@ -1,12 +1,21 @@
 import { Capability } from '../core/Capability';
 import { Configuration } from '../core/Configuration';
 
-export class Capabilities extends Capability {
+import { UniversalProperties } from './properties';
+
+enum Properties {
+  Capabilities = 'capabilities',
+  Webhooks = 'webhooks',
+}
+
+export class Capabilities extends Capability<`${Properties}` | `${UniversalProperties}`> {
   static readonly Identifier = {
     msb: 0,
     lsb: 16,
   };
   static readonly Name = 'capabilities';
+  static readonly Properties = Properties;
+  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Capabilities.Name),

@@ -1,8 +1,8 @@
+import { CapabilityClass } from '../capabilities/classes';
 import { CapabilityFactory } from '../factories/CapabilityFactory';
 
 import { capitalize, getKeyValuePairFromObject } from '../utils';
 
-import { Capability } from './Capability';
 import { Configuration } from './Configuration';
 import { InvalidCommandError, JSONError } from './Error';
 
@@ -12,10 +12,10 @@ export enum CommandType {
   Set = 0x01,
 }
 
-export class Command {
+export class Command<C extends InstanceType<CapabilityClass> = InstanceType<CapabilityClass>> {
   constructor(
     public type: CommandType,
-    public capability: Capability,
+    public capability: C,
     public version = Configuration.getApiVersion(),
   ) {}
 
@@ -38,13 +38,17 @@ export class Command {
     }
   }
 
-  public static parse(bytes: number[]) {
+  public static parse<C extends InstanceType<CapabilityClass> = InstanceType<CapabilityClass>>(
+    bytes: number[],
+  ) {
     try {
       const [version, msb, lsb, type, ...data] = bytes;
 
-      return new Command(type, CapabilityFactory.createFromIdentifier(msb, lsb), version).decode(
-        data,
-      );
+      return new Command(
+        type,
+        CapabilityFactory.createFromIdentifier(msb, lsb) as C,
+        version,
+      ).decode(data);
     } catch (e) {
       throw new InvalidCommandError(e);
     }
@@ -58,7 +62,7 @@ export class Command {
     return CommandType[this.type].toLowerCase();
   }
 
-  public setCapability(capability: Capability) {
+  public setCapability(capability: C) {
     this.capability = capability;
     return this;
   }
