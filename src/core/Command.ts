@@ -69,10 +69,14 @@ export class Command {
   }
 
   public toJSON() {
+    return this.valueOf();
+  }
+
+  public valueOf() {
     const { capability, name } = this;
     return {
       [name]: {
-        [capability.name]: capability,
+        [capability.name]: capability.valueOf(),
       },
     };
   }
