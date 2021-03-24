@@ -1,12 +1,20 @@
 import { Capability } from '../core/Capability';
 import { Configuration } from '../core/Configuration';
 
-export class VehicleStatus extends Capability {
+import { UniversalProperties } from './properties';
+
+enum Properties {
+  States = 'states',
+}
+
+export class VehicleStatus extends Capability<`${Properties}` | `${UniversalProperties}`> {
   static readonly Identifier = {
     msb: 0,
     lsb: 17,
   };
   static readonly Name = 'vehicle_status';
+  static readonly Properties = Properties;
+  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(VehicleStatus.Name),

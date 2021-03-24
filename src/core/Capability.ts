@@ -18,8 +18,10 @@ interface CapabilityEncodeDecodeOptions {
   bytesAsPropertyIds?: boolean;
 }
 
-export abstract class Capability extends Serializable implements NamedEntity {
-  public properties: Record<string, Property | Property[]> = {};
+export abstract class Capability<P extends string = string>
+  extends Serializable
+  implements NamedEntity {
+  public properties = {} as Record<P, Property | Property[]>;
 
   public constructor(
     public readonly definition: Readonly<ICapability>,
@@ -67,7 +69,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
     }
   }
 
-  public createProperty(id: string | number, dataComponentValue?: unknown) {
+  public createProperty(id: P | number, dataComponentValue?: unknown) {
     const property = new Property(
       typeof id === 'string'
         ? this.getPropertyDefinition('name', id)
@@ -82,7 +84,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return property;
   }
 
-  public createPropertiesFromExamples(name: string) {
+  public createPropertiesFromExamples(name: P) {
     const definition = this.getPropertyDefinition('name', name);
 
     return definition.examples.reduce<Property[]>((properties, { data_component }) => {
@@ -110,10 +112,10 @@ export abstract class Capability extends Serializable implements NamedEntity {
               throw new Error('Property components must be an object.');
             }
 
-            this.createProperty(name).fromJSON(components);
+            this.createProperty(name as P).fromJSON(components);
           }
         } else {
-          this.createProperty(name);
+          this.createProperty(name as P);
         }
       }
     } catch (e) {
@@ -123,17 +125,17 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return this;
   }
 
-  public getProperty(name: string): Property | undefined {
+  public getProperty(name: P): Property | undefined {
     const [property] = getArray(this.properties[name]);
     return property;
   }
 
-  public getProperties(name: string) {
+  public getProperties(name: P) {
     return getArray(this.properties[name] || []);
   }
 
   public getPropertiesArray() {
-    return Object.values(this.properties).reduce<Property[]>(
+    return Object.values<Property | Property[]>(this.properties).reduce<Property[]>(
       (allProperties, properties) => [...allProperties, ...getArray(properties)],
       [],
     );
@@ -143,7 +145,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
     return this.definition.state.map((id) => this.getPropertyDefinition('id', id).name);
   }
 
-  public hasProperty(name: string) {
+  public hasProperty(name: P) {
     return !!this.properties[name];
   }
 
@@ -156,7 +158,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   public valueOf() {
-    return Object.entries(this.properties).reduce(
+    return Object.entries<Property | Property[]>(this.properties).reduce(
       (value, [propertyName, properties]) => ({
         ...value,
         [propertyName]: Array.isArray(properties)
@@ -182,7 +184,7 @@ export abstract class Capability extends Serializable implements NamedEntity {
   }
 
   protected setProperty(property: Property) {
-    const { name } = property;
+    const name = property.name as P;
 
     const currentValue = this.properties[name];
     if (property.multiple && currentValue) {

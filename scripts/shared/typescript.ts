@@ -53,3 +53,12 @@ export function createPrinter(filename: string) {
     return printer.printNode(ts.EmitHint.Unspecified, node, sourceFile);
   };
 }
+
+export function createTemplateLiteralType(identifier: string) {
+  return ts.factory.createTemplateLiteralType(ts.factory.createTemplateHead('', ''), [
+    ts.factory.createTemplateLiteralTypeSpan(
+      ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(identifier), undefined),
+      ts.factory.createTemplateTail('', ''),
+    ),
+  ]);
+}

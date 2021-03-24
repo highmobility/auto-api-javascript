@@ -1,12 +1,21 @@
 import { Capability } from '../core/Capability';
 import { Configuration } from '../core/Configuration';
 
-export class Seats extends Capability {
+import { UniversalProperties } from './properties';
+
+enum Properties {
+  PersonsDetected = 'persons_detected',
+  SeatbeltsState = 'seatbelts_state',
+}
+
+export class Seats extends Capability<`${Properties}` | `${UniversalProperties}`> {
   static readonly Identifier = {
     msb: 0,
     lsb: 86,
   };
   static readonly Name = 'seats';
+  static readonly Properties = Properties;
+  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Seats.Name),

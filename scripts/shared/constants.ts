@@ -17,8 +17,8 @@ export const UniversalPropertiesFile = resolve(MiscDefinitionsPath, 'universal_p
 export const VersionFile = resolve(MiscDefinitionsPath, 'version.yml');
 
 export const CapabilityClassesPath = resolve(SourcesPath, 'capabilities');
-export const PropertyComponentsClassesPath = resolve(SourcesPath, 'components');
 export const ConfigurationFilePath = resolve(SourcesPath, 'configuration/configuration.json');
+export const PropertyComponentsClassesPath = resolve(SourcesPath, 'components');
 
 export const ConfigurationClassName = 'Configuration';
 export const CapabilityBaseClassName = 'Capability';

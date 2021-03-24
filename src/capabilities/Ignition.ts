@@ -1,12 +1,22 @@
 import { Capability } from '../core/Capability';
 import { Configuration } from '../core/Configuration';
 
-export class Ignition extends Capability {
+import { UniversalProperties } from './properties';
+
+enum Properties {
+  AccessoriesStatus = 'accessories_status',
+  State = 'state',
+  Status = 'status',
+}
+
+export class Ignition extends Capability<`${Properties}` | `${UniversalProperties}`> {
   static readonly Identifier = {
     msb: 0,
     lsb: 53,
   };
   static readonly Name = 'ignition';
+  static readonly Properties = Properties;
+  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Ignition.Name),
