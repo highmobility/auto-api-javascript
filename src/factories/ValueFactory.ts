@@ -44,18 +44,17 @@ const ValueConstructors: Partial<Record<TypeDefinitionType | string, ValueConstr
 
 export class ValueFactory {
   public static createFromDefinition(definition: TypeDefinition) {
-    const { customType, type, unitType } = definition;
+    const { customType, event, type, unitType } = definition;
 
-    const ValueConstructor = customType
-      ? CustomValue
-      : unitType
-      ? UnitValue
-      : ValueConstructors[type];
+    const ValueConstructor =
+      customType || event ? CustomValue : unitType ? UnitValue : ValueConstructors[type];
 
     switch (ValueConstructor) {
       case CustomValue:
         return new ValueConstructor(
-          Configuration.getCustomTypeDefinition(definition.customType as string),
+          event
+            ? Configuration.getEventDefinition(definition.event as string)
+            : Configuration.getCustomTypeDefinition(definition.customType as string),
         );
       case EnumValue:
         return new ValueConstructor(definition);

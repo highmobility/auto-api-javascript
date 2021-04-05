@@ -56,9 +56,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
 
     const [values] = items.reduce<[CustomValueItems, number]>(
       ([values, offset], item) => {
-        const itemTypeDefinition = item.customType
-          ? Configuration.getCustomTypeDefinition(item.customType)
-          : item;
+        const itemTypeDefinition = this.resolveTypeDefinitionFromRef(item);
 
         const [count, chunk] = bytesToChunk(bytes.slice(offset), itemTypeDefinition.size, () =>
           this.isVariableSizeSubtype(itemTypeDefinition),
@@ -152,9 +150,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   protected encodeItem(definition: TypeDefinition, value: Value) {
-    const { size } = definition.customType
-      ? Configuration.getCustomTypeDefinition(definition.customType)
-      : definition;
+    const { size } = this.resolveTypeDefinitionFromRef(definition);
     const bytes = value.encode();
 
     return size ? bytes : bytesWithSize(bytes);
@@ -166,6 +162,15 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     if (definition) return definition;
 
     throw new Error(`Custom type ${this.name} has no member called ${name}.`);
+  }
+
+  protected resolveTypeDefinitionFromRef(type: TypeDefinition) {
+    const { customType, event } = type;
+    return customType
+      ? Configuration.getCustomTypeDefinition(customType)
+      : event
+      ? Configuration.getEventDefinition(event)
+      : type;
   }
 
   protected isVariableSizeSubtype({ customType, type }: TypeDefinition) {

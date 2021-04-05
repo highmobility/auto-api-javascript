@@ -29,6 +29,14 @@ export class Configuration {
     return definition;
   }
 
+  public static getEventDefinition(name: string): Readonly<TypeDefinition> {
+    const definition = configuration.events[name];
+
+    if (definition === undefined) throw new Error(`Event '${name}' doesn't exist.`);
+
+    return definition;
+  }
+
   public static getPropertyComponentDefinition(name: string): Readonly<PropertyComponent> {
     const definition = configuration.property_components[name];
 
