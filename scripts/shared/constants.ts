@@ -9,8 +9,9 @@ export const CapabilitiesPath = resolve(AutoAPIPath, 'capabilities');
 export const MiscDefinitionsPath = resolve(AutoAPIPath, 'misc');
 
 export const CapabilitiesFileList = fs.readdirSync(CapabilitiesPath).sort();
-export const PropertyComponentsFile = resolve(MiscDefinitionsPath, 'property_components.yml');
 export const CustomTypesFile = resolve(MiscDefinitionsPath, 'custom_types.yml');
+export const EventsFile = resolve(MiscDefinitionsPath, 'events.yml');
+export const PropertyComponentsFile = resolve(MiscDefinitionsPath, 'property_components.yml');
 export const UnitTypesFile = resolve(MiscDefinitionsPath, 'unit_types.yml');
 export const UniversalPropertiesFile = resolve(MiscDefinitionsPath, 'universal_properties.yml');
 export const VersionFile = resolve(MiscDefinitionsPath, 'version.yml');
@@ -23,5 +24,6 @@ export const ConfigurationClassName = 'Configuration';
 export const CapabilityBaseClassName = 'Capability';
 export const PropertyClassName = 'Property';
 
+export const EventsRegex = new RegExp(`events.`);
 export const CustomTypesRegex = new RegExp(`types.`);
 export const UnitTypesRegex = new RegExp(`unit.`);

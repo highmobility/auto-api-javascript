@@ -16,6 +16,8 @@ import {
   ConfigurationFilePath,
   CustomTypesFile,
   CustomTypesRegex,
+  EventsFile,
+  EventsRegex,
   PropertyComponentsFile,
   UnitTypesFile,
   UnitTypesRegex,
@@ -27,6 +29,7 @@ import { parseYmlFile } from './shared/utils';
 function createConfiguration() {
   const configuration: Configuration = {
     capabilities: parseCapabilities(),
+    events: parseEvents(),
     measurement_types: parseUnitTypes(),
     property_components: parsePropertyComponents(),
     types: parseTypes(),
@@ -56,6 +59,9 @@ function mapTypesToEntity<T extends TypeDefinition>(entity: T) {
     ...((CustomTypesRegex.test(entity.type) && {
       customType: entity.type.replace(CustomTypesRegex, ''),
     }) ||
+      (EventsRegex.test(entity.type) && {
+        event: entity.type.replace(EventsRegex, ''),
+      }) ||
       (UnitTypesRegex.test(entity.type) && {
         unitType: entity.type.replace(UnitTypesRegex, ''),
       })),
@@ -79,6 +85,21 @@ function parseCapabilities() {
         },
       };
     },
+    {},
+  );
+}
+
+function parseEvents() {
+  return parseYmlFile<{ events: TypeDefinitions }>(EventsFile).events.reduce<
+    Configuration['events']
+  >(
+    (allEvents, event) => ({
+      ...allEvents,
+      [event.name]: {
+        ...event,
+        ...(event.items && { items: event.items.map((event) => mapTypesToEntity(event)) }),
+      },
+    }),
     {},
   );
 }

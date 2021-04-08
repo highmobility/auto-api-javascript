@@ -23,6 +23,7 @@ export interface CapabilityVersion {
 
 export interface Configuration {
   capabilities: Record<string, Capability>;
+  events: Record<string, TypeDefinition>;
   measurement_types: Record<string, MeasurementType>;
   property_components: Record<string, PropertyComponent>;
   types: Record<string, TypeDefinition>;
@@ -55,6 +56,7 @@ export type MeasurementTypes = MeasurementType[];
 
 export interface Property extends Omit<TypeDefinition, 'items'> {
   id: number;
+  added?: number;
   deprecated?: DeprecationInfo;
   description?: string;
   examples: PropertyExamples;
@@ -122,6 +124,7 @@ export type PropertySetterConstants = PropertySetterConstant[];
 export interface TypeDefinition {
   customType?: string;
   enum_values?: EnumValues;
+  event?: string;
   items?: TypeDefinitions;
   name: string;
   name_cased: string;

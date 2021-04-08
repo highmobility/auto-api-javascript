@@ -26,6 +26,15 @@ console.log(JSON.stringify(response));
 
 const multiCommand = new Command(CommandType.Set, new Capabilities.MultiCommand());
 
+const setCapabilitiesWebhooksCommand = new Command(
+  CommandType.Set,
+  new Capabilities.Capabilities(),
+);
+setCapabilitiesWebhooksCommand.capability.createProperty('webhooks', {
+  available: 'available',
+  event: 'trip_started',
+});
+
 const setDoorLocksCommand = new Command(CommandType.Set, new Capabilities.Doors());
 setDoorLocksCommand.capability.createProperty('locks', {
   location: 'front_right',
@@ -35,7 +44,7 @@ setDoorLocksCommand.capability.createProperty('locks', {
 const setIgnitionStatusCommand = new Command(CommandType.Set, new Capabilities.Ignition());
 setIgnitionStatusCommand.capability.createProperty('status', 'off');
 
-[setDoorLocksCommand, setIgnitionStatusCommand].forEach((command) =>
+[setCapabilitiesWebhooksCommand, setDoorLocksCommand, setIgnitionStatusCommand].forEach((command) =>
   multiCommand.capability.createProperty('multi_commands', command.encode()),
 );
 
