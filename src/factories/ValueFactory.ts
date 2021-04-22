@@ -44,7 +44,7 @@ const ValueConstructors: Partial<Record<TypeDefinitionType | string, ValueConstr
 
 export class ValueFactory {
   public static createFromDefinition(definition: TypeDefinition) {
-    const { customType, event, type, unitType } = definition;
+    const { customType, event, size, type, unitType } = definition;
 
     const ValueConstructor =
       customType || event ? CustomValue : unitType ? UnitValue : ValueConstructors[type];
@@ -53,8 +53,10 @@ export class ValueFactory {
       case CustomValue:
         return new ValueConstructor(
           event
-            ? Configuration.getEventDefinition(definition.event as string)
-            : Configuration.getCustomTypeDefinition(definition.customType as string),
+            ? Configuration.getEventDefinition(event)
+            : customType
+            ? Configuration.getCustomTypeDefinition(customType)
+            : definition,
         );
       case EnumValue:
         return new ValueConstructor(definition);
@@ -62,17 +64,15 @@ export class ValueFactory {
       case FloatValue:
       case IntegerValue:
       case UintValue:
-        return new (ValueConstructor as NumericValueConstructor)(definition.size);
+        return new (ValueConstructor as NumericValueConstructor)(size);
       case BytesValue:
       case StringValue:
       case TimestampValue:
         return new ValueConstructor();
       case UnitValue:
-        return new ValueConstructor(
-          Configuration.getMeasurementTypeDefinition(definition.unitType as string),
-        );
+        return new ValueConstructor(Configuration.getMeasurementTypeDefinition(unitType as string));
       default:
-        throw new Error(`Unknown value type: ${definition.type}`);
+        throw new Error(`Unknown value type: ${type}`);
     }
   }
 }
