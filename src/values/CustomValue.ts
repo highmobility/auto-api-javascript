@@ -51,7 +51,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   public decode(bytes: number[]) {
-    const { definition } = this;
+    const { definition, hasItems } = this;
     const items = definition.items || [definition];
 
     const [values] = items.reduce<[CustomValueItems, number]>(
@@ -59,7 +59,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
         const itemTypeDefinition = this.resolveTypeDefinitionFromRef(item);
 
         const [count, chunk] = bytesToChunk(bytes.slice(offset), itemTypeDefinition.size, () =>
-          this.isVariableSizeSubtype(itemTypeDefinition),
+          this.isVariableSizeSubtype(itemTypeDefinition, hasItems),
         );
 
         return [
@@ -73,9 +73,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
       [{}, 0],
     );
 
-    this._value = definition.items
-      ? values
-      : (last(getKeyValuePairFromObject<Value>(values)) as Value);
+    this._value = hasItems ? values : (last(getKeyValuePairFromObject<Value>(values)) as Value);
 
     return this;
   }
@@ -92,12 +90,16 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     return this;
   }
 
+  public get hasItems() {
+    return !!this.definition.items;
+  }
+
   public get name() {
     return this.definition.name;
   }
 
   public setValue(value: unknown) {
-    if (this.definition.items) {
+    if (this.hasItems) {
       if (isObject(value)) {
         this.assignValueToItems(value);
       } else {
@@ -153,7 +155,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     const { size } = this.resolveTypeDefinitionFromRef(definition);
     const bytes = value.encode();
 
-    return size ? bytes : bytesWithSize(bytes);
+    return size || !this.hasItems ? bytes : bytesWithSize(bytes);
   }
 
   protected getItemTypeDefinition(name: string) {
@@ -173,7 +175,10 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
       : type;
   }
 
-  protected isVariableSizeSubtype({ customType, type }: TypeDefinition) {
-    return !!customType || CustomValue.VariableSizeSubtypes.includes(type as TypeDefinitionType);
+  protected isVariableSizeSubtype({ customType, type }: TypeDefinition, hasItems = true) {
+    return (
+      hasItems &&
+      (!!customType || CustomValue.VariableSizeSubtypes.includes(type as TypeDefinitionType))
+    );
   }
 }
