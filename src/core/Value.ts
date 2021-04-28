@@ -12,8 +12,7 @@ export abstract class Value<D = unknown, S = D> extends Serializable {
   }
 
   protected extractValueFromJSONPayload(payload: unknown) {
-    const value = getValueFromObject(payload);
-    return value !== undefined ? value : payload;
+    return getValueFromObject(payload) ?? payload;
   }
 
   protected getValueForEncoding() {

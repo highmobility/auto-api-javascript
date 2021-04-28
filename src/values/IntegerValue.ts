@@ -35,6 +35,6 @@ export class IntegerValue extends Value<number> {
   }
 
   public valueOf() {
-    return this._value !== undefined ? this._value : null;
+    return this._value ?? null;
   }
 }
