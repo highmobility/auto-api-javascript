@@ -31,7 +31,6 @@ export class Race extends Capability<`${Properties}` | `${UniversalProperties}`>
   };
   static readonly Name = 'race';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(Configuration.getCapabilityDefinition(Race.Name), Configuration.getUniversalProperties());
   }

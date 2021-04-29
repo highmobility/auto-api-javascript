@@ -14,7 +14,6 @@ export class DriverFatigue extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'driver_fatigue';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(DriverFatigue.Name),

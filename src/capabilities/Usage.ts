@@ -53,7 +53,6 @@ export class Usage extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'usage';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Usage.Name),

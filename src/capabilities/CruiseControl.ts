@@ -18,7 +18,6 @@ export class CruiseControl extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'cruise_control';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(CruiseControl.Name),

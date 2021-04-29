@@ -16,7 +16,6 @@ export class Hood extends Capability<`${Properties}` | `${UniversalProperties}`>
   };
   static readonly Name = 'hood';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(Configuration.getCapabilityDefinition(Hood.Name), Configuration.getUniversalProperties());
   }

@@ -17,7 +17,6 @@ export class Notifications extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'notifications';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Notifications.Name),

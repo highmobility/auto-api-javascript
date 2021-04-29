@@ -16,7 +16,6 @@ export class RemoteControl extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'remote_control';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(RemoteControl.Name),

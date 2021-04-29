@@ -14,7 +14,6 @@ export class WeatherConditions extends Capability<`${Properties}` | `${Universal
   };
   static readonly Name = 'weather_conditions';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(WeatherConditions.Name),

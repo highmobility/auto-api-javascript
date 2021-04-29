@@ -15,7 +15,6 @@ export class PowerTakeoff extends Capability<`${Properties}` | `${UniversalPrope
   };
   static readonly Name = 'power_takeoff';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(PowerTakeoff.Name),

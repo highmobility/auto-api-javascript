@@ -15,7 +15,6 @@ export class MultiCommand extends Capability<`${Properties}` | `${UniversalPrope
   };
   static readonly Name = 'multi_command';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(MultiCommand.Name),

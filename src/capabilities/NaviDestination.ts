@@ -19,7 +19,6 @@ export class NaviDestination extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'navi_destination';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(NaviDestination.Name),

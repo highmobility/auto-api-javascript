@@ -15,7 +15,6 @@ export class Messaging extends Capability<`${Properties}` | `${UniversalProperti
   };
   static readonly Name = 'messaging';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Messaging.Name),

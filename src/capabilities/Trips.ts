@@ -34,7 +34,6 @@ export class Trips extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'trips';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Trips.Name),

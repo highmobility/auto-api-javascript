@@ -15,7 +15,6 @@ export class LightConditions extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'light_conditions';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(LightConditions.Name),

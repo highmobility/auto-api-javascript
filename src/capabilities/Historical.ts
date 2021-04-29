@@ -17,7 +17,6 @@ export class Historical extends Capability<`${Properties}` | `${UniversalPropert
   };
   static readonly Name = 'historical';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Historical.Name),

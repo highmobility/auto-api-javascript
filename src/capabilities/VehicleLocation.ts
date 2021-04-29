@@ -19,7 +19,6 @@ export class VehicleLocation extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'vehicle_location';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(VehicleLocation.Name),

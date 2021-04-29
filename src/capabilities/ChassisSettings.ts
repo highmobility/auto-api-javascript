@@ -21,7 +21,6 @@ export class ChassisSettings extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'chassis_settings';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(ChassisSettings.Name),

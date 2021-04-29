@@ -15,7 +15,6 @@ export class DashboardLights extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'dashboard_lights';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(DashboardLights.Name),

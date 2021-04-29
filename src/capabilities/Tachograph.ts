@@ -20,7 +20,6 @@ export class Tachograph extends Capability<`${Properties}` | `${UniversalPropert
   };
   static readonly Name = 'tachograph';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Tachograph.Name),

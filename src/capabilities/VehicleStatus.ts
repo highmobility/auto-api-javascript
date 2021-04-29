@@ -14,7 +14,6 @@ export class VehicleStatus extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'vehicle_status';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(VehicleStatus.Name),

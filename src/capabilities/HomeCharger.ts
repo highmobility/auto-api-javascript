@@ -29,7 +29,6 @@ export class HomeCharger extends Capability<`${Properties}` | `${UniversalProper
   };
   static readonly Name = 'home_charger';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(HomeCharger.Name),

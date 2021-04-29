@@ -14,7 +14,6 @@ export class Graphics extends Capability<`${Properties}` | `${UniversalPropertie
   };
   static readonly Name = 'graphics';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Graphics.Name),

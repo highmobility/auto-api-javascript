@@ -15,7 +15,6 @@ export class Offroad extends Capability<`${Properties}` | `${UniversalProperties
   };
   static readonly Name = 'offroad';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Offroad.Name),

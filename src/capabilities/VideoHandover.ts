@@ -17,7 +17,6 @@ export class VideoHandover extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'video_handover';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(VideoHandover.Name),

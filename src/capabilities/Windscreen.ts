@@ -21,7 +21,6 @@ export class Windscreen extends Capability<`${Properties}` | `${UniversalPropert
   };
   static readonly Name = 'windscreen';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Windscreen.Name),

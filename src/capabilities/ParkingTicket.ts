@@ -18,7 +18,6 @@ export class ParkingTicket extends Capability<`${Properties}` | `${UniversalProp
   };
   static readonly Name = 'parking_ticket';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(ParkingTicket.Name),

@@ -99,18 +99,16 @@ function createNameDeclaration(name: string) {
 }
 
 function createPropertiesDeclaration() {
-  return [PropertiesToken, UniversalPropertiesToken].map((token) =>
-    ts.factory.createPropertyDeclaration(
-      undefined,
-      [
-        ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
-        ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
-      ],
-      ts.factory.createIdentifier(token),
-      undefined,
-      undefined,
-      ts.factory.createIdentifier(token),
-    ),
+  return ts.factory.createPropertyDeclaration(
+    undefined,
+    [
+      ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
+      ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+    ],
+    ts.factory.createIdentifier(PropertiesToken),
+    undefined,
+    undefined,
+    ts.factory.createIdentifier(PropertiesToken),
   );
 }
 
@@ -157,7 +155,7 @@ function createCapabilityClassDefinition(className: string, capability: Capabili
     [
       createIdentifierDeclaration(capability),
       createNameDeclaration(capability.name),
-      ...createPropertiesDeclaration(),
+      createPropertiesDeclaration(),
       createConstructorDeclaration(className),
     ],
   );

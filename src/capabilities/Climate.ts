@@ -24,7 +24,6 @@ export class Climate extends Capability<`${Properties}` | `${UniversalProperties
   };
   static readonly Name = 'climate';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Climate.Name),

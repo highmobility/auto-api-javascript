@@ -16,7 +16,6 @@ export class Ignition extends Capability<`${Properties}` | `${UniversalPropertie
   };
   static readonly Name = 'ignition';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Ignition.Name),

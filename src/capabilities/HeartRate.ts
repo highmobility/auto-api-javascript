@@ -14,7 +14,6 @@ export class HeartRate extends Capability<`${Properties}` | `${UniversalProperti
   };
   static readonly Name = 'heart_rate';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(HeartRate.Name),

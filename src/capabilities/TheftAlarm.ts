@@ -20,7 +20,6 @@ export class TheftAlarm extends Capability<`${Properties}` | `${UniversalPropert
   };
   static readonly Name = 'theft_alarm';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(TheftAlarm.Name),

@@ -14,7 +14,6 @@ export class TextInput extends Capability<`${Properties}` | `${UniversalProperti
   };
   static readonly Name = 'text_input';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(TextInput.Name),

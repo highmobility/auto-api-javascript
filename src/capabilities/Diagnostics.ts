@@ -63,7 +63,6 @@ export class Diagnostics extends Capability<`${Properties}` | `${UniversalProper
   };
   static readonly Name = 'diagnostics';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Diagnostics.Name),

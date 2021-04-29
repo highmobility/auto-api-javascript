@@ -34,7 +34,6 @@ export class VehicleInformation extends Capability<`${Properties}` | `${Universa
   };
   static readonly Name = 'vehicle_information';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(VehicleInformation.Name),

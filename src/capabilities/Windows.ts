@@ -15,7 +15,6 @@ export class Windows extends Capability<`${Properties}` | `${UniversalProperties
   };
   static readonly Name = 'windows';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Windows.Name),

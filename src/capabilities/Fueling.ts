@@ -15,7 +15,6 @@ export class Fueling extends Capability<`${Properties}` | `${UniversalProperties
   };
   static readonly Name = 'fueling';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Fueling.Name),

@@ -14,7 +14,6 @@ export class ValetMode extends Capability<`${Properties}` | `${UniversalProperti
   };
   static readonly Name = 'valet_mode';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(ValetMode.Name),

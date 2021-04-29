@@ -14,7 +14,6 @@ export class Browser extends Capability<`${Properties}` | `${UniversalProperties
   };
   static readonly Name = 'browser';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Browser.Name),

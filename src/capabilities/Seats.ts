@@ -15,7 +15,6 @@ export class Seats extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'seats';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Seats.Name),

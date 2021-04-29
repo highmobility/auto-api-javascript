@@ -15,7 +15,6 @@ export class Capabilities extends Capability<`${Properties}` | `${UniversalPrope
   };
   static readonly Name = 'capabilities';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Capabilities.Name),

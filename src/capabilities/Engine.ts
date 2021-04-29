@@ -16,7 +16,6 @@ export class Engine extends Capability<`${Properties}` | `${UniversalProperties}
   };
   static readonly Name = 'engine';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Engine.Name),

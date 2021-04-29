@@ -14,7 +14,6 @@ export class ParkingBrake extends Capability<`${Properties}` | `${UniversalPrope
   };
   static readonly Name = 'parking_brake';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(ParkingBrake.Name),

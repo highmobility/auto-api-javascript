@@ -18,7 +18,6 @@ export class HonkHornFlashLights extends Capability<`${Properties}` | `${Univers
   };
   static readonly Name = 'honk_horn_flash_lights';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(HonkHornFlashLights.Name),

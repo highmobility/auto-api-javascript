@@ -24,7 +24,6 @@ export class Adas extends Capability<`${Properties}` | `${UniversalProperties}`>
   };
   static readonly Name = 'adas';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(Configuration.getCapabilityDefinition(Adas.Name), Configuration.getUniversalProperties());
   }

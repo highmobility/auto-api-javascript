@@ -16,7 +16,6 @@ export class Trunk extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'trunk';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Trunk.Name),

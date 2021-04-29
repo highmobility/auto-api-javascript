@@ -19,7 +19,6 @@ export class Crash extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'crash';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Crash.Name),

@@ -19,7 +19,6 @@ export class RooftopControl extends Capability<`${Properties}` | `${UniversalPro
   };
   static readonly Name = 'rooftop_control';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(RooftopControl.Name),

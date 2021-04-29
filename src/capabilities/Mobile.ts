@@ -14,7 +14,6 @@ export class Mobile extends Capability<`${Properties}` | `${UniversalProperties}
   };
   static readonly Name = 'mobile';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Mobile.Name),

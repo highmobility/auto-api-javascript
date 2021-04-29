@@ -14,7 +14,6 @@ export class WakeUp extends Capability<`${Properties}` | `${UniversalProperties}
   };
   static readonly Name = 'wake_up';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(WakeUp.Name),

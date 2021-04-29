@@ -31,7 +31,6 @@ export class Maintenance extends Capability<`${Properties}` | `${UniversalProper
   };
   static readonly Name = 'maintenance';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Maintenance.Name),

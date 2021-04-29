@@ -18,7 +18,6 @@ export class WiFi extends Capability<`${Properties}` | `${UniversalProperties}`>
   };
   static readonly Name = 'wi_fi';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(Configuration.getCapabilityDefinition(WiFi.Name), Configuration.getUniversalProperties());
   }

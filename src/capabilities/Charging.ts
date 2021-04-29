@@ -46,7 +46,6 @@ export class Charging extends Capability<`${Properties}` | `${UniversalPropertie
   };
   static readonly Name = 'charging';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Charging.Name),

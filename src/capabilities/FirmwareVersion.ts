@@ -16,7 +16,6 @@ export class FirmwareVersion extends Capability<`${Properties}` | `${UniversalPr
   };
   static readonly Name = 'firmware_version';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(FirmwareVersion.Name),

@@ -18,7 +18,6 @@ export class Doors extends Capability<`${Properties}` | `${UniversalProperties}`
   };
   static readonly Name = 'doors';
   static readonly Properties = Properties;
-  static readonly UniversalProperties = UniversalProperties;
   constructor() {
     super(
       Configuration.getCapabilityDefinition(Doors.Name),
