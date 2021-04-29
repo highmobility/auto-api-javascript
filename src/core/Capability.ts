@@ -1,4 +1,5 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
+import { ComponentName } from '../components/classes';
 
 import {
   bytesToChunks,
@@ -70,18 +71,19 @@ export abstract class Capability<P extends string = string>
   }
 
   public createProperty(id: P | number, dataComponentValue?: unknown) {
-    const property = new Property(
-      typeof id === 'string'
-        ? this.getPropertyDefinition('name', id)
-        : this.getPropertyDefinition('id', id),
-    );
+    const property = this.createPropertyInstance(id);
 
     if (dataComponentValue !== undefined) {
       property.createComponent('data', dataComponentValue);
     }
-    this.setProperty(property);
+    return this.setProperty(property);
+  }
 
-    return property;
+  public createPropertyFromJSON(
+    id: P | number,
+    components: Partial<Record<ComponentName, unknown>>,
+  ) {
+    return this.setProperty(this.createPropertyInstance(id).fromJSON(components));
   }
 
   public createPropertiesFromExamples(name: P) {
@@ -112,7 +114,7 @@ export abstract class Capability<P extends string = string>
               throw new Error('Property components must be an object.');
             }
 
-            this.createProperty(name as P).fromJSON(components);
+            this.createPropertyFromJSON(name as P, components);
           }
         } else {
           this.createProperty(name as P);
@@ -169,6 +171,14 @@ export abstract class Capability<P extends string = string>
     );
   }
 
+  protected createPropertyInstance(id: P | number): Property {
+    return new Property(
+      typeof id === 'string'
+        ? this.getPropertyDefinition('name', id)
+        : this.getPropertyDefinition('id', id),
+    );
+  }
+
   protected getPropertyDefinition<T extends keyof IProperty>(field: T, value: IProperty[T]) {
     const definition = [...this.definition.properties, ...this.universalProperties].find(
       (property) => property[field] === value,
@@ -193,6 +203,6 @@ export abstract class Capability<P extends string = string>
       this.properties[name] = property;
     }
 
-    return this;
+    return property;
   }
 }
