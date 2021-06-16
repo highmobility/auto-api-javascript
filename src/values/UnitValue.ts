@@ -1,6 +1,6 @@
 import { MeasurementType, UnitType } from '../types';
 
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
@@ -24,7 +24,7 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
   public constructor(public readonly definition: Readonly<MeasurementType>) {
     super();
 
-    if (definition === undefined) {
+    if (!definition) {
       throw new Error(`Cannot construct UnitValue without definition.`);
     }
   }
@@ -51,16 +51,14 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
     try {
-      if (isObject(value) && isNumber(value.value)) {
-        this.setValue(value as UnitValueDataSetter);
+      if (isObject(payload) && isNumber(payload.value)) {
+        this.setValue(payload as UnitValueDataSetter);
       } else {
         throw new Error('Value must be a number.');
       }
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
 
     return this;
@@ -84,7 +82,6 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
         : currentUnit || this.getFirstUnitDefinition();
     const value = (currentValue || new DoubleValue(UnitValue.ValueSize)).setValue(valueInUnits);
 
-    // TODO Triggering conversion here might be necessary
     this._value = {
       unit,
       value,
@@ -110,14 +107,19 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
   }
 
   protected getUnitDefinition<T extends keyof UnitType>(field: T, value: UnitType[T]) {
-    const definition = this.definition.unit_types.find((type) => type[field] === value);
+    const {
+      definition: { unit_types: units },
+      name,
+    } = this;
 
-    if (definition === undefined) {
+    const unit = units.find((type) => type[field] === value);
+
+    if (!unit) {
       throw new Error(
-        `Measurement type ${this.name} does not define unit identified by (${field}: ${value}).`,
+        `Measurement type ${name} does not define unit identified by (${field}: ${value}).`,
       );
     }
 
-    return definition;
+    return unit;
   }
 }

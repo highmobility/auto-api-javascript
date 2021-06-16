@@ -6,7 +6,7 @@ export class CapabilityFactory {
       ({ Identifier }) => Identifier.msb === msb && Identifier.lsb === lsb,
     );
 
-    if (Capability === undefined) {
+    if (!Capability) {
       throw new Error(`Invalid capability identifier [${msb}, ${lsb}].`);
     }
 
@@ -16,7 +16,7 @@ export class CapabilityFactory {
   public static createFromName(name: string) {
     const Capability = ClassList.find((CapabilityClass) => CapabilityClass.Name === name);
 
-    if (Capability === undefined) {
+    if (!Capability) {
       throw new Error(`Capability ${name} doesn't exist.`);
     }
 

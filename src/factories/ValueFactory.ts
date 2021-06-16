@@ -11,7 +11,7 @@ import {
   UnitValue,
 } from '../values';
 
-import { Configuration } from '../core/Configuration';
+import { Configuration } from '../configuration';
 
 import { TypeDefinition, TypeDefinitionType } from '../types';
 
@@ -51,13 +51,7 @@ export class ValueFactory {
 
     switch (ValueConstructor) {
       case CustomValue:
-        return new ValueConstructor(
-          event
-            ? Configuration.getEventDefinition(event)
-            : customType
-            ? Configuration.getCustomTypeDefinition(customType)
-            : definition,
-        );
+        return new ValueConstructor(Configuration.getTypeDefinitionFromRef(definition));
       case EnumValue:
         return new ValueConstructor(definition);
       case DoubleValue:

@@ -1,4 +1,4 @@
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
 import { bytesToInt, decimalToHexArray, isInteger } from '../utils';
@@ -18,12 +18,10 @@ export class IntegerValue extends Value<number> {
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
-    if (isInteger(value)) {
-      this.setValue(value);
+    if (isInteger(payload)) {
+      this.setValue(payload);
     } else {
-      throw new JSONError('Value must be an integer.');
+      throw new FormatError('Value must be an integer.');
     }
 
     return this;

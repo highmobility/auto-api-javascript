@@ -1,4 +1,4 @@
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
 import { base10ToIeee754, ieee754ToBase10, isNumber } from '../utils';
@@ -18,12 +18,10 @@ export class FloatValue extends Value<number> {
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
-    if (isNumber(value)) {
-      this.setValue(value);
+    if (isNumber(payload)) {
+      this.setValue(payload);
     } else {
-      throw new JSONError('Value must be a number.');
+      throw new FormatError('Value must be a number.');
     }
 
     return this;

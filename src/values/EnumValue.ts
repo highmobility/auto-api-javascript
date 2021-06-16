@@ -1,6 +1,6 @@
 import { EnumValue as IEnumValue, TypeDefinition } from '../types';
 
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
@@ -11,12 +11,8 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
   ) {
     super();
 
-    if (definition === undefined) {
+    if (!definition) {
       throw new Error(`Cannot construct EnumValue without definition.`);
-    }
-
-    if (definition.enum_values === undefined) {
-      throw new Error(`Invalid type definition: field 'enum_values' is missing.`);
     }
 
     if (value) this.setValue(value);
@@ -36,12 +32,10 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
     try {
-      this.setValue(value as string | number);
+      this.setValue(payload as string | number);
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
 
     return this;
@@ -50,8 +44,9 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
   public getValueDefinitionByField<T extends keyof IEnumValue>(field: T, value: IEnumValue[T]) {
     const item = this.definition.enum_values!.find((item) => item[field] === value);
 
-    if (item === undefined)
+    if (!item) {
       throw new Error(`Enum of ${this.name} has no match for ${field}: ${value}.`);
+    }
 
     return item;
   }

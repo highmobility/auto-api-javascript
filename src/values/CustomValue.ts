@@ -1,7 +1,7 @@
 import { last } from 'lodash';
 
-import { Configuration } from '../core/Configuration';
-import { JSONError } from '../core/Error';
+import { Configuration } from '../configuration';
+import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
@@ -24,7 +24,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   public constructor(public readonly definition: Readonly<TypeDefinition>) {
     super();
 
-    if (definition === undefined) {
+    if (!definition) {
       throw new Error(`Cannot construct CustomValue without definition.`);
     }
   }
@@ -56,7 +56,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
 
     const [values] = items.reduce<[CustomValueItems, number]>(
       ([values, offset], item) => {
-        const itemTypeDefinition = this.resolveTypeDefinitionFromRef(item);
+        const itemTypeDefinition = Configuration.getTypeDefinitionFromRef(item);
 
         const [count, chunk] = bytesToChunk(bytes.slice(offset), itemTypeDefinition.size, () =>
           this.isVariableSizeSubtype(itemTypeDefinition, hasItems),
@@ -79,12 +79,10 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
     try {
-      this.setValue(value);
+      this.setValue(payload);
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
 
     return this;
@@ -152,7 +150,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   protected encodeItem(definition: TypeDefinition, value: Value) {
-    const { size } = this.resolveTypeDefinitionFromRef(definition);
+    const { size } = Configuration.getTypeDefinitionFromRef(definition);
     const bytes = value.encode();
 
     return size || !this.hasItems ? bytes : bytesWithSize(bytes);
@@ -161,18 +159,11 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   protected getItemTypeDefinition(name: string) {
     const definition = this.definition.items!.find((item) => item.name === name);
 
-    if (definition) return definition;
+    if (!definition) {
+      throw new Error(`Custom type ${this.name} has no member called ${name}.`);
+    }
 
-    throw new Error(`Custom type ${this.name} has no member called ${name}.`);
-  }
-
-  protected resolveTypeDefinitionFromRef(type: TypeDefinition) {
-    const { customType, event } = type;
-    return customType
-      ? Configuration.getCustomTypeDefinition(customType)
-      : event
-      ? Configuration.getEventDefinition(event)
-      : type;
+    return definition;
   }
 
   protected isVariableSizeSubtype({ customType, type }: TypeDefinition, hasItems = true) {

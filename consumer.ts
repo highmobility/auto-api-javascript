@@ -1,4 +1,4 @@
-import { Command, CommandType } from './lib';
+import { CapabilityFactory, Command, CommandType, Configuration } from './lib';
 import { Capabilities, Doors, Ignition, MultiCommand, Race } from './lib/capabilities';
 
 /**
@@ -59,3 +59,22 @@ console.log(
   multiCommandAsJSON,
   multiCommandAsJSON === JSON.stringify(Command.parse(multiCommandEncoded)),
 );
+
+/**
+ * Full state from Auto API examples
+ */
+const capabilities = Configuration.getConfiguration().capabilities;
+const state = Object.entries(capabilities).reduce((state, [name, { properties }]) => {
+  const capability = CapabilityFactory.createFromName(name);
+
+  for (const { name: propertyName } of Object.values(properties)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    capability.createPropertiesFromExamples(propertyName as any);
+  }
+
+  return {
+    ...state,
+    [name]: capability.toJSON(),
+  };
+}, {});
+console.log(JSON.stringify(state, null, 2));

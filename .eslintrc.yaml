@@ -10,6 +10,7 @@ ignorePatterns:
   - 'auto-api'
   - 'es'
   - 'lib'
+  - 'scripts'
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 10

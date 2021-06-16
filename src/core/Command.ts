@@ -2,9 +2,9 @@ import { CapabilityClass } from '../capabilities/classes';
 import { CapabilityFactory } from '../factories/CapabilityFactory';
 
 import { capitalize, getKeyValuePairFromObject } from '../utils';
+import { Configuration } from '../configuration';
 
-import { Configuration } from './Configuration';
-import { InvalidCommandError, JSONError } from './Error';
+import { FormatError, InvalidCommandError } from './Error';
 
 export enum CommandType {
   Availability = 0x02,
@@ -34,7 +34,7 @@ export class Command<C extends InstanceType<CapabilityClass> = InstanceType<Capa
         CapabilityFactory.createFromName(capabilityName).fromJSON(properties),
       );
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
   }
 

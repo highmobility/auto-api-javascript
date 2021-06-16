@@ -16,7 +16,7 @@ export class PropertyComponentFactory {
   public static createFromId(id: number, property: Property, initialValue?: unknown) {
     const name = ComponentMap[id] as ComponentName | undefined;
 
-    if (name === undefined) {
+    if (!name) {
       throw new Error(`Unknown property component id: ${id}.`);
     }
 

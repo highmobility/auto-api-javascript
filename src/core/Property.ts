@@ -4,7 +4,7 @@ import { PropertyComponentFactory } from '../factories/PropertyComponentFactory'
 
 import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
 
-import { InvalidCommandError, JSONError } from './Error';
+import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Serializable } from './Serializable';
 import { PropertyComponent } from './PropertyComponent';
@@ -47,7 +47,7 @@ export class Property extends Serializable implements NamedEntity {
         this.createComponent(componentName as ComponentName).fromJSON(componentAsJSON);
       }
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
 
     return this;

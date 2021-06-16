@@ -3,8 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
+    "downlevelIteration": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true,

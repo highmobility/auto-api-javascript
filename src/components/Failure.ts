@@ -1,4 +1,4 @@
-import { Configuration } from '../core/Configuration';
+import { Configuration } from '../configuration';
 import { Property } from '../core/Property';
 import { PropertyComponent } from '../core/PropertyComponent';
 

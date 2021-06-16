@@ -1,4 +1,4 @@
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
 import { isArrayOfNumbers } from '../utils';
@@ -14,12 +14,10 @@ export class BytesValue extends Value<number[]> {
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
-    if (value && isArrayOfNumbers(value)) {
-      this.setValue(value);
+    if (payload && isArrayOfNumbers(payload)) {
+      this.setValue(payload);
     } else {
-      throw new JSONError('Value must be an array of numbers.');
+      throw new FormatError('Value must be an array of numbers.');
     }
 
     return this;

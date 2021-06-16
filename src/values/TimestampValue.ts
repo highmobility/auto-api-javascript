@@ -1,6 +1,6 @@
 import { isString } from 'lodash';
 
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
 import { bytesToInt, decimalToHexArray } from '../utils';
@@ -21,12 +21,10 @@ export class TimestampValue extends Value<Date> {
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
-    if (isString(value)) {
-      this.setValue(new Date(value));
+    if (isString(payload)) {
+      this.setValue(new Date(payload));
     } else {
-      throw new JSONError('Value must be a string in ISO date-time format.');
+      throw new FormatError('Value must be a string in ISO date-time format.');
     }
 
     return this;

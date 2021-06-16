@@ -8,13 +8,13 @@ export function assertByteCount(bytes: number[] | undefined, count: number) {
 }
 
 export function base10ToIeee754(value: number, count = 4) {
-  const ieeeArray = ([] as unknown) as Uint8Array;
+  const ieeeArray = [] as unknown as Uint8Array;
   ieee754.write(ieeeArray, value, 0, false, 23, count);
   return [...ieeeArray];
 }
 
 export function base10ToIeee754Double(value: number, count = 8) {
-  const ieeeArray = ([] as unknown) as Uint8Array;
+  const ieeeArray = [] as unknown as Uint8Array;
   ieee754.write(ieeeArray, value, 0, false, 52, count);
   return [...ieeeArray];
 }

@@ -14,12 +14,12 @@ export class InvalidCommandError extends AutoApiError {
   }
 }
 
-export class JSONError extends AutoApiError {
+export class FormatError extends AutoApiError {
   constructor(error: string | Error) {
     super(
-      error instanceof JSONError
+      error instanceof FormatError
         ? error.message
-        : `Failed to parse JSON: ${error instanceof Error ? error.message : error}`,
+        : `Failed to parse payload: ${error instanceof Error ? error.message : error}`,
     );
   }
 }

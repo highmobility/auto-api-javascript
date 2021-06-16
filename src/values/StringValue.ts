@@ -1,6 +1,6 @@
 import { isString } from 'lodash';
 
-import { JSONError } from '../core/Error';
+import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
 import { utfStringToByteArray } from '../utils';
@@ -16,12 +16,10 @@ export class StringValue extends Value<string> {
   }
 
   public fromJSON(payload: unknown) {
-    const value = this.extractValueFromJSONPayload(payload);
-
-    if (isString(value)) {
-      this.setValue(value);
+    if (isString(payload)) {
+      this.setValue(payload);
     } else {
-      throw new JSONError('Value must be a string.');
+      throw new FormatError('Value must be a string.');
     }
 
     return this;

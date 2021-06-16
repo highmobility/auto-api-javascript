@@ -10,7 +10,7 @@ import {
   isObject,
 } from '../utils';
 
-import { InvalidCommandError, JSONError } from './Error';
+import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
@@ -21,7 +21,8 @@ interface CapabilityEncodeDecodeOptions {
 
 export abstract class Capability<P extends string = string>
   extends Serializable
-  implements NamedEntity {
+  implements NamedEntity
+{
   public properties = {} as Record<P, Property | Property[]>;
 
   public constructor(
@@ -121,7 +122,7 @@ export abstract class Capability<P extends string = string>
         }
       }
     } catch (e) {
-      throw new JSONError(e);
+      throw new FormatError(e);
     }
 
     return this;
@@ -184,7 +185,7 @@ export abstract class Capability<P extends string = string>
       (property) => property[field] === value,
     );
 
-    if (definition === undefined) {
+    if (!definition) {
       throw new Error(
         `Capability ${this.name} does not have property identified by ${field}: ${value}.`,
       );

@@ -56,7 +56,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
   }
 
   public createValue(initialValue?: unknown) {
-    this._value = ValueFactory.createFromDefinition(this.getTypeDefinitionForValueConstructor());
+    this._value = ValueFactory.createFromDefinition(this.getValueTypeDefinition());
 
     return initialValue !== undefined ? this._value.setValue(initialValue) : this._value;
   }
@@ -69,7 +69,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return this.value ? this.value.valueOf() : null;
   }
 
-  protected getTypeDefinitionForValueConstructor(): Readonly<TypeDefinition> {
+  protected getValueTypeDefinition(): Readonly<TypeDefinition> {
     return this.definition;
   }
 }

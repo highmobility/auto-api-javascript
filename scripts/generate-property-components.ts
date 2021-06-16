@@ -1,7 +1,7 @@
 import path from 'path';
 import ts from 'typescript';
 
-import { configuration } from '@/configuration';
+import configuration from '@/configuration/configuration.json';
 import { PropertyComponent, PropertyComponents } from '@/types';
 import { snakeCaseToPascalCase } from '@/utils/strings';
 
@@ -70,7 +70,7 @@ function createDataComponentValueTypeDefinitionOverride() {
     undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ProtectedKeyword)],
     undefined,
-    ts.factory.createIdentifier('getTypeDefinitionForValueConstructor'),
+    ts.factory.createIdentifier('getValueTypeDefinition'),
     undefined,
     undefined,
     [],
@@ -192,12 +192,7 @@ function printPropertyComponentClassDefinition(filename: string, classDeclaratio
 
   const nodes = [
     [
-      printer(
-        tsUtils.createImportDeclaration(
-          `../core/${ConfigurationClassName}`,
-          ConfigurationClassName,
-        ),
-      ),
+      printer(tsUtils.createImportDeclaration(`../configuration`, ConfigurationClassName)),
       printer(tsUtils.createImportDeclaration(`../core/${PropertyClassName}`, PropertyClassName)),
       printer(tsUtils.createImportDeclaration(`../core/${BaseClassName}`, BaseClassName)),
     ]

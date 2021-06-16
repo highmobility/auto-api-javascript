@@ -1,5 +1,3 @@
-import { getValueFromObject } from '../utils';
-
 import { Serializable } from './Serializable';
 
 export abstract class Value<D = unknown, S = D> extends Serializable {
@@ -9,10 +7,6 @@ export abstract class Value<D = unknown, S = D> extends Serializable {
 
   public toJSON() {
     return { value: this.valueOf() };
-  }
-
-  protected extractValueFromJSONPayload(payload: unknown) {
-    return getValueFromObject(payload) ?? payload;
   }
 
   protected getValueForEncoding() {

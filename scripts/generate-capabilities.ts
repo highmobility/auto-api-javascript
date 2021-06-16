@@ -2,7 +2,7 @@ import path from 'path';
 import ts from 'typescript';
 
 import { Capability, Properties } from '@/types';
-import { configuration } from '@/configuration';
+import configuration from '@/configuration/configuration.json';
 import { snakeCaseToPascalCase } from '@/utils/strings';
 
 import {
@@ -215,12 +215,7 @@ function printCapabilityClassDefinition(filename: string, declarations: ts.Node[
           CapabilityBaseClassName,
         ),
       ),
-      printer(
-        tsUtils.createImportDeclaration(
-          `../core/${ConfigurationClassName}`,
-          ConfigurationClassName,
-        ),
-      ),
+      printer(tsUtils.createImportDeclaration(`../configuration`, ConfigurationClassName)),
     ]
       .join('\n')
       .concat('\n'),
