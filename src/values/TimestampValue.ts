@@ -5,7 +5,7 @@ import { Value } from '../core/Value';
 
 import { bytesToInt, decimalToHexArray } from '../utils';
 
-export class TimestampValue extends Value<Date> {
+export class TimestampValue extends Value<Date, Date | string> {
   public constructor(value = new Date()) {
     super();
     this.setValue(value);
@@ -30,8 +30,8 @@ export class TimestampValue extends Value<Date> {
     return this;
   }
 
-  public setValue(value: Date) {
-    this._value = value;
+  public setValue(value: Date | string) {
+    this._value = value instanceof Date ? value : new Date(value);
     return this;
   }
 

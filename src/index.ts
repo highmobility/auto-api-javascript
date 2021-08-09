@@ -4,6 +4,9 @@ export * from './core';
 // Capabilities
 export * as Capabilities from './capabilities';
 
+// Property components
+export * from './components';
+
 // Configuration
 export { Configuration } from './configuration';
 

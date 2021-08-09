@@ -92,6 +92,10 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     return !!this.definition.items;
   }
 
+  public get items(): Readonly<CustomValueData> | undefined {
+    return this._value;
+  }
+
   public get name() {
     return this.definition.name;
   }

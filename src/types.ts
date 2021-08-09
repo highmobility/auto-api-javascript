@@ -122,6 +122,7 @@ export interface PropertySetterConstant {
 export type PropertySetterConstants = PropertySetterConstant[];
 
 export interface TypeDefinition {
+  controls?: 'switch' | string;
   customType?: string;
   enum_values?: EnumValues;
   event?: string;
@@ -133,6 +134,7 @@ export interface TypeDefinition {
   size?: number;
   type: TypeDefinitionType | string;
   unitType?: string;
+  validation?: `min:${number}|max:${number}` | string;
 }
 
 export type TypeDefinitions = TypeDefinition[];
