@@ -68,6 +68,27 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
     return this.definition.name;
   }
 
+  public getFirstUnitDefinition() {
+    return this.definition.unit_types[0];
+  }
+
+  public getUnitDefinition<T extends keyof UnitType>(field: T, value: UnitType[T]) {
+    const {
+      definition: { unit_types: units },
+      name,
+    } = this;
+
+    const unit = units.find((type) => type[field] === value);
+
+    if (!unit) {
+      throw new Error(
+        `Measurement type ${name} does not define unit identified by (${field}: ${value}).`,
+      );
+    }
+
+    return unit;
+  }
+
   public setValue(data: UnitValueDataSetter) {
     const { unit: unitIdentifier, value: valueInUnits } = data;
 
@@ -100,26 +121,5 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
     }
 
     return null;
-  }
-
-  protected getFirstUnitDefinition() {
-    return this.definition.unit_types[0];
-  }
-
-  protected getUnitDefinition<T extends keyof UnitType>(field: T, value: UnitType[T]) {
-    const {
-      definition: { unit_types: units },
-      name,
-    } = this;
-
-    const unit = units.find((type) => type[field] === value);
-
-    if (!unit) {
-      throw new Error(
-        `Measurement type ${name} does not define unit identified by (${field}: ${value}).`,
-      );
-    }
-
-    return unit;
   }
 }

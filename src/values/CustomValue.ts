@@ -100,6 +100,16 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     return this.definition.name;
   }
 
+  public getItemTypeDefinition(name: string) {
+    const definition = this.definition.items!.find((item) => item.name === name);
+
+    if (!definition) {
+      throw new Error(`Custom type ${this.name} has no member called ${name}.`);
+    }
+
+    return definition;
+  }
+
   public setValue(value: unknown) {
     if (this.hasItems) {
       if (isObject(value)) {
@@ -158,16 +168,6 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     const bytes = value.encode();
 
     return size || !this.hasItems ? bytes : bytesWithSize(bytes);
-  }
-
-  protected getItemTypeDefinition(name: string) {
-    const definition = this.definition.items!.find((item) => item.name === name);
-
-    if (!definition) {
-      throw new Error(`Custom type ${this.name} has no member called ${name}.`);
-    }
-
-    return definition;
   }
 
   protected isVariableSizeSubtype({ customType, type }: TypeDefinition, hasItems = true) {
