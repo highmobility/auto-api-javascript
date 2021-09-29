@@ -1,6 +1,6 @@
 {
   "name": "@highmobility/auto-api-javascript",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Auto API for JavaScript - the parsing library for the Auto API vehicle data model",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -36,7 +36,6 @@
   "homepage": "https://github.com/highmobility/auto-api-javascript#readme",
   "devDependencies": {
     "@tsconfig/node10": "^1.0.8",
-    "@types/lodash": "^4.14.170",
     "@types/node": "^16.0.0",
     "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
@@ -60,7 +59,6 @@
   },
   "dependencies": {
     "ieee754": "^1.2.1",
-    "lodash": "^4.17.21",
     "tslib": "^2.3.0"
   },
   "husky": {

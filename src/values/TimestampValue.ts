@@ -1,9 +1,7 @@
-import { isString } from 'lodash';
-
 import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
-import { bytesToInt, decimalToHexArray } from '../utils';
+import { bytesToInt, decimalToHexArray, isString } from '../utils';
 
 export class TimestampValue extends Value<Date, Date | string> {
   public constructor(value = new Date()) {

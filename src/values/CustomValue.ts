@@ -1,5 +1,3 @@
-import { last } from 'lodash';
-
 import { Configuration } from '../configuration';
 import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
@@ -8,7 +6,7 @@ import { Value } from '../core/Value';
 import { TypeDefinition, TypeDefinitionType } from '../types';
 import { ValueFactory } from '../factories/ValueFactory';
 
-import { bytesToChunk, bytesWithSize, getKeyValuePairFromObject, isObject } from '../utils';
+import { bytesToChunk, bytesWithSize, getKeyValuePairFromObject, isObject, last } from '../utils';
 
 type CustomValueItems = Record<string, Value>;
 type CustomValueData = Value | CustomValueItems;

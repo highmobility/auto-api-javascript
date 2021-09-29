@@ -1,9 +1,7 @@
-import { isString } from 'lodash';
-
 import { FormatError } from '../core/Error';
 import { Value } from '../core/Value';
 
-import { utfStringToByteArray } from '../utils';
+import { isString, utfStringToByteArray } from '../utils';
 
 export class StringValue extends Value<string> {
   public encode() {
