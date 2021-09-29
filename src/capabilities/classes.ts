@@ -44,6 +44,7 @@ import { TextInput } from './TextInput';
 import { TheftAlarm } from './TheftAlarm';
 import { Trips } from './Trips';
 import { Trunk } from './Trunk';
+import { Universal } from './Universal';
 import { Usage } from './Usage';
 import { ValetMode } from './ValetMode';
 import { VehicleInformation } from './VehicleInformation';
@@ -104,6 +105,7 @@ export type CapabilityClass =
   | typeof TheftAlarm
   | typeof Trips
   | typeof Trunk
+  | typeof Universal
   | typeof Usage
   | typeof ValetMode
   | typeof VehicleInformation
@@ -164,6 +166,7 @@ export const ClassList: Array<CapabilityClass> = [
   TheftAlarm,
   Trips,
   Trunk,
+  Universal,
   Usage,
   ValetMode,
   VehicleInformation,

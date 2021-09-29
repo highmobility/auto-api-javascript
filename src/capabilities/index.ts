@@ -44,6 +44,7 @@ export { TextInput } from './TextInput';
 export { TheftAlarm } from './TheftAlarm';
 export { Trips } from './Trips';
 export { Trunk } from './Trunk';
+export { Universal } from './Universal';
 export { Usage } from './Usage';
 export { ValetMode } from './ValetMode';
 export { VehicleInformation } from './VehicleInformation';
