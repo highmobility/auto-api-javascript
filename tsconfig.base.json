@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node10/tsconfig.json",
+  "extends": "@tsconfig/node12/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -11,7 +11,6 @@
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "resolveJsonModule": true,
     "strictNullChecks": true
   },
   "exclude": [

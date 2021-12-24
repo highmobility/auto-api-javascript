@@ -338,6 +338,11 @@ const PropertyComponents = {
   },
 };
 
+/**
+ * Properties
+ * -----------------------------------------------------------------------
+ */
+
 type PropertyComponentContainer<
   V extends ValueConstructor,
   C extends typeof PropertyComponents = typeof PropertyComponents,
@@ -348,11 +353,6 @@ type PropertyComponentContainer<
     ? InstanceType<C[K]['value']>
     : any;
 };
-
-/**
- * Properties
- * -----------------------------------------------------------------------
- */
 
 export type PropertyDataComponentSetter<T> = T extends Property<infer D>
   ? ValueSetterArguments<InstanceType<D>>
