@@ -1,101 +1,52 @@
-import { ComponentName } from '../components/classes';
-import { Property as IProperty } from '../types';
-import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
+import { Availability, Failure } from '../values/custom';
+import { DescriptorSymbol } from '../decorators';
+import { PropertyComponents } from '../components';
+import { Timestamp, ValueConstructor, ValueSetterArguments } from '../values/base';
 
-import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
+export type PropertyComponentContainer<
+  V extends ValueConstructor,
+  C extends typeof PropertyComponents = typeof PropertyComponents,
+> = {
+  [K in keyof C]?: K extends 'data'
+    ? InstanceType<V>
+    : C[K] extends { value: ValueConstructor }
+    ? InstanceType<C[K]['value']>
+    : any;
+};
 
-import { InvalidCommandError, JSONError } from './Error';
-import { NamedEntity } from './NamedEntity';
-import { Serializable } from './Serializable';
-import { PropertyComponent } from './PropertyComponent';
+export type PropertyDataComponentSetter<T> = T extends Property<infer D>
+  ? ValueSetterArguments<InstanceType<D>>
+  : never;
 
-export class Property extends Serializable implements NamedEntity {
-  public constructor(
-    public readonly definition: Readonly<IProperty>,
-    public components: Partial<Record<ComponentName, PropertyComponent>> = {},
-  ) {
-    super();
+export interface PropertyDescriptor<V extends ValueConstructor> {
+  id: number;
+  multiple?: boolean;
+  name: string;
+  value: V;
+}
+
+export class Property<V extends ValueConstructor = ValueConstructor>
+  implements PropertyComponentContainer<V>
+{
+  [DescriptorSymbol]: PropertyDescriptor<V>;
+
+  public availability: Availability | undefined;
+  public data: InstanceType<V> | undefined;
+  public failure: Failure | undefined;
+  public timestamp: Timestamp | undefined;
+
+  public constructor(value?: ValueSetterArguments<InstanceType<V>>) {
+    if (value) {
+      this.setValue(value);
+    }
   }
 
-  public decode(bytes: number[] = []) {
-    try {
-      for (const [id, chunk] of bytesToChunks(bytes)) {
-        this.createComponent(id).decode(chunk);
-      }
-    } catch (e) {
-      throw new InvalidCommandError(e);
-    }
+  public get descriptor() {
+    return this[DescriptorSymbol];
+  }
 
+  public setValue(value: ValueSetterArguments<InstanceType<V>>) {
+    this.data = (this.data || new this.descriptor.value()).setValue(value) as InstanceType<V>;
     return this;
-  }
-
-  public encode() {
-    const bytes = Object.values(this.components).reduce<number[]>(
-      (allComponentBytes, component) => [
-        ...allComponentBytes,
-        ...(component ? component.encode() : []),
-      ],
-      [],
-    );
-
-    return [this.id, ...bytesWithSize(bytes)];
-  }
-
-  public fromJSON(payload: Record<string, unknown>) {
-    try {
-      for (const [componentName, componentAsJSON] of Object.entries(payload)) {
-        this.createComponent(componentName as ComponentName).fromJSON(componentAsJSON);
-      }
-    } catch (e) {
-      throw new JSONError(e);
-    }
-
-    return this;
-  }
-
-  public get id() {
-    return this.definition.id;
-  }
-
-  public get multiple() {
-    return !!this.definition.multiple;
-  }
-
-  public get name() {
-    return this.definition.name;
-  }
-
-  public createComponent<T extends ComponentName>(identifier: T | number, initialValue?: unknown) {
-    const component = PropertyComponentFactory.create(identifier, this, initialValue);
-
-    return (this.components[component.name as ComponentName] = component);
-  }
-
-  public getComponent<T extends ComponentName>(name: T) {
-    if (this.hasComponent(name)) {
-      return this.components[name] as PropertyComponent;
-    }
-
-    throw new Error(`Property ${this.name} has no ${name} component.`);
-  }
-
-  public hasComponent<T extends ComponentName>(name: T) {
-    return !!this.components[name];
-  }
-
-  public toJSON() {
-    return this.valueOf();
-  }
-
-  public valueOf() {
-    return isEmptyObject(this.components)
-      ? null
-      : Object.entries(this.components).reduce(
-          (value, [componentName, component]) => ({
-            ...value,
-            [componentName]: component?.valueOf(),
-          }),
-          {},
-        );
   }
 }
