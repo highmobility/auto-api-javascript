@@ -14,8 +14,13 @@ export class Double extends Module {
 
   protected registry = Registry.getInstance();
 
-  public constructor(basePath: string, name: string, spec: DoubleSpec) {
-    super(basePath, name, Double.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: DoubleSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, Double.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

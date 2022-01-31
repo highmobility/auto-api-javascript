@@ -14,8 +14,13 @@ export class UInteger extends Module {
 
   protected registry = Registry.getInstance();
 
-  public constructor(basePath: string, name: string, spec: UIntegerSpec) {
-    super(basePath, name, UInteger.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: UIntegerSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, UInteger.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

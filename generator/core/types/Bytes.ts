@@ -11,8 +11,13 @@ export interface BytesSpec {
 export class Bytes extends Module {
   public static TypeName = 'Bytes';
 
-  public constructor(basePath: string, name: string, spec: BytesSpec) {
-    super(basePath, name, Bytes.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: BytesSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, Bytes.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

@@ -14,8 +14,13 @@ export class Timestamp extends Module {
 
   protected registry = Registry.getInstance();
 
-  public constructor(basePath: string, name: string, spec: TimestampSpec) {
-    super(basePath, name, Timestamp.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: TimestampSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, Timestamp.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

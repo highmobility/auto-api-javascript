@@ -10,13 +10,14 @@ import { Enum, EnumSpec } from './types/Enum';
 import { Float, FloatSpec } from './types/Float';
 import { Integer, IntegerSpec } from './types/Integer';
 import { Module } from './Module';
+import { Property } from './Property';
+import { PropertyComponents } from './PropertyComponents';
 import { String, StringSpec } from './types/String';
 import { Timestamp, TimestampSpec } from './types/Timestamp';
 import { UInteger, UIntegerSpec } from './types/UInteger';
 import { UnitType, UnitTypeRef } from './types/UnitType';
 import { UnitTypes } from './types/UnitTypes';
-import { Property } from './Property';
-import { PropertyComponents } from './PropertyComponents';
+import { UniversalProperties } from './UniversalProperties';
 
 export type BaseTypeSpec =
   | BytesSpec
@@ -55,6 +56,7 @@ export class Registry {
       Value: Module;
     };
   };
+  public universalProperties?: UniversalProperties;
 
   private static instance: Registry;
 
@@ -76,7 +78,7 @@ export class Registry {
     );
     const identifier = module.createExportedIdentifier(name);
 
-    module.merge(new Type(module.basePath, name, spec as any));
+    module.merge(new Type(module.basePath, name, spec as any, module.exports));
 
     return identifier;
   }
@@ -91,6 +93,10 @@ export class Registry {
     }
 
     return this.createBaseTypeDeclaration(module, spec);
+  }
+
+  public createUniversalProperties() {
+    return (this.universalProperties ||= new UniversalProperties());
   }
 
   public getAutoAPIPath(...paths: string[]) {

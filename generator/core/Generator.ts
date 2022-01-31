@@ -13,6 +13,7 @@ export class Generator {
     [
       this.registry.createCapabilities(),
       this.registry.createComponents(),
+      this.registry.createUniversalProperties(),
       this.registry.modules.Values.CustomTypes,
       this.registry.modules.Values.UnitTypes,
     ].forEach((module) => module.emit(this.rootDir));

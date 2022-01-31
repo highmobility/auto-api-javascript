@@ -15,8 +15,13 @@ export class Enum extends Module {
 
   protected registry = Registry.getInstance();
 
-  public constructor(basePath: string, name: string, spec: EnumSpec) {
-    super(basePath, name, Enum.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: EnumSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, Enum.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

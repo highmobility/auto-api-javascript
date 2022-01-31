@@ -14,8 +14,13 @@ export class Integer extends Module {
 
   protected registry = Registry.getInstance();
 
-  public constructor(basePath: string, name: string, spec: IntegerSpec) {
-    super(basePath, name, Integer.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: IntegerSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, Integer.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }

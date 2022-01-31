@@ -11,8 +11,13 @@ export interface StringSpec {
 export class String extends Module {
   public static TypeName = 'String';
 
-  public constructor(basePath: string, name: string, spec: StringSpec) {
-    super(basePath, name, String.TypeName);
+  public constructor(
+    basePath: string,
+    name: string,
+    spec: StringSpec,
+    exports?: Record<string, Identifier>,
+  ) {
+    super(basePath, name, String.TypeName, undefined, exports);
 
     this.createNodes(spec);
   }
