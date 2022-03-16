@@ -36,6 +36,8 @@
   "homepage": "https://github.com/highmobility/auto-api-javascript#readme",
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
+    "@types/lodash.clonedeep": "^4.5.6",
+    "@types/lodash.get": "^4.4.6",
     "@types/node": "^17.0.21",
     "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
@@ -59,6 +61,8 @@
   },
   "dependencies": {
     "ieee754": "^1.2.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.get": "^4.4.2",
     "tslib": "^2.3.1"
   },
   "husky": {
