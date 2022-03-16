@@ -24,7 +24,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
       this.createValue().decode(bytes);
       return this;
     } catch (e) {
-      throw new InvalidCommandError(e);
+      throw new InvalidCommandError(e as Error);
     }
   }
 

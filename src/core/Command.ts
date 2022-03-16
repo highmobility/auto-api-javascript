@@ -34,7 +34,7 @@ export class Command<C extends InstanceType<CapabilityClass> = InstanceType<Capa
         CapabilityFactory.createFromName(capabilityName).fromJSON(properties),
       );
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
   }
 
@@ -50,7 +50,7 @@ export class Command<C extends InstanceType<CapabilityClass> = InstanceType<Capa
         version,
       ).decode(data);
     } catch (e) {
-      throw new InvalidCommandError(e);
+      throw new InvalidCommandError(e as Error);
     }
   }
 

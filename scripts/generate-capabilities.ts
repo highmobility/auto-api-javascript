@@ -270,7 +270,7 @@ function printUniversalProperties() {
   printSourceFile(filename, nodes);
 }
 
-function generateClassDefinitionsForCapabilitites() {
+function generateClassDefinitionsForCapabilities() {
   // Clean or create destination dir
   cleanOrCreateDirectory(CapabilityClassesPath);
 
@@ -301,4 +301,4 @@ function generateClassDefinitionsForCapabilitites() {
   console.log('Successfully generated class definitions for capabilities.');
 }
 
-generateClassDefinitionsForCapabilitites();
+generateClassDefinitionsForCapabilities();

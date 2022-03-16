@@ -18,7 +18,7 @@ export function createExportDeclaration(source: string, identifier: string) {
     undefined,
     false,
     ts.factory.createNamedExports([
-      ts.factory.createExportSpecifier(undefined, ts.factory.createIdentifier(identifier)),
+      ts.factory.createExportSpecifier(false, undefined, ts.factory.createIdentifier(identifier)),
     ]),
     ts.factory.createStringLiteral(source),
   );
@@ -32,7 +32,7 @@ export function createImportDeclaration(source: string, identifier: string) {
       false,
       undefined,
       ts.factory.createNamedImports([
-        ts.factory.createImportSpecifier(undefined, ts.factory.createIdentifier(identifier)),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(identifier)),
       ]),
     ),
     ts.factory.createStringLiteral(source),

@@ -35,7 +35,7 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
     try {
       this.setValue(payload as string | number);
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
 
     return this;

@@ -23,7 +23,7 @@ export class Property extends Serializable implements NamedEntity {
         this.createComponent(id).decode(chunk);
       }
     } catch (e) {
-      throw new InvalidCommandError(e);
+      throw new InvalidCommandError(e as Error);
     }
 
     return this;
@@ -47,7 +47,7 @@ export class Property extends Serializable implements NamedEntity {
         this.createComponent(componentName as ComponentName).fromJSON(componentAsJSON);
       }
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
 
     return this;

@@ -4,7 +4,9 @@ import YAML from 'yamljs';
 
 export function cleanOrCreateDirectory(dir: string) {
   if (fs.existsSync(dir)) {
-    fs.readdirSync(dir).forEach((file) => fs.rmSync(path.resolve(dir, file)));
+    fs.readdirSync(dir).forEach((file) =>
+      fs.rmSync(path.resolve(dir, file), { recursive: true, force: true }),
+    );
   } else {
     fs.mkdirSync(dir);
   }

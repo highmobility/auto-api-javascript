@@ -58,7 +58,7 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
         throw new Error('Value must be a number.');
       }
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
 
     return this;

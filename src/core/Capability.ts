@@ -53,7 +53,7 @@ export abstract class Capability<P extends string = string>
         }
       }
     } catch (e) {
-      throw new InvalidCommandError(e);
+      throw new InvalidCommandError(e as Error);
     }
 
     return this;
@@ -122,7 +122,7 @@ export abstract class Capability<P extends string = string>
         }
       }
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
 
     return this;

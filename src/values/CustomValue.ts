@@ -80,7 +80,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     try {
       this.setValue(payload);
     } catch (e) {
-      throw new FormatError(e);
+      throw new FormatError(e as Error);
     }
 
     return this;
