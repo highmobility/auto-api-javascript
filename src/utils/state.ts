@@ -183,7 +183,7 @@ export const updatePropertyStates = (
     }
 
     return state;
-  } else {
-    update(state, stateB);
   }
+
+  return update(state, stateB);
 };
