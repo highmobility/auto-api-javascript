@@ -60,6 +60,7 @@ export interface Property extends Omit<TypeDefinition, 'items'> {
   deprecated?: DeprecationInfo;
   description?: string;
   examples: PropertyExamples;
+  identity_key?: string;
   multiple?: boolean;
 }
 

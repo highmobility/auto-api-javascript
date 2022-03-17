@@ -2,7 +2,7 @@ import { ComponentName } from '../components/classes';
 import { Property as IProperty } from '../types';
 import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
 
-import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
+import { bytesToChunks, bytesWithSize, comparePropertyIdentity, isEmptyObject } from '../utils';
 
 import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -41,6 +41,18 @@ export class Property extends Serializable implements NamedEntity {
     return [this.id, ...bytesWithSize(bytes)];
   }
 
+  public equals(property: Property) {
+    return (['availability', 'data', 'failure', 'timestamp'] as ComponentName[]).every(
+      (component) => {
+        if (this.hasComponent(component) && property.hasComponent(component)) {
+          return this.getComponent(component).equals(property.getComponent(component));
+        }
+
+        return this.components[component] === property.components[component];
+      },
+    );
+  }
+
   public fromJSON(payload: Record<string, unknown>) {
     try {
       for (const [componentName, componentAsJSON] of Object.entries(payload)) {
@@ -55,6 +67,10 @@ export class Property extends Serializable implements NamedEntity {
 
   public get id() {
     return this.definition.id;
+  }
+
+  public get identityKey() {
+    return this.definition.identity_key;
   }
 
   public get multiple() {
@@ -81,6 +97,24 @@ export class Property extends Serializable implements NamedEntity {
 
   public hasComponent<T extends ComponentName>(name: T) {
     return !!this.components[name];
+  }
+
+  public isInstanceOf(property: Property) {
+    const { identityKey, multiple } = property;
+    if (property instanceof Object.getPrototypeOf(this).constructor) {
+      if (multiple && identityKey) {
+        if ([this, property].every((p) => p.hasComponent('data'))) {
+          const [a, b] = [this, property].map((p) => p.valueOf() || {});
+          return comparePropertyIdentity(a, b, identityKey);
+        }
+
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   public toJSON() {

@@ -38,6 +38,18 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return [this.id, ...bytesWithSize(this._value.encode())];
   }
 
+  public equals(component: PropertyComponent) {
+    if (component.name === this.name) {
+      if (this.value && component.value) {
+        return this.value.equals(component.value);
+      }
+
+      return this.value === component.value;
+    }
+
+    return false;
+  }
+
   public fromJSON(payload: unknown) {
     (this.value || this.createValue()).fromJSON(payload);
     return this;

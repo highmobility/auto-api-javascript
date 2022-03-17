@@ -48,6 +48,26 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     }
   }
 
+  public equals(value: CustomValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      if (this.hasItems && value.hasItems) {
+        const items = value.items as CustomValueItems;
+        return Object.entries(this.items as CustomValueItems).every(([k, v]) => {
+          return items[k] && v.equals(items[k]);
+        });
+      }
+
+      if (a instanceof Value && b instanceof Value) {
+        return a.equals(b);
+      }
+    }
+
+    return a === b;
+  }
+
   public decode(bytes: number[]) {
     const { definition, hasItems } = this;
     const items = definition.items || [definition];
@@ -123,7 +143,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   public valueOf() {
-    const { _value: value } = this;
+    const { value } = this;
     if (value) {
       return value instanceof Value
         ? value.valueOf()

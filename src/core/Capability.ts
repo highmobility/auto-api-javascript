@@ -14,7 +14,6 @@ import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
-
 interface CapabilityEncodeDecodeOptions {
   bytesAsPropertyIds?: boolean;
 }
@@ -57,6 +56,35 @@ export abstract class Capability<P extends string = string>
     }
 
     return this;
+  }
+
+  public diff(capability: Capability<P>) {
+    const instance = new (Object.getPrototypeOf(this).constructor)(
+      this.definition,
+      this.universalProperties,
+    ) as Capability<P>;
+
+    const properties = capability
+      .getPropertiesArray()
+      .reduce<Property[]>((properties, property) => {
+        if (this.hasProperty(property.name as P)) {
+          const ref = this.findProperty(property);
+          if (ref && ref.equals(property)) {
+            return properties;
+          }
+        }
+
+        return [...properties, property];
+      }, []);
+
+    for (const property of properties) {
+      instance.createPropertyFromJSON(
+        property.name as P,
+        property.toJSON() as Partial<Record<ComponentName, unknown>>,
+      );
+    }
+
+    return instance;
   }
 
   public encode(options?: CapabilityEncodeDecodeOptions) {
@@ -131,6 +159,16 @@ export abstract class Capability<P extends string = string>
   public getProperty(name: P): Property | undefined {
     const [property] = getArray(this.properties[name]);
     return property;
+  }
+
+  public findProperty(property: Property): Property | undefined {
+    if (this.hasProperty(property.name as P)) {
+      if (property.multiple) {
+        return this.getProperties(property.name as P).find((ref) => ref.isInstanceOf(property));
+      } else {
+        return this.getProperty(property.name as P);
+      }
+    }
   }
 
   public getProperties(name: P) {

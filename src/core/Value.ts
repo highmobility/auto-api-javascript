@@ -9,6 +9,10 @@ export abstract class Value<D = unknown, S = D> extends Serializable {
 
   public abstract setValue(value: S): this;
 
+  public equals(value: Value<D, S>) {
+    return this.value === value.value;
+  }
+
   public toJSON() {
     return { value: this.valueOf() };
   }

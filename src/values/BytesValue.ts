@@ -8,6 +8,17 @@ export class BytesValue extends Value<number[]> {
     return [...this.getValueForEncoding()];
   }
 
+  public equals(value: BytesValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      return a.length == b.length && a.every((v, i) => v === b[i]);
+    }
+
+    return a === b;
+  }
+
   public decode(bytes: number[]) {
     this._value = [...bytes];
     return this;

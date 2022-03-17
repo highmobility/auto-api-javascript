@@ -36,6 +36,17 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
     return [id, unit.id, ...value.encode()];
   }
 
+  public equals(value: UnitValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      return a.unit.id === b.unit.id && a.value.equals(b.value);
+    }
+
+    return a === b;
+  }
+
   public decode(bytes: number[]) {
     const [, unitId, ...valueBytes] = bytes;
 
