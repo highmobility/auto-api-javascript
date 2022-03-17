@@ -2,8 +2,8 @@ import { CapabilityClass } from '../capabilities/classes';
 import { CapabilityFactory } from '../factories/CapabilityFactory';
 
 import { capitalize, getKeyValuePairFromObject } from '../utils';
-import { Configuration } from '../configuration';
 
+import { Configuration } from './Configuration';
 import { FormatError, InvalidCommandError } from './Error';
 
 export enum CommandType {

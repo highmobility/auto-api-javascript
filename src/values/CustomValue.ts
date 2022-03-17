@@ -1,4 +1,4 @@
-import { Configuration } from '../configuration';
+import { Configuration } from '../core/Configuration';
 import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';

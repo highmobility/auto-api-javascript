@@ -1,11 +1,10 @@
-import { PropertyComponent as IPropertyComponent, TypeDefinition } from '../types';
+import { PropertyComponent as IPropertyComponent, Property, TypeDefinition } from '../types';
 import { ValueFactory } from '../factories/ValueFactory';
 
 import { bytesWithSize } from '../utils';
 
 import { InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
-import { Property } from './Property';
 import { Serializable } from './Serializable';
 import { Value } from './Value';
 
@@ -70,7 +69,11 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
   public createValue(initialValue?: unknown) {
     this._value = ValueFactory.createFromDefinition(this.getValueTypeDefinition());
 
-    return initialValue !== undefined ? this._value.setValue(initialValue) : this._value;
+    if (initialValue !== undefined) {
+      this._value.setValue(initialValue);
+    }
+
+    return this._value;
   }
 
   public toJSON() {

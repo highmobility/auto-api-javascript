@@ -8,8 +8,8 @@ import { snakeCaseToPascalCase } from '@/utils/strings';
 import { cleanOrCreateDirectory, printSourceFile } from './shared/utils';
 import {
   ConfigurationClassName,
-  PropertyClassName,
   PropertyComponentsClassesPath,
+  PropertyTypeName,
 } from './shared/constants';
 import * as tsUtils from './shared/typescript';
 
@@ -55,7 +55,7 @@ function createConstructorDeclaration({ name }: PropertyComponent) {
         undefined,
         ts.factory.createTypeReferenceNode(ts.factory.createIdentifier('Readonly'), [
           ts.factory.createTypeReferenceNode(
-            ts.factory.createIdentifier(PropertyClassName),
+            ts.factory.createIdentifier(PropertyTypeName),
             undefined,
           ),
         ]),
@@ -79,11 +79,8 @@ function createDataComponentValueTypeDefinitionOverride() {
       [
         ts.factory.createReturnStatement(
           ts.factory.createPropertyAccessExpression(
-            ts.factory.createPropertyAccessExpression(
-              ts.factory.createThis(),
-              ts.factory.createIdentifier('property'),
-            ),
-            ts.factory.createIdentifier('definition'),
+            ts.factory.createThis(),
+            ts.factory.createIdentifier('property'),
           ),
         ),
       ],
@@ -192,8 +189,8 @@ function printPropertyComponentClassDefinition(filename: string, classDeclaratio
 
   const nodes = [
     [
-      printer(tsUtils.createImportDeclaration(`../configuration`, ConfigurationClassName)),
-      printer(tsUtils.createImportDeclaration(`../core/${PropertyClassName}`, PropertyClassName)),
+      printer(tsUtils.createImportDeclaration(`../core/Configuration`, ConfigurationClassName)),
+      printer(tsUtils.createImportDeclaration(`../types`, PropertyTypeName)),
       printer(tsUtils.createImportDeclaration(`../core/${BaseClassName}`, BaseClassName)),
     ]
       .join('\n')
@@ -213,10 +210,19 @@ function printPropertyComponentsMetaData(classNames: string[], components: Prope
       .map((className) => printer(tsUtils.createImportDeclaration(`./${className}`, className)))
       .join('\n')
       .concat('\n'),
+    printer(tsUtils.createImportDeclaration(`./types`, ComponentNameTypeName)).concat('\n\n'),
     printer(createPropertyComponentClassMapDefinition(components)).concat('\n'),
     printer(createPropertyComponentMapDefinition(components)).concat('\n'),
-    printer(createPropertyComponentNameDeclaration(components)),
   ];
+
+  printSourceFile(filename, nodes);
+}
+
+function printPropertyComponentsTypes(components: PropertyComponents) {
+  const filename = path.join(PropertyComponentsClassesPath, `types.ts`);
+  const printer = tsUtils.createPrinter(filename);
+
+  const nodes = [printer(createPropertyComponentNameDeclaration(components))];
 
   printSourceFile(filename, nodes);
 }
@@ -257,6 +263,7 @@ function generatePropertyComponents() {
 
   printExportDefinitionsForPropertyComponents(classNames);
   printPropertyComponentsMetaData(classNames, components);
+  printPropertyComponentsTypes(components);
 
   console.log('Successfully generated property components.');
 }

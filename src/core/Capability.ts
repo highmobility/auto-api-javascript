@@ -1,5 +1,5 @@
 import { Capability as ICapability, Property as IProperty } from '../types';
-import { ComponentName } from '../components/classes';
+import { ComponentName } from '../components/types';
 
 import {
   bytesToChunks,
@@ -14,6 +14,7 @@ import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
 import { Property } from './Property';
 import { Serializable } from './Serializable';
+
 interface CapabilityEncodeDecodeOptions {
   bytesAsPropertyIds?: boolean;
 }

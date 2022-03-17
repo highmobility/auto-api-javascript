@@ -8,7 +8,7 @@ export * as Capabilities from './capabilities';
 export * from './components';
 
 // Configuration
-export { Configuration } from './configuration';
+export { Configuration } from './core/Configuration';
 
 // Capability factory
 export * from './factories/CapabilityFactory';

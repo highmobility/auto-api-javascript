@@ -10,8 +10,7 @@ import {
   UintValue,
   UnitValue,
 } from '../values';
-
-import { Configuration } from '../configuration';
+import { Configuration } from '../core/Configuration';
 
 import { TypeDefinition, TypeDefinitionType } from '../types';
 

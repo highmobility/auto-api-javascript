@@ -1,4 +1,4 @@
-import { ComponentName } from '../components/classes';
+import { ComponentName } from '../components/types';
 import { Property as IProperty } from '../types';
 import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
 
@@ -82,7 +82,7 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public createComponent<T extends ComponentName>(identifier: T | number, initialValue?: unknown) {
-    const component = PropertyComponentFactory.create(identifier, this, initialValue);
+    const component = PropertyComponentFactory.create(identifier, this.definition, initialValue);
 
     return (this.components[component.name as ComponentName] = component);
   }

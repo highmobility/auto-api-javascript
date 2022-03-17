@@ -1,5 +1,5 @@
-import { Configuration } from '../configuration';
-import { Property } from '../core/Property';
+import { Configuration } from '../core/Configuration';
+import { Property } from '../types';
 import { PropertyComponent } from '../core/PropertyComponent';
 
 export class Timestamp extends PropertyComponent {

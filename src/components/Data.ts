@@ -1,5 +1,5 @@
-import { Configuration } from '../configuration';
-import { Property } from '../core/Property';
+import { Configuration } from '../core/Configuration';
+import { Property } from '../types';
 import { PropertyComponent } from '../core/PropertyComponent';
 
 export class Data extends PropertyComponent {
@@ -7,6 +7,6 @@ export class Data extends PropertyComponent {
     super(Configuration.getPropertyComponentDefinition('data'), property);
   }
   protected getValueTypeDefinition() {
-    return this.property.definition;
+    return this.property;
   }
 }
