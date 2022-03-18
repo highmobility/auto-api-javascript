@@ -43,6 +43,19 @@ export abstract class Capability<P extends string = string>
     return this.definition.name;
   }
 
+  public addProperty(property: Property) {
+    const name = property.name as P;
+
+    const currentValue = this.properties[name];
+    if (property.multiple && currentValue) {
+      (this.properties[name] = getArray(currentValue)).push(property);
+    } else {
+      this.properties[name] = property;
+    }
+
+    return property;
+  }
+
   public decode(bytes: number[] = [], options?: CapabilityEncodeDecodeOptions) {
     try {
       if (options && options.bytesAsPropertyIds) {
@@ -106,14 +119,7 @@ export abstract class Capability<P extends string = string>
     if (dataComponentValue !== undefined) {
       property.createComponent('data', dataComponentValue);
     }
-    return this.setProperty(property);
-  }
-
-  public createPropertyFromJSON(
-    id: P | number,
-    components: Partial<Record<ComponentName, unknown>>,
-  ) {
-    return this.setProperty(this.createPropertyInstance(id).fromJSON(components));
+    return this.addProperty(property);
   }
 
   public createPropertiesFromExamples(name: P) {
@@ -123,10 +129,31 @@ export abstract class Capability<P extends string = string>
       const property = new Property(definition);
 
       property.createComponent('data').decode(Array.from(hexToUint8Array(data_component)));
-      this.setProperty(property);
+      this.addProperty(property);
 
       return [...properties, property];
     }, []);
+  }
+
+  public createPropertyFromJSON(
+    id: P | number,
+    components: Partial<Record<ComponentName, unknown>>,
+  ): Property;
+  public createPropertyFromJSON(
+    id: P | number,
+    components: Partial<Record<ComponentName, unknown>>[],
+  ): Property[];
+
+  public createPropertyFromJSON(
+    id: P | number,
+    components: Partial<Record<ComponentName, unknown>> | Partial<Record<ComponentName, unknown>>[],
+  ): Property | Property[] {
+    if (Array.isArray(components)) {
+      return components.map((component) =>
+        this.addProperty(this.createPropertyInstance(id).fromJSON(component)),
+      );
+    }
+    return this.addProperty(this.createPropertyInstance(id).fromJSON(components));
   }
 
   public fromJSON(payload: unknown) {
@@ -195,6 +222,11 @@ export abstract class Capability<P extends string = string>
     return !isEmptyObject(this.properties);
   }
 
+  public removeProperty(name: P) {
+    delete this.properties[name];
+    return this;
+  }
+
   public toJSON() {
     return this.valueOf();
   }
@@ -231,18 +263,5 @@ export abstract class Capability<P extends string = string>
     }
 
     return definition;
-  }
-
-  protected setProperty(property: Property) {
-    const name = property.name as P;
-
-    const currentValue = this.properties[name];
-    if (property.multiple && currentValue) {
-      (this.properties[name] = getArray(currentValue)).push(property);
-    } else {
-      this.properties[name] = property;
-    }
-
-    return property;
   }
 }

@@ -65,6 +65,18 @@ export class Property extends Serializable implements NamedEntity {
     return this;
   }
 
+  public clone(components?: ComponentName[]) {
+    const instance = new (Object.getPrototypeOf(this).constructor)(this.definition) as Property;
+
+    for (const component of components || (Object.keys(this.components) as ComponentName[])) {
+      if (this.hasComponent(component)) {
+        instance.setComponent(this.getComponent(component));
+      }
+    }
+
+    return instance;
+  }
+
   public get id() {
     return this.definition.id;
   }
@@ -97,6 +109,24 @@ export class Property extends Serializable implements NamedEntity {
 
   public hasComponent<T extends ComponentName>(name: T) {
     return !!this.components[name];
+  }
+
+  public removeComponent<T extends ComponentName>(name: T) {
+    if (this.hasComponent(name)) {
+      delete this.components[name];
+    }
+
+    return this;
+  }
+
+  public setComponent<T extends ComponentName>(ref: PropertyComponent) {
+    const component = this.createComponent(ref.name as T);
+
+    if (ref.value) {
+      component.fromJSON(ref.toJSON());
+    }
+
+    return component;
   }
 
   public isInstanceOf(property: Property) {

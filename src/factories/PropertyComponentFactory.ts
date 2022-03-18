@@ -37,7 +37,7 @@ export class PropertyComponentFactory {
       >;
 
       if (initialValue !== undefined) {
-        component.createValue(initialValue);
+        component.createValueInstance(initialValue);
       }
 
       return component;

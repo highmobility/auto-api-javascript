@@ -20,7 +20,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
 
   public decode(bytes: number[]) {
     try {
-      this.createValue().decode(bytes);
+      this.createValueInstance().decode(bytes);
       return this;
     } catch (e) {
       throw new InvalidCommandError(e as Error);
@@ -50,7 +50,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
   }
 
   public fromJSON(payload: unknown) {
-    (this.value || this.createValue()).fromJSON(payload);
+    (this.value || this.createValueInstance()).fromJSON(payload);
     return this;
   }
 
@@ -66,7 +66,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return this._value;
   }
 
-  public createValue(initialValue?: unknown) {
+  public createValueInstance(initialValue?: unknown) {
     this._value = ValueFactory.createFromDefinition(this.getValueTypeDefinition());
 
     if (initialValue !== undefined) {
