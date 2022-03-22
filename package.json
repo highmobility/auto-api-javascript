@@ -60,6 +60,7 @@
     "yamljs": "^0.3.0"
   },
   "dependencies": {
+    "abab": "^2.0.5",
     "ieee754": "^1.2.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",
