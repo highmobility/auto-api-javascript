@@ -227,6 +227,18 @@ export abstract class Capability<P extends string = string>
     return this;
   }
 
+  public update(capability: Capability<P>) {
+    return capability.getPropertiesArray().reduce((result, property) => {
+      const ref = this.findProperty(property);
+
+      if (ref) {
+        ref.replace(property);
+      }
+
+      return result;
+    }, this);
+  }
+
   public toJSON() {
     return this.valueOf();
   }

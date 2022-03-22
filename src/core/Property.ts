@@ -1,3 +1,4 @@
+import { ComponentMap } from '../components/classes';
 import { ComponentName } from '../components/types';
 import { Property as IProperty } from '../types';
 import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
@@ -42,15 +43,13 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public equals(property: Property) {
-    return (['availability', 'data', 'failure', 'timestamp'] as ComponentName[]).every(
-      (component) => {
-        if (this.hasComponent(component) && property.hasComponent(component)) {
-          return this.getComponent(component).equals(property.getComponent(component));
-        }
+    return Object.values(ComponentMap).every((component) => {
+      if (this.hasComponent(component) && property.hasComponent(component)) {
+        return this.getComponent(component).equals(property.getComponent(component));
+      }
 
-        return this.components[component] === property.components[component];
-      },
-    );
+      return this.components[component] === property.components[component];
+    });
   }
 
   public fromJSON(payload: Record<string, unknown>) {
@@ -145,6 +144,18 @@ export class Property extends Serializable implements NamedEntity {
     }
 
     return false;
+  }
+
+  public replace(property: Property) {
+    return Object.values(ComponentMap).reduce((result, component) => {
+      if (property.hasComponent(component)) {
+        this.setComponent(property.getComponent(component));
+      } else {
+        this.removeComponent(component);
+      }
+
+      return result;
+    }, this);
   }
 
   public toJSON() {
