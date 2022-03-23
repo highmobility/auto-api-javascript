@@ -46,9 +46,8 @@ export abstract class Capability<P extends string = string>
   public addProperty(property: Property) {
     const name = property.name as P;
 
-    const currentValue = this.properties[name];
-    if (property.multiple && currentValue) {
-      (this.properties[name] = getArray(currentValue)).push(property);
+    if (property.multiple) {
+      ((this.properties[name] as Property[]) ||= []).push(property);
     } else {
       this.properties[name] = property;
     }
