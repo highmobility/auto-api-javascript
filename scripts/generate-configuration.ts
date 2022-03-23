@@ -128,7 +128,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
 
     case 'seats':
       switch (propertyName) {
-        case 'person_detected':
+        case 'persons_detected':
         case 'seatbelts_state':
           return 'location';
       }
