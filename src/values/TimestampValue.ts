@@ -1,12 +1,22 @@
+import { TypeDefinition } from '../types';
+
 import { FormatError } from '../core/Error';
+import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { bytesToInt, decimalToHexArray, isString } from '../utils';
 
-export class TimestampValue extends Value<Date, Date | string> {
-  public constructor(value = new Date()) {
+export class TimestampValue extends Value<Date, Date | string> implements NamedEntity {
+  public constructor(
+    public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>,
+    value = new Date(),
+  ) {
     super();
     this.setValue(value);
+  }
+
+  public get name() {
+    return this.definition.name;
   }
 
   public encode() {

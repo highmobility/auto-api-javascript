@@ -51,7 +51,7 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
     const [, unitId, ...valueBytes] = bytes;
 
     const unit = this.getUnitDefinition('id', unitId);
-    const value = new DoubleValue(UnitValue.ValueSize).decode(valueBytes);
+    const value = this.createDoubleValue().decode(valueBytes);
 
     this._value = {
       unit,
@@ -112,7 +112,7 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
           ? this.getUnitDefinition('name', unitIdentifier)
           : this.getUnitDefinition('id', unitIdentifier)
         : currentUnit || this.getFirstUnitDefinition();
-    const value = (currentValue || new DoubleValue(UnitValue.ValueSize)).setValue(valueInUnits);
+    const value = (currentValue || this.createDoubleValue()).setValue(valueInUnits);
 
     this._value = {
       unit,
@@ -132,5 +132,12 @@ export class UnitValue extends Value<UnitValueData, UnitValueDataSetter> impleme
     }
 
     return null;
+  }
+
+  protected createDoubleValue() {
+    return new DoubleValue({
+      name: this.name,
+      size: UnitValue.ValueSize,
+    });
   }
 }

@@ -1,11 +1,22 @@
+import { TypeDefinition } from '../types';
+
 import { FormatError } from '../core/Error';
+import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { base10ToIeee754, ieee754ToBase10, isNumber } from '../utils';
 
-export class FloatValue extends Value<number> {
-  public constructor(public readonly size = 4) {
+export class FloatValue extends Value<number> implements NamedEntity {
+  public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
     super();
+  }
+
+  public get name() {
+    return this.definition.name;
+  }
+
+  public get size() {
+    return this.definition.size || 4;
   }
 
   public encode() {

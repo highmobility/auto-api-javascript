@@ -3,8 +3,8 @@ import { base10ToIeee754Double, ieee754DoubleToBase10 } from '../utils';
 import { FloatValue } from './FloatValue';
 
 export class DoubleValue extends FloatValue {
-  public constructor(public readonly size = 8) {
-    super(size);
+  public get size() {
+    return this.definition.size || 8;
   }
 
   public encode() {

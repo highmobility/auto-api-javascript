@@ -43,7 +43,7 @@ const ValueConstructors: Partial<Record<TypeDefinitionType | string, ValueConstr
 
 export class ValueFactory {
   public static createFromDefinition(definition: TypeDefinition): InstanceType<ValueConstructor> {
-    const { customType, event, size, type, unitType } = definition;
+    const { customType, event, type, unitType } = definition;
 
     if (customType || event) {
       return ValueFactory.createFromDefinition(Configuration.getTypeDefinitionFromRef(definition));
@@ -58,16 +58,14 @@ export class ValueFactory {
     switch (ValueConstructor) {
       case CustomValue:
       case EnumValue:
-        return new ValueConstructor(definition);
       case DoubleValue:
       case FloatValue:
       case IntegerValue:
       case UintValue:
-        return new (ValueConstructor as NumericValueConstructor)(size);
       case BytesValue:
       case StringValue:
       case TimestampValue:
-        return new ValueConstructor();
+        return new ValueConstructor(definition);
       default:
         throw new Error(`Unknown value type: ${type}`);
     }

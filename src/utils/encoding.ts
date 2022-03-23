@@ -24,7 +24,7 @@ export const base64ToByteArray = (base64String: string) =>
   (atob(base64String) || '').split('').map((c) => c.charCodeAt(0));
 
 export const byteArrayToBase64 = (byteArray: number[]) =>
-  btoa(String.fromCharCode.apply(null, byteArray));
+  btoa(String.fromCharCode.apply(null, byteArray)) || '';
 
 export function bytesToChunk(
   bytes: number[],

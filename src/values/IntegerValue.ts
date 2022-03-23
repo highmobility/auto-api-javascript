@@ -1,11 +1,22 @@
+import { TypeDefinition } from '../types';
+
 import { FormatError } from '../core/Error';
+import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { bytesToInt, decimalToHexArray, isInteger } from '../utils';
 
-export class IntegerValue extends Value<number> {
-  public constructor(public readonly size = 1) {
+export class IntegerValue extends Value<number> implements NamedEntity {
+  public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
     super();
+  }
+
+  public get name() {
+    return this.definition.name;
+  }
+
+  public get size() {
+    return this.definition.size || 1;
   }
 
   public encode() {

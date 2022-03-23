@@ -1,9 +1,20 @@
+import { TypeDefinition } from '../types';
+
 import { FormatError } from '../core/Error';
+import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
 import { isArrayOfNumbers } from '../utils';
 
-export class BytesValue extends Value<number[]> {
+export class BytesValue extends Value<number[]> implements NamedEntity {
+  public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
+    super();
+  }
+
+  public get name() {
+    return this.definition.name;
+  }
+
   public encode() {
     return [...this.getValueForEncoding()];
   }
