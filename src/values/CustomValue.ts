@@ -1,4 +1,4 @@
-import { Configuration } from '../configuration';
+import { Configuration } from '../core/Configuration';
 import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
@@ -6,13 +6,14 @@ import { Value } from '../core/Value';
 import { TypeDefinition, TypeDefinitionType } from '../types';
 import { ValueFactory } from '../factories/ValueFactory';
 
-import { bytesToChunk, bytesWithSize, getKeyValuePairFromObject, isObject, last } from '../utils';
+import { bytesToChunk, bytesWithSize, isObject } from '../utils';
 
+type CustomValueDefinition = Omit<TypeDefinition, 'items'> &
+  Required<Pick<TypeDefinition, 'items'>>;
 type CustomValueItems = Record<string, Value>;
-type CustomValueData = Value | CustomValueItems;
 type CustomValueSetter = unknown;
 
-export class CustomValue extends Value<CustomValueData, CustomValueSetter> implements NamedEntity {
+export class CustomValue extends Value<CustomValueItems, CustomValueSetter> implements NamedEntity {
   public static readonly VariableSizeSubtypes = [
     TypeDefinitionType.Bytes,
     TypeDefinitionType.Custom,
@@ -28,36 +29,41 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   public encode() {
-    const { definition } = this;
-    const { items } = definition;
+    const { items } = this.definition as CustomValueDefinition;
 
-    const value = this.getValueForEncoding();
+    const values = this.getValueForEncoding();
+    return items.reduce<number[]>((bytes, itemDefinition) => {
+      const value = values[itemDefinition.name];
+      if (value) {
+        return [...bytes, ...this.encodeItem(itemDefinition, value)];
+      }
 
-    if (items) {
-      const values = value as CustomValueItems;
-      return items.reduce<number[]>((bytes, itemDefinition) => {
-        const value = values[itemDefinition.name];
-        if (value) {
-          return [...bytes, ...this.encodeItem(itemDefinition, value)];
-        }
+      throw new Error(`Cannot encode item ${itemDefinition.name} as it is undefined.`);
+    }, []);
+  }
 
-        throw new Error(`Cannot encode item ${itemDefinition.name} as it is undefined.`);
-      }, []);
-    } else {
-      return this.encodeItem(definition, value as Value);
+  public equals(value: CustomValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      return Object.entries(a).every(([k, v]) => {
+        return b[k] && v.equals(b[k]);
+      });
     }
+
+    return a === b;
   }
 
   public decode(bytes: number[]) {
-    const { definition, hasItems } = this;
-    const items = definition.items || [definition];
+    const { items } = this.definition as CustomValueDefinition;
 
     const [values] = items.reduce<[CustomValueItems, number]>(
       ([values, offset], item) => {
         const itemTypeDefinition = Configuration.getTypeDefinitionFromRef(item);
 
         const [count, chunk] = bytesToChunk(bytes.slice(offset), itemTypeDefinition.size, () =>
-          this.isVariableSizeSubtype(itemTypeDefinition, hasItems),
+          this.isVariableSizeSubtype(itemTypeDefinition),
         );
 
         return [
@@ -71,7 +77,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
       [{}, 0],
     );
 
-    this._value = hasItems ? values : (last(getKeyValuePairFromObject<Value>(values)) as Value);
+    this._value = values;
 
     return this;
   }
@@ -86,11 +92,7 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     return this;
   }
 
-  public get hasItems() {
-    return !!this.definition.items;
-  }
-
-  public get items(): Readonly<CustomValueData> | undefined {
+  public get items(): Readonly<CustomValueItems> | undefined {
     return this._value;
   }
 
@@ -109,39 +111,27 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
   }
 
   public setValue(value: unknown) {
-    if (this.hasItems) {
-      if (isObject(value)) {
-        this.assignValueToItems(value);
-      } else {
-        throw new Error(`CustomValue ${this.name} value setter expects type of Object.`);
-      }
+    if (isObject(value)) {
+      this.assignValueToItems(value);
     } else {
-      this.assignValue(value);
+      throw new Error(`CustomValue ${this.name} value setter expects type of Object.`);
     }
 
     return this;
   }
 
   public valueOf() {
-    const { _value: value } = this;
+    const { value } = this;
     if (value) {
-      return value instanceof Value
-        ? value.valueOf()
-        : Object.entries(value).reduce<Record<string, unknown>>(
-            (all, [name, value]) => ({
-              ...all,
-              [name]: value.valueOf(),
-            }),
-            {},
-          );
+      return Object.entries(value).reduce<Record<string, unknown>>(
+        (all, [name, value]) => ({
+          ...all,
+          [name]: value.valueOf(),
+        }),
+        {},
+      );
     }
     return null;
-  }
-
-  protected assignValue(value: unknown) {
-    (this._value = (this._value as Value) || this.createValueInstance(this.definition)).setValue(
-      value,
-    );
   }
 
   protected assignValueToItems(values: Record<string, unknown>) {
@@ -165,13 +155,10 @@ export class CustomValue extends Value<CustomValueData, CustomValueSetter> imple
     const { size } = Configuration.getTypeDefinitionFromRef(definition);
     const bytes = value.encode();
 
-    return size || !this.hasItems ? bytes : bytesWithSize(bytes);
+    return size ? bytes : bytesWithSize(bytes);
   }
 
-  protected isVariableSizeSubtype({ customType, type }: TypeDefinition, hasItems = true) {
-    return (
-      hasItems &&
-      (!!customType || CustomValue.VariableSizeSubtypes.includes(type as TypeDefinitionType))
-    );
+  protected isVariableSizeSubtype({ customType, type }: TypeDefinition) {
+    return !!customType || CustomValue.VariableSizeSubtypes.includes(type as TypeDefinitionType);
   }
 }

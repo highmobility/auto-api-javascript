@@ -13,6 +13,17 @@ export class TimestampValue extends Value<Date, Date | string> {
     return [...decimalToHexArray(this.getValueForEncoding().getTime(), 8)];
   }
 
+  public equals(value: TimestampValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      return a.getTime() === b.getTime();
+    }
+
+    return a === b;
+  }
+
   public decode(bytes: number[]) {
     this._value = new Date(bytesToInt(bytes));
     return this;

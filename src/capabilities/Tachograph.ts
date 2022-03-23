@@ -1,5 +1,5 @@
 import { Capability } from '../core/Capability';
-import { Configuration } from '../configuration';
+import { Configuration } from '../core/Configuration';
 
 import { UniversalProperties } from './properties';
 

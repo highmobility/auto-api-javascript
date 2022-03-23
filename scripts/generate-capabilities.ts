@@ -215,7 +215,7 @@ function printCapabilityClassDefinition(filename: string, declarations: ts.Node[
           CapabilityBaseClassName,
         ),
       ),
-      printer(tsUtils.createImportDeclaration(`../configuration`, ConfigurationClassName)),
+      printer(tsUtils.createImportDeclaration(`../core/Configuration`, ConfigurationClassName)),
     ]
       .join('\n')
       .concat('\n'),

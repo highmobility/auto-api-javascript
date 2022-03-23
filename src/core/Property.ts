@@ -1,8 +1,9 @@
-import { ComponentName } from '../components/classes';
+import { ComponentMap } from '../components/classes';
+import { ComponentName } from '../components/types';
 import { Property as IProperty } from '../types';
 import { PropertyComponentFactory } from '../factories/PropertyComponentFactory';
 
-import { bytesToChunks, bytesWithSize, isEmptyObject } from '../utils';
+import { bytesToChunks, bytesWithSize, comparePropertyIdentity, isEmptyObject } from '../utils';
 
 import { FormatError, InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
@@ -41,6 +42,16 @@ export class Property extends Serializable implements NamedEntity {
     return [this.id, ...bytesWithSize(bytes)];
   }
 
+  public equals(property: Property) {
+    return Object.values(ComponentMap).every((component) => {
+      if (this.hasComponent(component) && property.hasComponent(component)) {
+        return this.getComponent(component).equals(property.getComponent(component));
+      }
+
+      return this.components[component] === property.components[component];
+    });
+  }
+
   public fromJSON(payload: Record<string, unknown>) {
     try {
       for (const [componentName, componentAsJSON] of Object.entries(payload)) {
@@ -53,8 +64,24 @@ export class Property extends Serializable implements NamedEntity {
     return this;
   }
 
+  public clone(components?: ComponentName[]) {
+    const instance = new (Object.getPrototypeOf(this).constructor)(this.definition) as Property;
+
+    for (const component of components || (Object.keys(this.components) as ComponentName[])) {
+      if (this.hasComponent(component)) {
+        instance.setComponent(this.getComponent(component));
+      }
+    }
+
+    return instance;
+  }
+
   public get id() {
     return this.definition.id;
+  }
+
+  public get identityKey() {
+    return this.definition.identity_key;
   }
 
   public get multiple() {
@@ -66,7 +93,7 @@ export class Property extends Serializable implements NamedEntity {
   }
 
   public createComponent<T extends ComponentName>(identifier: T | number, initialValue?: unknown) {
-    const component = PropertyComponentFactory.create(identifier, this, initialValue);
+    const component = PropertyComponentFactory.create(identifier, this.definition, initialValue);
 
     return (this.components[component.name as ComponentName] = component);
   }
@@ -81,6 +108,54 @@ export class Property extends Serializable implements NamedEntity {
 
   public hasComponent<T extends ComponentName>(name: T) {
     return !!this.components[name];
+  }
+
+  public removeComponent<T extends ComponentName>(name: T) {
+    if (this.hasComponent(name)) {
+      delete this.components[name];
+    }
+
+    return this;
+  }
+
+  public setComponent<T extends ComponentName>(ref: PropertyComponent) {
+    const component = this.createComponent(ref.name as T);
+
+    if (ref.value) {
+      component.fromJSON(ref.toJSON());
+    }
+
+    return component;
+  }
+
+  public isInstanceOf(property: Property) {
+    const { identityKey, multiple } = property;
+    if (property instanceof Object.getPrototypeOf(this).constructor) {
+      if (multiple && identityKey) {
+        if ([this, property].every((p) => p.hasComponent('data'))) {
+          const [a, b] = [this, property].map((p) => p.valueOf() || {});
+          return comparePropertyIdentity(a, b, identityKey);
+        }
+
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  public replace(property: Property) {
+    return Object.values(ComponentMap).reduce((result, component) => {
+      if (property.hasComponent(component)) {
+        this.setComponent(property.getComponent(component));
+      } else {
+        this.removeComponent(component);
+      }
+
+      return result;
+    }, this);
   }
 
   public toJSON() {

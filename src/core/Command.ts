@@ -1,9 +1,14 @@
 import { CapabilityClass } from '../capabilities/classes';
 import { CapabilityFactory } from '../factories/CapabilityFactory';
 
-import { capitalize, getKeyValuePairFromObject } from '../utils';
-import { Configuration } from '../configuration';
+import {
+  base64ToByteArray,
+  byteArrayToBase64,
+  capitalize,
+  getKeyValuePairFromObject,
+} from '../utils';
 
+import { Configuration } from './Configuration';
 import { FormatError, InvalidCommandError } from './Error';
 
 export enum CommandType {
@@ -18,6 +23,10 @@ export class Command<C extends InstanceType<CapabilityClass> = InstanceType<Capa
     public capability: C,
     public version = Configuration.getApiVersion(),
   ) {}
+
+  public static fromBase64(payload: string) {
+    return Command.parse(base64ToByteArray(payload));
+  }
 
   public static fromJSON(payload: unknown) {
     try {
@@ -70,6 +79,10 @@ export class Command<C extends InstanceType<CapabilityClass> = InstanceType<Capa
   public setType(type: CommandType) {
     this.type = type;
     return this;
+  }
+
+  public toBase64() {
+    return byteArrayToBase64(this.encode());
   }
 
   public toJSON() {

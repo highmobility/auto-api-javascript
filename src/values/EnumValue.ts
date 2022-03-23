@@ -31,6 +31,17 @@ export class EnumValue extends Value<IEnumValue, string | number> implements Nam
     return [this.getValueForEncoding().id];
   }
 
+  public equals(value: EnumValue) {
+    const { value: a } = this;
+    const { value: b } = value;
+
+    if (a && b) {
+      return a.id === b.id && a.name === b.name;
+    }
+
+    return a === b;
+  }
+
   public fromJSON(payload: unknown) {
     try {
       this.setValue(payload as string | number);

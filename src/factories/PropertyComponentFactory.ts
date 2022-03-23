@@ -1,6 +1,7 @@
-import { ClassMap, ComponentMap, ComponentName } from '../components/classes';
+import { ClassMap, ComponentMap } from '../components/classes';
+import { ComponentName } from '../components/types';
 
-import { Property } from '../core/Property';
+import { Property } from '../types';
 
 export class PropertyComponentFactory {
   public static create<T extends ComponentName>(
@@ -36,7 +37,7 @@ export class PropertyComponentFactory {
       >;
 
       if (initialValue !== undefined) {
-        component.createValue(initialValue);
+        component.createValueInstance(initialValue);
       }
 
       return component;

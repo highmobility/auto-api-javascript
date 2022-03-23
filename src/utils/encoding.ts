@@ -1,3 +1,4 @@
+import { atob, btoa } from 'abab';
 import ieee754 from 'ieee754';
 
 export function assertByteCount(bytes: number[] | undefined, count: number) {
@@ -18,6 +19,12 @@ export function base10ToIeee754Double(value: number, count = 8) {
   ieee754.write(ieeeArray, value, 0, false, 52, count);
   return [...ieeeArray];
 }
+
+export const base64ToByteArray = (base64String: string) =>
+  (atob(base64String) || '').split('').map((c) => c.charCodeAt(0));
+
+export const byteArrayToBase64 = (byteArray: number[]) =>
+  btoa(String.fromCharCode.apply(null, byteArray));
 
 export function bytesToChunk(
   bytes: number[],

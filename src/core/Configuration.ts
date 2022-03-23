@@ -1,23 +1,20 @@
 import {
   Capability,
-  Configuration as ConfigurationType,
   MeasurementType,
   Properties,
   PropertyComponent,
   TypeDefinition,
 } from '../types';
 
-import configuration from './configuration.json';
+import { configuration } from '../configuration';
 
 export class Configuration {
-  public static raw: Readonly<ConfigurationType> = configuration;
-
   public static getApiVersion() {
     return configuration.version;
   }
 
   public static getCapabilityDefinition(name: string): Readonly<Capability> {
-    const definition = Configuration.raw.capabilities[name];
+    const definition = configuration.capabilities[name];
 
     if (!definition) {
       throw new Error(`Capability '${name}' doesn't exist.`);
@@ -27,11 +24,11 @@ export class Configuration {
   }
 
   public static getConfiguration() {
-    return Configuration.raw;
+    return configuration;
   }
 
   public static getCustomTypeDefinition(name: string): Readonly<TypeDefinition> {
-    const definition = Configuration.raw.types[name];
+    const definition = configuration.types[name];
 
     if (!definition) {
       throw new Error(`Custom type '${name}' doesn't exist.`);
@@ -41,7 +38,7 @@ export class Configuration {
   }
 
   public static getEventDefinition(name: string): Readonly<TypeDefinition> {
-    const definition = Configuration.raw.events[name];
+    const definition = configuration.events[name];
 
     if (!definition) {
       throw new Error(`Event '${name}' doesn't exist.`);
@@ -51,7 +48,7 @@ export class Configuration {
   }
 
   public static getPropertyComponentDefinition(name: string): Readonly<PropertyComponent> {
-    const definition = Configuration.raw.property_components[name];
+    const definition = configuration.property_components[name];
 
     if (!definition) {
       throw new Error(`Property component '${name}' doesn't exist.`);
@@ -61,7 +58,7 @@ export class Configuration {
   }
 
   public static getMeasurementTypeDefinition(name: string): Readonly<MeasurementType> {
-    const definition = Configuration.raw.measurement_types[name];
+    const definition = configuration.measurement_types[name];
 
     if (!definition) {
       throw new Error(`Measurement type '${name}' doesn't exist.`);
@@ -80,6 +77,6 @@ export class Configuration {
   }
 
   public static getUniversalProperties(): Readonly<Properties> {
-    return Configuration.raw.universal_properties;
+    return configuration.universal_properties;
   }
 }

@@ -22,7 +22,7 @@ export const PropertyComponentsClassesPath = resolve(SourcesPath, 'components');
 
 export const ConfigurationClassName = 'Configuration';
 export const CapabilityBaseClassName = 'Capability';
-export const PropertyClassName = 'Property';
+export const PropertyTypeName = 'Property';
 
 export const EventsRegex = new RegExp(`events.`);
 export const CustomTypesRegex = new RegExp(`types.`);

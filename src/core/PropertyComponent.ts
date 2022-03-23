@@ -1,11 +1,10 @@
-import { PropertyComponent as IPropertyComponent, TypeDefinition } from '../types';
+import { PropertyComponent as IPropertyComponent, Property, TypeDefinition } from '../types';
 import { ValueFactory } from '../factories/ValueFactory';
 
 import { bytesWithSize } from '../utils';
 
 import { InvalidCommandError } from './Error';
 import { NamedEntity } from './NamedEntity';
-import { Property } from './Property';
 import { Serializable } from './Serializable';
 import { Value } from './Value';
 
@@ -21,7 +20,7 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
 
   public decode(bytes: number[]) {
     try {
-      this.createValue().decode(bytes);
+      this.createValueInstance().decode(bytes);
       return this;
     } catch (e) {
       throw new InvalidCommandError(e as Error);
@@ -38,8 +37,20 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return [this.id, ...bytesWithSize(this._value.encode())];
   }
 
+  public equals(component: PropertyComponent) {
+    if (component.name === this.name) {
+      if (this.value && component.value) {
+        return this.value.equals(component.value);
+      }
+
+      return this.value === component.value;
+    }
+
+    return false;
+  }
+
   public fromJSON(payload: unknown) {
-    (this.value || this.createValue()).fromJSON(payload);
+    (this.value || this.createValueInstance()).fromJSON(payload);
     return this;
   }
 
@@ -55,10 +66,14 @@ export abstract class PropertyComponent extends Serializable implements NamedEnt
     return this._value;
   }
 
-  public createValue(initialValue?: unknown) {
+  public createValueInstance(initialValue?: unknown) {
     this._value = ValueFactory.createFromDefinition(this.getValueTypeDefinition());
 
-    return initialValue !== undefined ? this._value.setValue(initialValue) : this._value;
+    if (initialValue !== undefined) {
+      this._value.setValue(initialValue);
+    }
+
+    return this._value;
   }
 
   public toJSON() {
