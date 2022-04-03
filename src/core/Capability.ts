@@ -31,10 +31,11 @@ export abstract class Capability<P extends Properties> {
 
   public addProperty<T extends keyof P>(
     name: T,
-    value?: PropertyDataComponentSetter<InstanceType<P[T]>>,
+    value?: PropertyDataComponentSetter<InstanceType<P[T]>> | InstanceType<P[T]>,
   ): InstanceType<P[T]> {
     const Constructor = this.descriptor.properties[name];
-    const property = new Constructor(value) as InstanceType<P[T]>;
+    const property =
+      value instanceof Constructor ? value : (new Constructor(value) as InstanceType<P[T]>);
 
     this.properties[name] = getClassDescriptor(Constructor).multiple
       ? [...((this.properties[name] as InstanceType<P[T]>[]) || []), property]

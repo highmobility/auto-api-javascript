@@ -13,20 +13,22 @@ export interface UnitTypeValue<U extends string = string> {
 }
 
 export interface UnitTypeValueSetter<U extends string> {
-  unit?: U;
-  value: UnitTypeValue['value'] | ValueSetterArguments<UnitTypeValue['value']>;
+  unit: U;
+  value: UnitTypeValue<U>['value'] | ValueSetterArguments<UnitTypeValue<U>['value']>;
 }
 
-export class UnitType<U extends string> extends Value<UnitTypeValue<U>, UnitTypeValueSetter<U>> {
+export class UnitType<U extends string> extends Value<
+  UnitTypeValue<U>,
+  UnitTypeValue<U> | UnitTypeValueSetter<U>
+> {
   [DescriptorSymbol]: UnitTypeDescriptor<U>;
 
   public get descriptor() {
     return this[DescriptorSymbol];
   }
 
-  public setValue(value: UnitTypeValueSetter<U>) {
-    // TODO
-    this.value = value as UnitTypeValue<U>;
+  public setValue(value: UnitTypeValue<U> | UnitTypeValueSetter<U>) {
+    this.$value = this.isUnitTypeValue(value) ? value : this.valueSetterToUnitTypeValue(value);
     return this;
   }
 
@@ -36,6 +38,23 @@ export class UnitType<U extends string> extends Value<UnitTypeValue<U>, UnitType
     return {
       unit,
       value: value.valueOf(),
+    };
+  }
+
+  protected isUnitTypeValue(
+    value: UnitTypeValue<U> | UnitTypeValueSetter<U>,
+  ): value is UnitTypeValue<U> {
+    if (value.unit === undefined) {
+      return false;
+    }
+
+    return this.descriptor.units[value.unit] && value.value instanceof Double;
+  }
+
+  protected valueSetterToUnitTypeValue({ unit, value }: UnitTypeValueSetter<U>) {
+    return {
+      unit,
+      value: value instanceof Double ? value : new Double(value),
     };
   }
 }

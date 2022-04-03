@@ -20,15 +20,23 @@ export interface CustomTypeDescriptor<V extends CustomTypeItems> extends ValueDe
 export class CustomType<
   I extends CustomTypeItems,
   S extends CustomTypeItemsSetter<I> = CustomTypeItemsSetter<I>,
-> extends Value<CustomTypeItemsInstance<I>, S> {
+> extends Value<CustomTypeItemsInstance<I>, CustomTypeItemsInstance<I> | S> {
   [DescriptorSymbol]: CustomTypeDescriptor<I>;
 
   public get descriptor() {
     return this[DescriptorSymbol];
   }
 
-  public setValue(value: S) {
-    this.value = this.valueSetterToValueMap(this[DescriptorSymbol].items, value);
+  public get value(): CustomTypeItemsInstance<I> {
+    return this.getValue();
+  }
+
+  public set value(value: CustomTypeItemsInstance<I> | S) {
+    this.setValue(value);
+  }
+
+  public setValue(value: S | CustomTypeItemsInstance<I>) {
+    this.$value = this.isItemsInstance(value) ? value : this.valueSetterToValueMap(value);
     return this;
   }
 
@@ -42,15 +50,20 @@ export class CustomType<
     );
   }
 
-  protected valueSetterToValueMap(
-    items: I,
-    value: CustomTypeItemsSetter<I>,
-  ): CustomTypeItemsInstance<I> {
+  protected isItemsInstance(
+    value: CustomTypeItemsInstance<I> | S,
+  ): value is CustomTypeItemsInstance<I> {
+    return Object.entries(this.descriptor.items).every(([k, v]) => {
+      k in value && value[k] instanceof v;
+    });
+  }
+
+  protected valueSetterToValueMap(value: CustomTypeItemsSetter<I>): CustomTypeItemsInstance<I> {
     if (value) {
       return Object.entries(value).reduce(
         (values, [k, v]) => ({
           ...values,
-          [k as keyof I]: v instanceof Value ? v : new items[k](v),
+          [k as keyof I]: v instanceof Value ? v : new this.descriptor.items[k](v),
         }),
         {},
       ) as CustomTypeItemsInstance<I>;

@@ -6,7 +6,7 @@ export class Timestamp extends Value<Date, Date | string> {
   }
 
   public setValue(value: Date | string) {
-    this.value = typeof value === 'string' ? new Date(value) : value;
+    this.$value = typeof value === 'string' ? new Date(value) : value;
     return this;
   }
 

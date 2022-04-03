@@ -37,16 +37,11 @@ export class Property<V extends ValueConstructor = ValueConstructor>
 
   public constructor(value?: ValueSetterArguments<InstanceType<V>>) {
     if (value) {
-      this.setValue(value);
+      this.data = value;
     }
   }
 
   public get descriptor() {
     return this[DescriptorSymbol];
-  }
-
-  public setValue(value: ValueSetterArguments<InstanceType<V>>) {
-    this.data = (this.data || new this.descriptor.value()).setValue(value) as InstanceType<V>;
-    return this;
   }
 }

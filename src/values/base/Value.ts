@@ -7,14 +7,18 @@ export interface ValueDescriptor {
 
 export type ValueConstructor<T extends Value = Value> = ConstructorType<T>;
 
-export type ValueSetterArguments<V> = V extends Value<any, infer S> ? S : never;
+export type ValueSetterArguments<V> = V extends Value
+  ? V extends { setValue: (v: infer S) => any }
+    ? S
+    : never
+  : never;
 
 export class Value<V = any, S = V> {
   [DescriptorSymbol]: ValueDescriptor;
 
-  public value!: V;
+  protected $value!: V;
 
-  public constructor(value: S) {
+  public constructor(value: S | V) {
     this.setValue(value);
   }
 
@@ -22,12 +26,20 @@ export class Value<V = any, S = V> {
     return this[DescriptorSymbol];
   }
 
-  public getValue() {
-    return this.value;
+  public get value(): V {
+    return this.getValue();
   }
 
-  public setValue(value: S) {
-    this.value = value as unknown as V;
+  public set value(value: S | V) {
+    this.setValue(value);
+  }
+
+  public getValue() {
+    return this.$value;
+  }
+
+  public setValue(value: S | V) {
+    this.$value = value as unknown as V;
     return this;
   }
 
