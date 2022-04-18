@@ -121,12 +121,14 @@ export class CustomValue extends Value<CustomValueItems, CustomValueSetter> impl
   }
 
   public valueOf() {
-    const { value } = this;
+    const { value, definition } = this;
+    const { items } = definition as CustomValueDefinition;
+
     if (value) {
-      return Object.entries(value).reduce<Record<string, unknown>>(
-        (all, [name, value]) => ({
+      return items.reduce<Record<string, unknown>>(
+        (all, { name }) => ({
           ...all,
-          [name]: value.valueOf(),
+          [name]: value[name].valueOf(),
         }),
         {},
       );
@@ -135,11 +137,14 @@ export class CustomValue extends Value<CustomValueItems, CustomValueSetter> impl
   }
 
   protected assignValueToItems(values: Record<string, unknown>) {
+    const { items } = this.definition as CustomValueDefinition;
     const valueMap: CustomValueItems = (this._value = (this._value as CustomValueItems) || {});
 
-    for (const [key, value] of Object.entries(values)) {
-      (valueMap[key] =
-        valueMap[key] || this.createValueInstance(this.getItemTypeDefinition(key))).setValue(value);
+    for (const { name } of items) {
+      (valueMap[name] =
+        valueMap[name] || this.createValueInstance(this.getItemTypeDefinition(name))).setValue(
+        values[name],
+      );
     }
   }
 
