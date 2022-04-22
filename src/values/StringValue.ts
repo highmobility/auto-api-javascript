@@ -40,6 +40,6 @@ export class StringValue extends Value<string> implements NamedEntity {
   }
 
   public valueOf() {
-    return this._value || null;
+    return this._value === undefined ? null : this._value;
   }
 }
