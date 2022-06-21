@@ -71,7 +71,7 @@ export abstract class Capability<P extends string = string>
     return this;
   }
 
-  public diff(capability: Capability<P>) {
+  public diff(capability: Capability<P>, fallbackToFirstOfType?: boolean) {
     const instance = new (Object.getPrototypeOf(this).constructor)(
       this.definition,
       this.universalProperties,
@@ -81,7 +81,7 @@ export abstract class Capability<P extends string = string>
       .getPropertiesArray()
       .reduce<Property[]>((properties, property) => {
         if (this.hasProperty(property.name as P)) {
-          const ref = this.findProperty(property);
+          const ref = this.findProperty(property, fallbackToFirstOfType);
           if (ref && ref.equals(property)) {
             return properties;
           }
@@ -188,10 +188,15 @@ export abstract class Capability<P extends string = string>
     return property;
   }
 
-  public findProperty(property: Property): Property | undefined {
+  public findProperty(property: Property, fallbackToFirstOfType?: boolean): Property | undefined {
     if (this.hasProperty(property.name as P)) {
       if (property.multiple) {
-        return this.getProperties(property.name as P).find((ref) => ref.isInstanceOf(property));
+        const match = this.getProperties(property.name as P).find((ref) =>
+          ref.isInstanceOf(property),
+        );
+        return match === undefined && fallbackToFirstOfType
+          ? this.getProperty(property.name as P)
+          : match;
       } else {
         return this.getProperty(property.name as P);
       }
@@ -226,9 +231,9 @@ export abstract class Capability<P extends string = string>
     return this;
   }
 
-  public update(capability: Capability<P>) {
+  public update(capability: Capability<P>, fallbackToFirstOfType?: boolean) {
     return capability.getPropertiesArray().reduce((result, property) => {
-      const ref = this.findProperty(property);
+      const ref = this.findProperty(property, fallbackToFirstOfType);
 
       if (ref) {
         ref.replace(property);
