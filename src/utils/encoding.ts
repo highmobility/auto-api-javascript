@@ -124,17 +124,3 @@ export function intToHex(int: number) {
 export function intToTwoBytes(int: number) {
   return hexToUint8Array(intToHex(int).padStart(4, '0'));
 }
-
-export function utfStringToByteArray(string: string, minLength?: number) {
-  const byteArray = unescape(encodeURIComponent(string))
-    .split('')
-    .map((char) => char.charCodeAt(0));
-
-  if (minLength !== undefined) {
-    while (byteArray.length < minLength) {
-      byteArray.unshift(0);
-    }
-  }
-
-  return byteArray;
-}

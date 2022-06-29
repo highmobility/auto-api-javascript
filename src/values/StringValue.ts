@@ -4,7 +4,7 @@ import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
 import { Value } from '../core/Value';
 
-import { isString, utfStringToByteArray } from '../utils';
+import { byteArrayToUtfString, isString, utfStringToByteArray } from '../utils';
 
 export class StringValue extends Value<string> implements NamedEntity {
   public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
@@ -20,7 +20,7 @@ export class StringValue extends Value<string> implements NamedEntity {
   }
 
   public decode(bytes: number[]) {
-    this._value = Buffer.from(bytes).toString('utf8').replace(/\0/g, '');
+    this._value = byteArrayToUtfString(bytes);
     return this;
   }
 
