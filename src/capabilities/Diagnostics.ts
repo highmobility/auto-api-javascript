@@ -26,6 +26,7 @@ enum Properties {
   EngineOilLevel = 'engine_oil_level',
   EngineOilLifeRemaining = 'engine_oil_life_remaining',
   EngineOilPressureLevel = 'engine_oil_pressure_level',
+  EngineOilServiceStatus = 'engine_oil_service_status',
   EngineOilTemperature = 'engine_oil_temperature',
   EngineRpm = 'engine_rpm',
   EngineTimeToNextService = 'engine_time_to_next_service',

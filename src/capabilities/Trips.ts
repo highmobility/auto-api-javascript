@@ -16,6 +16,7 @@ enum Properties {
   EndTime = 'end_time',
   Event = 'event',
   MaximumSpeed = 'maximum_speed',
+  RoadType = 'road_type',
   StartAddress = 'start_address',
   StartAddressComponents = 'start_address_components',
   StartCoordinates = 'start_coordinates',

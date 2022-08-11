@@ -12,6 +12,7 @@ enum Properties {
   BrakePressure = 'brake_pressure',
   BrakeTorqueVectorings = 'brake_torque_vectorings',
   ClutchPedalSwitch = 'clutch_pedal_switch',
+  DrivetrainState = 'drivetrain_state',
   ElectronicStabilityProgram = 'electronic_stability_program',
   GasPedalPosition = 'gas_pedal_position',
   GearMode = 'gear_mode',

@@ -12,6 +12,7 @@ enum Properties {
   ForwardCollisionWarningSystem = 'forward_collision_warning_system',
   LaneKeepAssistSystem = 'lane_keep_assist_system',
   LaneKeepAssistsStates = 'lane_keep_assists_states',
+  LaunchControl = 'launch_control',
   ParkAssists = 'park_assists',
   RearCrossWarningSystem = 'rear_cross_warning_system',
   Status = 'status',

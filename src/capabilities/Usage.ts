@@ -6,10 +6,12 @@ import { UniversalProperties } from './properties';
 enum Properties {
   AccelerationEvaluation = 'acceleration_evaluation',
   AverageFuelConsumption = 'average_fuel_consumption',
+  AverageSpeed = 'average_speed',
   AverageSpeedLastTrip = 'average_speed_last_trip',
   AverageSpeedSinceReset = 'average_speed_since_reset',
   AverageWeeklyDistance = 'average_weekly_distance',
   AverageWeeklyDistanceLongRun = 'average_weekly_distance_long_run',
+  BrakingEvaluation = 'braking_evaluation',
   CurrentFuelConsumption = 'current_fuel_consumption',
   DistanceOverTime = 'distance_over_time',
   DrivingDurationLastTrip = 'driving_duration_last_trip',
@@ -21,6 +23,7 @@ enum Properties {
   EcoScoreConstant = 'eco_score_constant',
   EcoScoreFreeWheel = 'eco_score_free_wheel',
   EcoScoreTotal = 'eco_score_total',
+  ElectricConsumptionAverage = 'electric_consumption_average',
   ElectricConsumptionRateSinceReset = 'electric_consumption_rate_since_reset',
   ElectricConsumptionRateSinceStart = 'electric_consumption_rate_since_start',
   ElectricDistanceLastTrip = 'electric_distance_last_trip',
@@ -42,6 +45,7 @@ enum Properties {
   OdometerAfterLastTrip = 'odometer_after_last_trip',
   RapidAccelerationGrade = 'rapid_acceleration_grade',
   RapidDecelerationGrade = 'rapid_deceleration_grade',
+  RecuperationPower = 'recuperation_power',
   SafetyDrivingScore = 'safety_driving_score',
   TripMeters = 'trip_meters',
 }

@@ -6,6 +6,7 @@ import { UniversalProperties } from './properties';
 enum Properties {
   Altitude = 'altitude',
   Coordinates = 'coordinates',
+  FuzzyCoordinates = 'fuzzy_coordinates',
   GpsSignalStrength = 'gps_signal_strength',
   GpsSource = 'gps_source',
   Heading = 'heading',

@@ -10,6 +10,7 @@ enum Properties {
   SunroofRainEvent = 'sunroof_rain_event',
   SunroofState = 'sunroof_state',
   SunroofTiltState = 'sunroof_tilt_state',
+  TiltPosition = 'tilt_position',
 }
 
 export class RooftopControl extends Capability<`${Properties}` | `${UniversalProperties}`> {

@@ -8,6 +8,7 @@ enum Properties {
   ImpactZone = 'impact_zone',
   Incidents = 'incidents',
   Severity = 'severity',
+  Status = 'status',
   TippedState = 'tipped_state',
   Type = 'type',
 }
