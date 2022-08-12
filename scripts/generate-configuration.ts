@@ -118,6 +118,14 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
           return 'location';
       }
 
+    case 'maintenance':
+      switch (propertyName) {
+        case 'brakes_service_due_dates':
+        case 'brakes_service_remaining_distances':
+        case 'brakes_service_statuses':
+          return 'axle';
+      }
+
     case 'race':
       switch (propertyName) {
         case 'accelerations':
