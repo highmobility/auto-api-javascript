@@ -199,18 +199,49 @@ function mapPropertyIdentityKeys(identityKeyFn: (name: string) => string | undef
 }
 
 function mapTypesToEntity<T extends TypeDefinition>(entity: T) {
-  return {
-    ...entity,
-    ...((CustomTypesRegex.test(entity.type) && {
-      customType: entity.type.replace(CustomTypesRegex, ''),
-    }) ||
-      (EventsRegex.test(entity.type) && {
-        event: entity.type.replace(EventsRegex, ''),
-      }) ||
-      (UnitTypesRegex.test(entity.type) && {
-        unitType: entity.type.replace(UnitTypesRegex, ''),
-      })),
-  };
+  switch (entity.type) {
+    case 'double':
+      entity.size = entity.size || 8;
+      break;
+
+    case 'enum':
+      entity.size = entity.size || 1;
+      break;
+
+    case 'float':
+      entity.size = entity.size || 4;
+      break;
+
+    case 'integer':
+    case 'uinteger':
+      entity.size = entity.size || 1;
+      break;
+
+    case 'timestamp':
+      entity.size = entity.size || 8;
+      break;
+
+    default: {
+      if (CustomTypesRegex.test(entity.type)) {
+        entity.customType = entity.type.replace(CustomTypesRegex, '');
+        break;
+      }
+
+      if (EventsRegex.test(entity.type)) {
+        entity.event = entity.type.replace(EventsRegex, '');
+        break;
+      }
+
+      if (UnitTypesRegex.test(entity.type)) {
+        entity.unitType = entity.type.replace(UnitTypesRegex, '');
+        entity.size = entity.size || 10;
+      }
+
+      break;
+    }
+  }
+
+  return entity;
 }
 
 function parseApiVersion() {
