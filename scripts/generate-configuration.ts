@@ -51,6 +51,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'park_assists':
           return 'location';
       }
+      break;
 
     case 'charging':
       switch (propertyName) {
@@ -59,6 +60,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'reduction_times':
           return 'start_stop';
       }
+      break;
 
     case 'chassis_settings':
       switch (propertyName) {
@@ -67,18 +69,21 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'minimum_spring_rates':
           return 'axle';
       }
+      break;
 
     case 'climate':
       switch (propertyName) {
         case 'hvac_weekday_starting_times':
           return 'weekday';
       }
+      break;
 
     case 'crash':
       switch (propertyName) {
         case 'incidents':
           return 'location';
       }
+      break;
 
     case 'dashboard_lights':
       switch (propertyName) {
@@ -87,6 +92,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'dashboard_lights':
           return 'name';
       }
+      break;
 
     case 'diagnostics':
       switch (propertyName) {
@@ -101,6 +107,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'wheel_rpms':
           return 'location';
       }
+      break;
 
     case 'doors':
       switch (propertyName) {
@@ -109,6 +116,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'positions':
           return 'location';
       }
+      break;
 
     case 'lights':
       switch (propertyName) {
@@ -117,6 +125,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'reading_lamps':
           return 'location';
       }
+      break;
 
     case 'maintenance':
       switch (propertyName) {
@@ -125,6 +134,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'brakes_service_statuses':
           return 'axle';
       }
+      break;
 
     case 'race':
       switch (propertyName) {
@@ -133,6 +143,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'brake_torque_vectorings':
           return 'axle';
       }
+      break;
 
     case 'seats':
       switch (propertyName) {
@@ -140,6 +151,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'seatbelts_state':
           return 'location';
       }
+      break;
 
     case 'tachograph':
       switch (propertyName) {
@@ -148,6 +160,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'drivers_time_states':
           return 'driver_number';
       }
+      break;
 
     case 'trips':
       switch (propertyName) {
@@ -156,13 +169,18 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'thresholds':
           return 'type';
       }
+      break;
 
     case 'usage':
       switch (propertyName) {
+        case 'acceleration_durations':
+          return 'direction';
+
         case 'driving_modes_activation_periods':
         case 'driving_modes_energy_consumptions':
           return 'driving_mode';
       }
+      break;
 
     case 'windows':
       switch (propertyName) {
@@ -170,6 +188,7 @@ export const getPropertyIdentityKey = (capabilityName: string) => (propertyName:
         case 'positions':
           return 'location';
       }
+      break;
   }
 };
 

@@ -4,6 +4,7 @@ import { Configuration } from '../core/Configuration';
 import { UniversalProperties } from './properties';
 
 enum Properties {
+  AccelerationDurations = 'acceleration_durations',
   AccelerationEvaluation = 'acceleration_evaluation',
   AverageFuelConsumption = 'average_fuel_consumption',
   AverageSpeed = 'average_speed',

@@ -45,6 +45,7 @@ enum Properties {
   MileageMeters = 'mileage_meters',
   Odometer = 'odometer',
   OemTroubleCodeValues = 'oem_trouble_code_values',
+  PassengerAirbagStatus = 'passenger_airbag_status',
   Speed = 'speed',
   TirePressureStatuses = 'tire_pressure_statuses',
   TirePressures = 'tire_pressures',

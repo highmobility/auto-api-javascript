@@ -5,6 +5,7 @@ import { UniversalProperties } from './properties';
 
 enum Properties {
   Accelerations = 'accelerations',
+  AcceleratorDurations = 'accelerator_durations',
   AcceleratorPedalIdleSwitch = 'accelerator_pedal_idle_switch',
   AcceleratorPedalKickdownSwitch = 'accelerator_pedal_kickdown_switch',
   BrakePedalPosition = 'brake_pedal_position',
