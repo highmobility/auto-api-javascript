@@ -45,7 +45,6 @@ function createConstructorDeclaration({ name }: PropertyComponent) {
     ],
     [
       ts.factory.createParameterDeclaration(
-        undefined,
         [
           ts.factory.createModifier(ts.SyntaxKind.PublicKeyword),
           ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
@@ -67,7 +66,6 @@ function createConstructorDeclaration({ name }: PropertyComponent) {
 
 function createDataComponentValueTypeDefinitionOverride() {
   return ts.factory.createMethodDeclaration(
-    undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ProtectedKeyword)],
     undefined,
     ts.factory.createIdentifier('getValueTypeDefinition'),
@@ -91,7 +89,6 @@ function createDataComponentValueTypeDefinitionOverride() {
 
 function createPropertyComponentClassDefinition(className: string, component: PropertyComponent) {
   return ts.factory.createClassDeclaration(
-    undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     className,
     undefined,
@@ -112,7 +109,6 @@ function createPropertyComponentClassDefinition(className: string, component: Pr
 
 function createPropertyComponentNameDeclaration(components: PropertyComponents) {
   return ts.factory.createTypeAliasDeclaration(
-    undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createIdentifier(ComponentNameTypeName),
     undefined,

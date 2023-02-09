@@ -33,7 +33,7 @@ export class PropertyComponentFactory {
 
     if (PropertyComponentConstructor) {
       const component = new PropertyComponentConstructor(property) as InstanceType<
-        typeof ClassMap[T]
+        (typeof ClassMap)[T]
       >;
 
       if (initialValue !== undefined) {
