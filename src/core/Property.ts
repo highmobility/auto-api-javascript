@@ -14,6 +14,7 @@ export class Property extends Serializable implements NamedEntity {
   public constructor(
     public readonly definition: Readonly<IProperty>,
     public components: Partial<Record<ComponentName, PropertyComponent>> = {},
+    public tags: Record<string, unknown> = {},
   ) {
     super();
   }
@@ -126,6 +127,20 @@ export class Property extends Serializable implements NamedEntity {
     }
 
     return component;
+  }
+
+  public addTag<T = unknown>(label: string, value: T) {
+    this.tags[label] = value;
+    return this;
+  }
+
+  public getTag<T = unknown>(label: string) {
+    return this.tags[label] as T | undefined;
+  }
+
+  public removeTag(label: string) {
+    delete this.tags[label];
+    return this;
   }
 
   public isInstanceOf(property: Property) {

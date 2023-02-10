@@ -60,7 +60,6 @@ function createConstructorDeclaration(className: string) {
 
 function createIdentifierDeclaration({ identifier }: Capability) {
   return ts.factory.createPropertyDeclaration(
-    undefined,
     [
       ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
       ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
@@ -86,7 +85,6 @@ function createIdentifierDeclaration({ identifier }: Capability) {
 
 function createNameDeclaration(name: string) {
   return ts.factory.createPropertyDeclaration(
-    undefined,
     [
       ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
       ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
@@ -100,7 +98,6 @@ function createNameDeclaration(name: string) {
 
 function createPropertiesDeclaration() {
   return ts.factory.createPropertyDeclaration(
-    undefined,
     [
       ts.factory.createModifier(ts.SyntaxKind.StaticKeyword),
       ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
@@ -118,7 +115,6 @@ function createPropertiesEnumDeclaration(
   exportDeclaration = false,
 ) {
   return ts.factory.createEnumDeclaration(
-    undefined,
     exportDeclaration ? [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)] : undefined,
     ts.factory.createIdentifier(token),
     properties
@@ -135,7 +131,6 @@ function createPropertiesEnumDeclaration(
 
 function createCapabilityClassDefinition(className: string, capability: Capability) {
   return ts.factory.createClassDeclaration(
-    undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     className,
     undefined,
@@ -163,7 +158,6 @@ function createCapabilityClassDefinition(className: string, capability: Capabili
 
 function createCapabilityClassTypeDefinition(classNames: string[]) {
   return ts.factory.createTypeAliasDeclaration(
-    undefined,
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createIdentifier(ClassTypeIdentifier),
     undefined,

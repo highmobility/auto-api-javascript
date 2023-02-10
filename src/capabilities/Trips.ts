@@ -5,6 +5,7 @@ import { UniversalProperties } from './properties';
 
 enum Properties {
   AverageFuelConsumption = 'average_fuel_consumption',
+  BrakingCount = 'braking_count',
   Description = 'description',
   Distance = 'distance',
   DriverName = 'driver_name',

@@ -6,7 +6,6 @@ export function createConstructorDeclaration(
 ) {
   return ts.factory.createConstructorDeclaration(
     undefined,
-    undefined,
     parameters,
     ts.factory.createBlock(statements, true),
   );
@@ -14,7 +13,6 @@ export function createConstructorDeclaration(
 
 export function createExportDeclaration(source: string, identifier: string) {
   return ts.factory.createExportDeclaration(
-    undefined,
     undefined,
     false,
     ts.factory.createNamedExports([
@@ -26,7 +24,6 @@ export function createExportDeclaration(source: string, identifier: string) {
 
 export function createImportDeclaration(source: string, identifier: string) {
   return ts.factory.createImportDeclaration(
-    undefined,
     undefined,
     ts.factory.createImportClause(
       false,
