@@ -143,11 +143,11 @@ export class Property extends Serializable implements NamedEntity {
     return this;
   }
 
-  public isInstanceOf(property: Property) {
+  public isInstanceOf(property: Property, strict?: boolean) {
     const { identityKey, multiple } = property;
     if (property instanceof Object.getPrototypeOf(this).constructor) {
-      if (multiple) {
-        if (identityKey && [this, property].every((p) => p.hasComponent('data'))) {
+      if (multiple && identityKey) {
+        if ([this, property].every((p) => p.hasComponent('data'))) {
           const [a, b] = [this, property].map((p) => p.valueOf() || {});
           return comparePropertyIdentity(a, b, identityKey);
         }
@@ -155,7 +155,7 @@ export class Property extends Serializable implements NamedEntity {
         return false;
       }
 
-      return true;
+      return multiple && strict ? false : true;
     }
 
     return false;

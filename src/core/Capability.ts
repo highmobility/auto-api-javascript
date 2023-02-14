@@ -71,7 +71,7 @@ export abstract class Capability<P extends string = string>
     return this;
   }
 
-  public diff(capability: Capability<P>, fallbackToFirstOfType?: boolean) {
+  public diff(capability: Capability<P>, fallbackToFirstOfType?: boolean, strict?: boolean) {
     const instance = new (Object.getPrototypeOf(this).constructor)(
       this.definition,
       this.universalProperties,
@@ -81,7 +81,7 @@ export abstract class Capability<P extends string = string>
       .getPropertiesArray()
       .reduce<Property[]>((properties, property) => {
         if (this.hasProperty(property.name as P)) {
-          const ref = this.findProperty(property, fallbackToFirstOfType);
+          const ref = this.findProperty(property, fallbackToFirstOfType, strict);
           if (ref && ref.equals(property)) {
             return properties;
           }
@@ -188,11 +188,15 @@ export abstract class Capability<P extends string = string>
     return property;
   }
 
-  public findProperty(property: Property, fallbackToFirstOfType?: boolean): Property | undefined {
+  public findProperty(
+    property: Property,
+    fallbackToFirstOfType?: boolean,
+    strict?: boolean,
+  ): Property | undefined {
     if (this.hasProperty(property.name as P)) {
       if (property.multiple) {
         const match = this.getProperties(property.name as P).find((ref) =>
-          ref.isInstanceOf(property),
+          ref.isInstanceOf(property, strict),
         );
         return match === undefined && fallbackToFirstOfType
           ? this.getProperty(property.name as P)
@@ -231,9 +235,9 @@ export abstract class Capability<P extends string = string>
     return this;
   }
 
-  public update(capability: Capability<P>, fallbackToFirstOfType?: boolean) {
+  public update(capability: Capability<P>, fallbackToFirstOfType?: boolean, strict?: boolean) {
     return capability.getPropertiesArray().reduce((result, property) => {
-      const ref = this.findProperty(property, fallbackToFirstOfType);
+      const ref = this.findProperty(property, fallbackToFirstOfType, strict);
 
       if (ref) {
         ref.replace(property);
