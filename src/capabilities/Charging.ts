@@ -43,6 +43,7 @@ enum Properties {
   CurrentType = 'current_type',
   DepartureTimeDisplay = 'departure_time_display',
   DepartureTimes = 'departure_times',
+  DistanceToCompleteCharge = 'distance_to_complete_charge',
   DrivingModePhev = 'driving_mode_phev',
   EstimatedRange = 'estimated_range',
   EstimatedRangeTarget = 'estimated_range_target',
