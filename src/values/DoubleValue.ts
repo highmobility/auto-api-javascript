@@ -12,8 +12,7 @@ export class DoubleValue extends FloatValue {
   }
 
   public decode(bytes: number[]) {
-    this._value = ieee754DoubleToBase10(bytes, this.size);
-    return this;
+    return this.setValue(ieee754DoubleToBase10(bytes, this.size));
   }
 
   public toString() {

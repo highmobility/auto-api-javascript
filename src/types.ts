@@ -54,6 +54,11 @@ export interface MeasurementType {
 
 export type MeasurementTypes = MeasurementType[];
 
+export interface NumericRange {
+  min: number;
+  max: number;
+}
+
 export interface Property extends Omit<TypeDefinition, 'items'> {
   id: number;
   added?: number;

@@ -2,17 +2,24 @@ import { TypeDefinition } from '../types';
 
 import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
-import { Value } from '../core/Value';
 
-import { bytesToInt, decimalToHexArray, isInteger } from '../utils';
+import { bytesToInt, decimalToHexArray, getNumericInputRange, isInteger } from '../utils';
 
-export class IntegerValue extends Value<number> implements NamedEntity {
-  public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
-    super();
+import { NumericValue } from './NumericValue';
+
+export class IntegerValue extends NumericValue implements NamedEntity {
+  public constructor(
+    public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size' | 'validation'>>,
+  ) {
+    super(definition);
   }
 
   public get name() {
     return this.definition.name;
+  }
+
+  public get range() {
+    return getNumericInputRange(this.size);
   }
 
   public get size() {
@@ -24,8 +31,7 @@ export class IntegerValue extends Value<number> implements NamedEntity {
   }
 
   public decode(bytes: number[]) {
-    this._value = bytesToInt(bytes);
-    return this;
+    return this.setValue(bytesToInt(bytes));
   }
 
   public fromJSON(payload: unknown) {
@@ -35,11 +41,6 @@ export class IntegerValue extends Value<number> implements NamedEntity {
       throw new FormatError('Value must be an integer.');
     }
 
-    return this;
-  }
-
-  public setValue(value: number) {
-    this._value = value;
     return this;
   }
 

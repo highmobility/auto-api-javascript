@@ -2,17 +2,24 @@ import { TypeDefinition } from '../types';
 
 import { FormatError } from '../core/Error';
 import { NamedEntity } from '../core/NamedEntity';
-import { Value } from '../core/Value';
 
-import { base10ToIeee754, ieee754ToBase10, isNumber } from '../utils';
+import { base10ToIeee754, getNumericInputRange, ieee754ToBase10, isNumber } from '../utils';
 
-export class FloatValue extends Value<number> implements NamedEntity {
-  public constructor(public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size'>>) {
-    super();
+import { NumericValue } from './NumericValue';
+
+export class FloatValue extends NumericValue implements NamedEntity {
+  public constructor(
+    public readonly definition: Readonly<Pick<TypeDefinition, 'name' | 'size' | 'validation'>>,
+  ) {
+    super(definition);
   }
 
   public get name() {
     return this.definition.name;
+  }
+
+  public get range() {
+    return getNumericInputRange(this.size);
   }
 
   public get size() {
@@ -24,8 +31,7 @@ export class FloatValue extends Value<number> implements NamedEntity {
   }
 
   public decode(bytes: number[]) {
-    this._value = ieee754ToBase10(bytes, this.size);
-    return this;
+    return this.setValue(ieee754ToBase10(bytes, this.size));
   }
 
   public fromJSON(payload: unknown) {
@@ -35,11 +41,6 @@ export class FloatValue extends Value<number> implements NamedEntity {
       throw new FormatError('Value must be a number.');
     }
 
-    return this;
-  }
-
-  public setValue(value: number) {
-    this._value = value;
     return this;
   }
 

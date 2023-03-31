@@ -81,6 +81,10 @@ export function bytesWithSize(bytes: number[]) {
   return [...intToTwoBytes(bytes.length), ...bytes];
 }
 
+export function clamp(value: number, min: number, max: number) {
+  return Math.max(Math.min(value, max), min);
+}
+
 export function decimalToHexArray(value: number | string, bytes = 1) {
   let hex = intToHex(typeof value === 'string' ? parseInt(value, 10) : value);
 
@@ -89,6 +93,13 @@ export function decimalToHexArray(value: number | string, bytes = 1) {
   }
 
   return hex.match(/.{1,2}/g)!.map((hexItem) => Number(`0x${hexItem}`));
+}
+
+export function getNumericInputRange(size = 1, unsigned?: boolean) {
+  return {
+    min: unsigned ? 0 : -1 * Math.pow(2, size * 8 - 1),
+    max: Math.pow(2, size * 8 - (unsigned ? 0 : 1)) - 1,
+  };
 }
 
 export function hexArrayToHex(hexArray: number[]) {
