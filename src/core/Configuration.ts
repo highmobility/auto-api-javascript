@@ -72,8 +72,8 @@ export class Configuration {
     return customType
       ? Configuration.getCustomTypeDefinition(customType)
       : event
-      ? Configuration.getEventDefinition(event)
-      : definition;
+        ? Configuration.getEventDefinition(event)
+        : definition;
   }
 
   public static getUniversalProperties(): Readonly<Properties> {

@@ -2,11 +2,9 @@
 
 AutoAPI for JavaScript/TypeScript - the parsing library for the Auto API vehicle data model
 
-:warning: This project is currently under development.
-
 ## Introduction
 
-This library aims to provide a low-level access for building and decoding Auto API commands/data structures from/to binary/JSON. Produced binary representation is essentially an array of unsigned integers. Both CommonJS and ES builds are included in this package.
+This library aims to provide a low-level access for building and decoding Auto API commands/data structures from/to binary/JSON. Both CommonJS and ES builds are included in this package.
 
 ## Basic usage
 
