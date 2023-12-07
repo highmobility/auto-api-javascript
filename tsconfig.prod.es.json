@@ -2,7 +2,6 @@
   "extends": "./tsconfig.prod.cjs.json",
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "node",
     "outDir": "es"
   }
 }

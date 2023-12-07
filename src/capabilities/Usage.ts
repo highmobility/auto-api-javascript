@@ -36,6 +36,7 @@ enum Properties {
   FuelDistanceLastTrip = 'fuel_distance_last_trip',
   FuelDistanceSinceReset = 'fuel_distance_since_reset',
   LastTripAverageEnergyRecuperation = 'last_trip_average_energy_recuperation',
+  LastTripBatteryRegenerated = 'last_trip_battery_regenerated',
   LastTripBatteryRemaining = 'last_trip_battery_remaining',
   LastTripDate = 'last_trip_date',
   LastTripElectricPortion = 'last_trip_electric_portion',
