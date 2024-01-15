@@ -29,6 +29,7 @@ enum Properties {
   ChargeLimit = 'charge_limit',
   ChargeMode = 'charge_mode',
   ChargePortState = 'charge_port_state',
+  ChargerPower = 'charger_power',
   ChargerVoltage = 'charger_voltage',
   ChargerVoltageAc = 'charger_voltage_ac',
   ChargerVoltageDc = 'charger_voltage_dc',
