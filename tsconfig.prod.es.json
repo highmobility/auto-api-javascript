@@ -2,6 +2,7 @@
   "extends": "./tsconfig.prod.cjs.json",
   "compilerOptions": {
     "module": "ESNext",
+    "moduleResolution": "Bundler",
     "outDir": "es"
   }
 }
